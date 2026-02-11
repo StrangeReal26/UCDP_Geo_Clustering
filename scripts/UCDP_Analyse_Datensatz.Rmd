@@ -1,0 +1,451 @@
+---
+title: "UCDP Analyse Datensatz"
+author: "Teichgräber"
+date: "2026-02-11"
+output: html_document
+---
+
+
+```{r}
+getwd()
+list.files()
+list.files("data")
+```
+
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+
+# Vorstellung des Datensatzes GED 25.1 des Uppsala Conflict Data Program (UCDP)
+
+
+## Libraries laden (jedes Mal durchführen)
+
+```{r, echo = FALSE}
+library(tidyverse)
+library(lubridate)
+library(dplyr)
+library(arrow)
+library(ggplot2)
+```
+
+## Einlesen des gekürzten Datensatzes GED 25.1 
+
+Umgewandelte Datei (von xlsx zu csv) muss mit Semikolon als Trennzeichen gelesen werden wegen der Deutschen Version!
+
+```{r}
+UCDPsmall = read.csv("data/GEDEvent_v25_1_small.csv", sep = ";")
+```
+
+```{r}
+view(UCDPsmall)
+```
+
+## Kurzer Überblick über den Datensatz mit "glimpse"
+
+```{r}
+
+# head(UCDPsmall, 10) --> Wird drauf verzichtet, da zu unübersichtlich!
+# tail(UCDPsmall, 10) --> Wird drauf verzichtet, da zu unübersichtlich!
+glimpse(UCDPsmall)
+
+```
+
+## Allgemeine Informationen zum Datensatz
+
+```{r}
+
+nrow(UCDPsmall) # Anzahl der Zeilen
+ncol(UCDPsmall) # Anzahl der Spalten
+
+dim(UCDPsmall) # Vektor mit beiden Anzahlen
+
+```
+
+## Deskriptive Beschreibung des Datensatzes
+
+## Überblick über die Variablen mit "str" (übersichtlicher)
+
+```{r}
+
+str(UCDPsmall) 
+
+```
+
+## Erklärung der wichtigsten Variablen
+
+
+**Variablen**
+
+"id"
+
+"year"
+
+"active_year" 
+
+"type_of_violence"
+
+"conflict_new_id"
+
+"conflict_name"
+
+"dyad_new_id"
+
+"dyad_name"
+
+"side_a_new_id"
+
+"side_a"
+
+"side_b_new_id"
+
+"side_b"
+"number_of_sources"
+
+"where_prec"
+
+"where_coordinates"
+
+"where_description"
+
+"adm_1"
+
+"adm_2"
+
+"latitude"          
+"longitude"        
+"geom_wkt"
+
+"country"           
+"country_id"
+
+"region"
+
+"event_clarity"
+
+"date_prec"
+
+"date_start"        
+"date_end"
+
+"deaths_a"          
+"deaths_b"
+
+"deaths_civilians"  
+"deaths_unknown"
+
+"best"
+
+"high"              
+"low"
+
+
+*Wichtiges*
+
+Aus der Beschreibung des Datensatzes geht hervor, dass keine fehlenden Werte in den gesamten Daten vorhanden sind.
+
+Weiter unten stehende Datenabfrage bestätigt dies.
+
+
+## Abrufen nur der Spaltennamen
+
+```{r}
+
+colnames(UCDPsmall)
+
+```
+
+## Überblick über die deskriptive Statistik aller Variablen (auch bei unsinnigen Variablen)
+
+```{r}
+
+summary(UCDPsmall) # Base COde
+
+```
+
+## Überblick über deskriptive Daten der Verluste der tödlichsten Konflikte
+
+```{r}
+
+UCDPsmall |>
+  group_by(conflict_new_id, dyad_name) |>
+  summarise(
+    total_deaths = sum(best, na.rm = TRUE),
+    .groups = "drop"
+  ) |>
+  arrange(desc(total_deaths)) |>
+  slice_head(n = 10)
+
+
+conflict_13243 <- UCDPsmall |>
+  filter(conflict_new_id == 13243)
+
+nrow(conflict_13243)
+
+summary(conflict_13243$best)
+
+conflict_13243 |>
+  summarise(
+    anzahl_events = n(),
+    summe_tote = sum(best, na.rm = TRUE),
+    mittelwert = mean(best, na.rm = TRUE),
+    median = median(best, na.rm = TRUE),
+    standardabweichung = sd(best, na.rm = TRUE),
+    minimum = min(best, na.rm = TRUE),
+    maximum = max(best, na.rm = TRUE)
+  )
+
+```
+
+## Anzahl fehlender Werte pro Variable
+
+```{r}
+
+UCDPsmall |>
+  summarise(across(everything(), ~ sum(is.na(.x)))) # Code von Tidyverse
+
+colSums(is.na(UCDPsmall)) # Code in R
+
+```
+
+## Deskriptive Statistik zur Variable "best" (best estimate of total fatalities)
+
+```{r}
+
+UCDPsmall |>
+  summarise(
+    mean_best = mean(best, na.rm = TRUE),
+    median_best = median(best, na.rm = TRUE),
+    sd_best = sd(best, na.rm = TRUE),
+    max_best = max(best, na.rm = TRUE)
+  )
+
+```
+
+## Zählen von Werten in den Spalten
+
+```{r}
+
+UCDPsmall |>
+  count(type_of_violence) # Einfaches Zählen der EIntragungen pro Art von "type_of_violance"
+
+# 1: state-based conflict 2: non-state conflict 3: one-sided violence
+
+UCDPsmall |>
+  count(country, sort = TRUE) |>
+  slice_head(n = 30) # Begrenzung der Abfrage auf 30 Werte
+
+UCDPsmall |>
+  count(region) # Wie viele Events gibt es in den angegebenen Regionen?
+
+```
+
+## Zeitliche Verteilungen
+
+```{r}
+
+UCDPsmall |>
+  count(year, sort = TRUE)
+
+
+UCDPsmall |>
+  group_by(year) |>
+  summarise(events = n())
+
+```
+
+## Histogramm zur zeitlichen Verteilung
+
+Verwendung von Library "ggplot" zur besseren Ausgestaltung der Diagramme
+
+```{r}
+
+# Histogramm mit Balken für je zwei Jahre zusammengefasst
+
+ggplot(UCDPsmall, aes(x = year)) +
+  geom_histogram(binwidth = 2) +
+  labs(
+    title = "Zeitliche Verteilung der Konfliktereignisse",
+    x = "Jahr",
+    y = "Anzahl der Ereignisse"
+  )
+
+
+hist(
+  UCDPsmall$year,
+  breaks = "Sturges",
+  main = "Zeitliche Verteilung der Konfliktereignisse",
+  xlab = "Jahr",
+  ylab = "Anzahl der Ereignisse"
+)
+
+
+# Histogramm mit Balken pro Jahr
+
+UCDPsmall |>
+  count(year) |>
+  ggplot(aes(x = year, y = n)) +
+  geom_col() +
+  labs(
+    title = "Anzahl der Konfliktereignisse pro Jahr",
+    x = "Jahr",
+    y = "Anzahl der Ereignisse"
+  )
+
+```
+
+## Vergleich von zwei Variablen. Hier: Zivile und nicht zivile Opfer
+
+```{r}
+
+UCDPsmall |>
+  summarise(
+    deaths_civ = sum(deaths_civilians, na.rm = TRUE),
+    deaths_non_civ = sum(deaths_a + deaths_b, na.rm = TRUE)
+  )
+
+```
+
+## Räumliche Beschreibung
+
+```{r}
+
+summary(UCDPsmall$latitude)
+summary(UCDPsmall$longitude)
+
+sum(is.na(UCDPsmall$latitude) | is.na(UCDPsmall$longitude)) # Fehlende Geodaten
+
+```
+
+## Zahlen zu Konflikten und Akteuren
+
+```{r}
+
+n_distinct(UCDPsmall$conflict_name) # Anzahl unterschiedlicher Konflikte (dplyer)
+
+UCDPsmall |>
+  count(conflict_name, sort = TRUE) |> # Die Häufigsten Konflikte nach Anzahl sortiert
+  slice_head(n = 30)
+
+```
+
+## Berechnung der Toten aufgeschlüsselt nach einem Konflikt (Konflikt ID)
+
+```{r}
+
+UCDPsmall |>
+  group_by(conflict_new_id, dyad_name) |>
+  summarise(
+    total_deaths = sum(best, na.rm = TRUE),
+    .groups = "drop"
+  ) |>
+  arrange(desc(total_deaths)) |>
+  slice_head(n = 30)
+
+```
+
+## Tote pro Jahr in einem Liniendiagramm im Zeitraum 2000 bis 2025
+
+```{r}
+
+todesfaelle_pro_jahr <- UCDPsmall |>
+  filter(year >= 2000, year <= 2025) |>
+  group_by(year) |>
+  summarise(
+    total_deaths = sum(best, na.rm = TRUE),
+    .groups = "drop"
+  )
+
+ggplot(todesfaelle_pro_jahr, aes(x = year, y = total_deaths)) +
+  geom_line() +
+  geom_point() +
+  scale_y_continuous(labels = scales::label_comma()) +
+  labs(
+    title = "Todesfälle durch bewaffnete Konflikte (2000–2025)",
+    x = "Jahr",
+    y = "Anzahl der Todesfälle (best)"
+  )
+
+```
+
+## Berechnung der durchschnittlichen Toten aller Events aufgegliedert nach Konflikt und Jahr (Tödlichkeit)
+
+```{r}
+
+UCDPsmall |>
+  group_by(year) |>
+  summarise(
+    anzahl_events = n(),
+    gesamt_tote = sum(best, na.rm = TRUE),
+    durchschnitt_tote_pro_event = mean(best, na.rm = TRUE),
+    median_tote = median(best, na.rm = TRUE),
+    sd_tote = sd(best, na.rm = TRUE),
+    .groups = "drop"
+  ) |>
+  arrange(year)
+
+```
+
+## Vergleich der Toten aufgeschlüsselt nach Monat über kompletten Zeitraum --> Falsch
+
+Gibt es einen tödlichsten Monat?
+
+```{r}
+
+UCDPsmall <- UCDPsmall |>
+  mutate(date_start = lubridate::dmy(date_start))
+
+class(UCDPsmall$date_start)
+
+UCDPsmall <- UCDPsmall |>
+  mutate(start_month = month(date_start))
+
+```
+
+```{r}
+
+monthly_yearly <- UCDPsmall |>
+  group_by(year, start_month) |>
+  summarise(
+    deaths_month = sum(best, na.rm = TRUE),
+    events_month = n(),
+    .groups = "drop"
+  )
+
+```
+
+```{r}
+
+month_stats <- monthly_yearly |>
+  group_by(start_month) |>
+  summarise(
+    mean_deaths   = mean(deaths_month, na.rm = TRUE),
+    median_deaths = median(deaths_month, na.rm = TRUE),
+    sd_deaths     = sd(deaths_month, na.rm = TRUE),
+    min_deaths    = min(deaths_month, na.rm = TRUE),
+    max_deaths    = max(deaths_month, na.rm = TRUE),
+    total_deaths  = sum(deaths_month, na.rm = TRUE),
+    n_months      = n(),
+    .groups = "drop"
+  ) |>
+  arrange(desc(mean_deaths))
+
+```
+
+```{r}
+
+month_stats |>
+  slice_head(n = 5)
+
+```
+
+```{r}
+
+month_stats |>
+  arrange(desc(total_deaths)) |>
+  slice_head(n = 12)
+
+```
+
