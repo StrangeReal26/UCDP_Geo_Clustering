@@ -2,7 +2,9 @@
 title: "UCDP Analyse Datensatz"
 author: "Teichgräber"
 date: "2026-02-11"
-output: html_document
+output: 
+  distill::distill_article: default
+  html_document: default
 ---
 
 
@@ -29,6 +31,7 @@ library(lubridate)
 library(dplyr)
 library(arrow)
 library(ggplot2)
+library(distill)
 ```
 
 ## Einlesen des gekürzten Datensatzes GED 25.1 
@@ -437,7 +440,7 @@ month_stats <- monthly_yearly |>
 ```{r}
 
 month_stats |>
-  slice_head(n = 5)
+  slice_head(n = 10)
 
 ```
 
