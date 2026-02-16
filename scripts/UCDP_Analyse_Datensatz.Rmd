@@ -243,6 +243,23 @@ UCDPsmall |>
 UCDPsmall |>
   count(region) # Wie viele Events gibt es in den angegebenen Regionen?
 
+
+# Anzahl Konflikte pro Region
+
+UCDPsmall |>
+  group_by(region) |>
+  summarise(
+    n_conflicts = n_distinct(conflict_new_id)
+  )
+
+
+# Anzahl Koonflikte im Datensatz insgesamt
+
+UCDPsmall |>
+  summarise(
+    n_conflicts_global = n_distinct(conflict_new_id)
+  )
+
 ```
 
 ## Zeitliche Verteilungen

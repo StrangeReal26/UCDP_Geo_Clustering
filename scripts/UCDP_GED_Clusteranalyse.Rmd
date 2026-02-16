@@ -1,0 +1,27 @@
+---
+title: "UCDP GED Clusteranalyse"
+author: "Teichgräber"
+date: "2026-02-16"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r}
+library(tidyverse)
+library(lubridate)
+library(dplyr)
+library(arrow)
+library(ggplot2)
+library(distill)
+```
+
+```{r}
+GED = read.csv("data/GEDEvent_v25_1_small.csv", sep = ";")
+```
+
+```{r}
+view(GED)
+```
