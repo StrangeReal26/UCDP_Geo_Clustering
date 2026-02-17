@@ -55,7 +55,9 @@ Region „Africa“ (mit Fokus auf Sahel-Subregion)
 
 ## Hypothese
 
-**H1:** Geographisch identifizierte Cluster von Gewaltereignissen weisen eine hohe Übereinstimmung mit den bestehenden Konfliktzuordnungen im UCDP GED auf.
+**H1:** 
+
+**Geographisch identifizierte Cluster von Gewaltereignissen weisen eine hohe Übereinstimmung mit den bestehenden Konfliktzuordnungen im UCDP GED auf.**
 
 **Begründung:**
 
