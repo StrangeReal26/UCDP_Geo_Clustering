@@ -22,90 +22,81 @@ knitr::opts_chunk$set(
 library(distill)
 ```
 
-
 # Titel: Geographische Clusteranalyse von Gewaltereignissen in Afrika
-
-
 
 ## Datensatz
 
 **Datengrundlage:**
 
-UCDP Georeferenced Event Dataset (GED), Version 25.1 
+UCDP Georeferenced Event Dataset (GED), Version 25.1
 
 **Kurzbeschreibung:**
 
-* Ereignisdatensatz zu organisierter Gewalt
-* Zeitraum: 1989–2024 
-* Beobachtungseinheit: einzelnes tödliches Ereignis
-* Vollständig georeferenziert (Latitude/Longitude, WGS84) 
-* Enthält eindeutige Konflikt-IDs (`conflict_new_id`)
-* Maximale zeitliche Auflösung: Tag
-* Maximale räumliche Auflösung: Ort (Dorf/Stadt)
+-   Ereignisdatensatz zu organisierter Gewalt
+-   Zeitraum: 1989–2024
+-   Beobachtungseinheit: einzelnes tödliches Ereignis
+-   Vollständig georeferenziert (Latitude/Longitude, WGS84)
+-   Enthält eindeutige Konflikt-IDs (`conflict_new_id`)
+-   Maximale zeitliche Auflösung: Tag
+-   Maximale räumliche Auflösung: Ort (Dorf/Stadt)
 
 **Untersuchungsraum:**
 
 Region „Africa“ (mit Fokus auf Sahel-Subregion)
 
-
 ## ️Forschungsfrage
 
 **Inwiefern entsprechen geographisch identifizierte Cluster von Gewaltereignissen bestehenden Konfliktzuordnungen im UCDP GED?**
 
---> Rein explorative Analyse durchführen
+Neu: Rein explorative Analyse durchführen
 
 ## Hypothese
 
-**H1:** 
+**H1:**
 
 **Geographisch identifizierte Cluster von Gewaltereignissen weisen eine hohe Übereinstimmung mit den bestehenden Konfliktzuordnungen im UCDP GED auf.**
 
 **Begründung:**
 
-* Konflikte sind territorial verankert
-* Territoriale Konzentration erzeugt räumliche Dichte
-* Dichtebasierte Algorithmen sollten diese Struktur erkennen
+-   Konflikte sind territorial verankert
+-   Territoriale Konzentration erzeugt räumliche Dichte
+-   Dichtebasierte Algorithmen sollten diese Struktur erkennen
 
---> H1 streichen und eine rein explorative Clusteranalyse durchführen
-
+Neu: H1 streichen und eine rein explorative Clusteranalyse durchführen
 
 ## Datenfilter & Eingrenzung
 
 ### Zeitliche Eingrenzung
 
-* Zeitraum: 2000–2024
-  Begründung:
-* bessere Datenqualität
-* größere strukturelle Homogenität
-* Vermeidung von Kalter-Krieg-Effekten
+-   Zeitraum: 2000–2024 Begründung:
+-   bessere Datenqualität
+-   größere strukturelle Homogenität
+-   Vermeidung von Kalter-Krieg-Effekten
 
 ### Räumliche Eingrenzung
 
-* Region: Africa (`region == "Africa"`) 
-* Subregion: Sahel (definierte Länderliste)
+-   Region: Africa (`region == "Africa"`)
+-   Subregion: Sahel (definierte Länderliste)
 
 Begründung:
 
-* hohe Konfliktdichte
-* keine dominierenden Einzelgroßkonflikte
-* geeignete räumliche Heterogenität
+-   hohe Konfliktdichte
+-   keine dominierenden Einzelgroßkonflikte
+-   geeignete räumliche Heterogenität
 
 ### Qualitätsfilter
 
-* `where_prec == 1 oder 2`
-  → nur präzise Ortsangaben 
-* `event_clarity == 1`
-  → nur klar identifizierbare Einzelereignisse vollständige Koordinaten
-
+-   `where_prec == 1 oder 2` → nur präzise Ortsangaben
+-   `event_clarity == 1` → nur klar identifizierbare Einzelereignisse vollständige Koordinaten
 
 ## Methodisches Vorgehen: Clusteranalyse
 
 ### Schritt 1: Geodatenaufbereitung
 
-* Umwandlung in `sf`-Objekt
-* Projektion von WGS84 (Grad) in metrisches CRS
-* Verwendung von **Lambert Azimuthal Equal Area (LAEA)** für die Sahelregion
-* Koordinaten in Meter extrahieren
+-   Umwandlung in `sf`-Objekt
+-   Projektion von WGS84 (Grad) in metrisches CRS
+-   Verwendung von **Lambert Azimuthal Equal Area (LAEA)** für die Sahelregion
+-   Koordinaten in Meter extrahieren
 
 Ziel: korrekte Distanzberechnung
 
@@ -115,10 +106,10 @@ Ziel: korrekte Distanzberechnung
 
 Begründung:
 
-* erkennt Cluster beliebiger Form
-* robust bei unterschiedlicher Dichte
-* benötigt kein fixes Distanzparameter (kein ε)
-* identifiziert Noise-Punkte
+-   erkennt Cluster beliebiger Form
+-   robust bei unterschiedlicher Dichte
+-   benötigt kein fixes Distanzparameter (kein ε)
+-   identifiziert Noise-Punkte
 
 Input:
 
@@ -126,9 +117,9 @@ Input:
 
 Output:
 
-* cluster_id pro Event
-* membership_probability
-* Noise-Punkte
+-   cluster_id pro Event
+-   membership_probability
+-   Noise-Punkte
 
 ### Schritt 3: Evaluation
 
@@ -138,27 +129,24 @@ cluster_id ↔ conflict_new_id
 
 Analytische Schritte:
 
-* Kreuztabellen
-* Cluster-Purity
-* Anteil dominanter Konflikte pro Cluster
-* Identifikation gemischter Cluster
+-   Kreuztabellen
+-   Cluster-Purity
+-   Anteil dominanter Konflikte pro Cluster
+-   Identifikation gemischter Cluster
 
 Ziel:
 
-* Überprüfung der Hypothese
-* Bewertung der Übereinstimmung
+-   Überprüfung der Hypothese
+-   Bewertung der Übereinstimmung
 
 ## Erwartete Ergebnisse
 
-* Teilweise hohe Kongruenz zwischen räumlichen Clustern und Konflikt-IDs
-* Konflikte mit klarer territorialer Begrenzung → hohe Übereinstimmung
-* Transnationale oder urbane Mehrfachkonflikte → geringere Übereinstimmung
+-   Teilweise hohe Kongruenz zwischen räumlichen Clustern und Konflikt-IDs
+-   Konflikte mit klarer territorialer Begrenzung → hohe Übereinstimmung
+-   Transnationale oder urbane Mehrfachkonflikte → geringere Übereinstimmung
 
 ## Beitrag der Arbeit
 
-* Methodischer Beitrag: Anwendung dichtebasierter Clusterverfahren auf Konfliktdaten
-* Empirischer Beitrag: Prüfung der räumlichen Rekonstruierbarkeit von Konflikten
-* Validierungsbeitrag: Vergleich algorithmischer Struktur mit institutioneller Konfliktdefinition
-
-
-
+-   Methodischer Beitrag: Anwendung dichtebasierter Clusterverfahren auf Konfliktdaten
+-   Empirischer Beitrag: Prüfung der räumlichen Rekonstruierbarkeit von Konflikten
+-   Validierungsbeitrag: Vergleich algorithmischer Struktur mit institutioneller Konfliktdefinition
