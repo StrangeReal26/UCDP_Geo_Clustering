@@ -164,7 +164,7 @@ colnames(UCDPsmall)
 
 ```{r}
 
-summary(UCDPsmall) # Base COde
+summary(UCDPsmall) # Base Code
 
 ```
 
@@ -325,17 +325,6 @@ UCDPsmall |>
     deaths_civ = sum(deaths_civilians, na.rm = TRUE),
     deaths_non_civ = sum(deaths_a + deaths_b, na.rm = TRUE)
   )
-
-```
-
-## Räumliche Beschreibung
-
-```{r}
-
-summary(UCDPsmall$latitude)
-summary(UCDPsmall$longitude)
-
-sum(is.na(UCDPsmall$latitude) | is.na(UCDPsmall$longitude)) # Fehlende Geodaten
 
 ```
 
