@@ -50,8 +50,9 @@ Region „Africa“ (mit Fokus auf Sahel-Subregion)
 
 ## ️Forschungsfrage
 
-> **Inwiefern entsprechen geographisch identifizierte Cluster von Gewaltereignissen bestehenden Konfliktzuordnungen im UCDP GED?**
+**Inwiefern entsprechen geographisch identifizierte Cluster von Gewaltereignissen bestehenden Konfliktzuordnungen im UCDP GED?**
 
+--> Rein explorative Analyse durchführen
 
 ## Hypothese
 
@@ -64,6 +65,8 @@ Region „Africa“ (mit Fokus auf Sahel-Subregion)
 * Konflikte sind territorial verankert
 * Territoriale Konzentration erzeugt räumliche Dichte
 * Dichtebasierte Algorithmen sollten diese Struktur erkennen
+
+--> H1 streichen und eine rein explorative Clusteranalyse durchführen
 
 
 ## Datenfilter & Eingrenzung
