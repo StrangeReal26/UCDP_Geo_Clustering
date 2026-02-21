@@ -9,12 +9,14 @@ output: html_document
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
-```{r}
+```{r, echo=FALSE}
 library(lubridate)
 library(dplyr)
-library(arrow)
 library(ggplot2)
 library(distill)
+library(sf)
+library(dbscan)
+library(tidyr)
 ```
 
 ```{r}
@@ -22,5 +24,41 @@ GED = read.csv("data/GEDEvent_v25_1_small.csv", sep = ";")
 ```
 
 ```{r}
-view(GED)
+View(GED)
 ```
+
+```{r}
+glimpse(GED)
+```
+
+```{r}
+str(GED)
+```
+
+```{r}
+sum(is.na(GED$latitude)); sum(is.na(GED$longitude))
+```
+
+```{r}
+
+# --- Data preparation: types & basic cleaning ---
+GED <- GED |>
+  mutate(
+    
+    # 1) Logical/Boolean: "true"/"false" als chr wird nun als TRUE/FALSE definiert
+    active_year = tolower(active_year) == "true",
+
+    # 2) Koordinaten: Komma -> Punkt, dann numeric
+    latitude  = as.numeric(gsub(",", ".", latitude)),
+    longitude = as.numeric(gsub(",", ".", longitude)),
+
+    # 3) Datum: date_start und date_end ist noch "dd.mm.yyyy" als Text
+    date_start = dmy(date_start),
+    date_end = dmy(date_end),
+    
+  ) |>
+  # 5) Remove rows with missing coords (sonst scheitert sf/hdbscan später)
+  drop_na(latitude, longitude)
+
+```
+
