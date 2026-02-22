@@ -36,29 +36,331 @@ str(GED)
 ```
 
 ```{r}
+
+# Prüfung fehlender Werte bei den geographischen Daten
 sum(is.na(GED$latitude)); sum(is.na(GED$longitude))
+
 ```
 
 ```{r}
 
-# --- Data preparation: types & basic cleaning ---
+# Aufbereitung der Daten bzw. Variablen
 GED <- GED |>
   mutate(
     
-    # 1) Logical/Boolean: "true"/"false" als chr wird nun als TRUE/FALSE definiert
+    # 1) Aktives Jahr: Der Wert der Variablen "true"/"false" wird von character nun als TRUE/FALSE (BOOLEAN) definiert
+    
     active_year = tolower(active_year) == "true",
 
-    # 2) Koordinaten: Komma -> Punkt, dann numeric
+    # 2) Koordinaten: Das Dezimalzeichen wird von Komma zu Punkt geändert und als numeric definiert
+    
     latitude  = as.numeric(gsub(",", ".", latitude)),
     longitude = as.numeric(gsub(",", ".", longitude)),
 
-    # 3) Datum: date_start und date_end ist noch "dd.mm.yyyy" als Text
+    # 3) Datum: Die variablen date_start und date_end werden von character in ein Datumsformat gebracht
+    
     date_start = dmy(date_start),
     date_end = dmy(date_end),
     
   ) |>
-  # 5) Remove rows with missing coords (sonst scheitert sf/hdbscan später)
+  
+  # 5) Zeilen mit fehlenden geographsichen Daten werden entfernt (sonst scheitert die spätere Datenanalyse)
+  
   drop_na(latitude, longitude)
 
 ```
 
+```{r}
+
+# Die Länder der Region der späteren Clusteranalyse werden festgehalten (dfür wird ein Vektor genutzt)
+
+sahel_countries <- c("Senegal",
+                     "Mauritania",
+                     "Mali",
+                     "Burkina Faso",
+                     "Niger",
+                     "Chad",
+                     "Sudan")
+
+# Hier wird ein neuer Datensatz auf Grundlage der benötigten Filter definiert und geladen
+
+GED_sahel <- GED |>
+  filter(country %in% sahel_countries) |>
+  filter(year >= 2000) |>
+  filter(where_prec %in% c(1, 2)) |>
+  filter(event_clarity == 1)
+
+```
+
+```{r}
+
+# Überprüfung, ob die Filter korrekt sind und wie viele Beobachtungen übrig bleiben
+
+unique(GED_sahel$country)
+
+glimpse(GED_sahel)
+
+```
+
+```{r}
+
+# Neuer Datensatz wird erstellt mit allen vorherigen Variablen und mit einer neuen Spalte geometry (geometrischer Punkt)
+
+GED_sahel_sf <- GED_sahel |>
+  st_as_sf(
+    coords = c("longitude", "latitude"),  # x = longitude, y = latitude
+    crs = 4326,                           # WGS84 / EPSG:4326 (Grad)
+    remove = FALSE                        # Datensatz behält latitude/longitude als Spalten
+  )
+
+# Überprüfung: Welche Projektion/CRS hat das sf-Objekt?
+
+st_crs(GED_sahel_sf)
+
+# Überprüfung: Erste Geometrien anschauen
+
+head(st_geometry(GED_sahel_sf))
+
+```
+
+```{r}
+
+# Neuer Datensatz wird erstellt
+# Es werden die Vorherig erstellten Koordianten in Meter-Koordinaten auf Grundlage des LAEA erzeugt
+
+# 1) Projektion definieren (LAEA) – Zentrum grob in der Sahelzone
+
+crs_laea_sahel <- "+proj=laea +lat_0=15 +lon_0=10 +datum=WGS84 +units=m +no_defs"
+
+# 2) Transformation: von WGS84 (Grad) -> LAEA (Meter)
+
+GED_sahel_laea <- GED_sahel_sf |>
+  st_transform(crs = crs_laea_sahel)
+
+# 3) x/y-Koordinaten (in Metern) aus der Geometrie extrahieren
+
+coords_m <- st_coordinates(GED_sahel_laea)
+
+# Zusatz: x/y als Spalten zum Datensatz hinzufügen (hilfreich für Debug/Plots)
+
+GED_sahel_laea <- GED_sahel_laea |>
+  mutate(
+    x_m = coords_m[, 1],
+    y_m = coords_m[, 2]
+  )
+
+# Kurze Überprüfung: CRS und Größenordnung der Koordinaten
+
+st_crs(GED_sahel_laea)
+summary(GED_sahel_laea$x_m)
+summary(GED_sahel_laea$y_m)
+
+```
+
+```{r}
+
+# Clusteranalyse mit HDBSCAN clustering (explorativ) ---
+
+# 1) Parameter setzen: Mindestgröße/Robustheit eines Clusters
+
+minPts_value <- 30
+
+# 2) HDBSCAN ausführen
+# coords_m ist eine Matrix: Spalte 1 = x (m), Spalte 2 = y (m)
+
+hdb <- hdbscan(coords_m, minPts = minPts_value)
+
+# 3) Ergebnisse an Datensatz anhängen
+# cluster: 0 = noise (kein Cluster), 1..k = Cluster-IDs
+# membership_prob: "Sicherheit" der Zuordnung (0..1)
+
+GED_sahel_laea <- GED_sahel_laea |>
+  mutate(
+    cluster_id = hdb$cluster,
+    cluster_prob = hdb$membership_prob
+  )
+
+# 4) Erste Checks: Wie viele Cluster? Wie viel Noise?
+
+table(GED_sahel_laea$cluster_id)
+
+n_clusters <- length(setdiff(unique(GED_sahel_laea$cluster_id), 0))
+noise_share <- mean(GED_sahel_laea$cluster_id == 0)
+
+n_clusters
+noise_share
+summary(GED_sahel_laea$cluster_prob)
+
+```
+
+```{r}
+
+# Bild zur Darstellung der Cluster mit ggplot2
+
+p_clusters <- ggplot(GED_sahel_laea,
+                     aes(x = longitude,
+                         y = latitude,
+                         color = factor(cluster_id))) +
+  geom_point(size = 0.6, alpha = 0.7) +
+  coord_equal() +
+  labs(color = "Cluster ID",
+       title = paste0("HDBSCAN clusters (minPts = ", minPts_value, ")")) +
+  theme_minimal()
+
+p_clusters
+
+ggsave(
+  filename = paste0("plots/hdbscan_clusters_minPts_", minPts_value, ".png"),
+  plot = p_clusters,
+  width = 10,
+  height = 6,
+  dpi = 300
+)
+
+```
+
+```{r}
+
+# Kreuztabelle: cluster_id vs conflict_new_id
+
+# Optional: Noise (cluster_id == 0) ausschließen, damit die Tabelle übersichtlicher wird
+GED_sahel_clustered <- GED_sahel_laea |>
+  filter(cluster_id != 0)
+
+# Kreuztabelle (Counts)
+tab_cluster_conflict <- table(
+  GED_sahel_clustered$cluster_id,
+  GED_sahel_clustered$conflict_new_id
+)
+
+# Ausgabe (kann sehr groß sein)
+tab_cluster_conflict
+
+```
+
+```{r}
+
+# Nennung aller Konflikte pro Cluster 
+
+GED_sahel_laea |>
+  filter(cluster_id != 0) |>
+  count(cluster_id, conflict_new_id, name = "n") |>
+  arrange(cluster_id, desc(n)) |>
+  View()
+
+```
+
+```{r}
+
+# Anzahl Konflikte pro Cluster mit Anzahl an Events (cluster_size)
+
+GED_sahel_laea |>
+  filter(cluster_id != 0) |>
+  group_by(cluster_id) |>
+  summarise(
+    n_conflicts = n_distinct(conflict_new_id),
+    cluster_size = n()
+  ) |>
+  arrange(desc(n_conflicts))
+
+```
+
+```{r}
+
+# Dominant conflict per cluster (share/purity-like measure)
+
+dominance_by_cluster <- GED_sahel_clustered |>
+  count(cluster_id, conflict_new_id, name = "n") |>
+  group_by(cluster_id) |>
+  mutate(
+    cluster_size = sum(n),
+    share = n / cluster_size
+  ) |>
+  arrange(cluster_id, desc(share)) |>
+  slice(1) |>
+  ungroup() |>
+  select(cluster_id, conflict_new_id, cluster_size, n_dominant = n, dominant_share = share)
+
+dominance_by_cluster
+
+```
+
+```{r}
+
+# Top conflicts per cluster (for interpretation)
+
+top_conflicts_by_cluster <- GED_sahel_clustered |>
+  count(cluster_id, conflict_new_id, name = "n") |>
+  group_by(cluster_id) |>
+  mutate(share = n / sum(n)) |>
+  arrange(cluster_id, desc(share)) |>
+  slice_head(n = 5) |>
+  ungroup()
+
+top_conflicts_by_cluster
+
+```
+
+```{r}
+
+# Plot 1: Anzahl Konflikte pro Cluster (Balkendiagramm)
+
+conflicts_per_cluster <- GED_sahel_laea |>
+  filter(cluster_id != 0) |>
+  group_by(cluster_id) |>
+  summarise(
+    n_conflicts = n_distinct(conflict_new_id),
+    cluster_size = n(),
+    .groups = "drop"
+  ) |>
+  arrange(cluster_id)
+
+p_conflicts <- ggplot(conflicts_per_cluster,
+                      aes(x = factor(cluster_id), y = n_conflicts)) +
+  geom_col() +
+  labs(
+    title = "Number of distinct conflicts per HDBSCAN cluster",
+    subtitle = paste0("minPts = ", minPts_value, " (Noise excluded)"),
+    x = "Cluster ID",
+    y = "Number of distinct conflicts"
+  ) +
+  theme_minimal()
+
+p_conflicts
+
+ggsave(
+  filename = paste0("plots/bar_n_conflicts_per_cluster_minPts_", minPts_value, ".png"),
+  plot = p_conflicts,
+  width = 10,
+  height = 6,
+  dpi = 300
+)
+
+```
+
+```{r}
+
+# Plot 2: Dominant Share pro Cluster (Homogenität)
+
+p_dominance <- ggplot(dominance_by_cluster,
+                      aes(x = factor(cluster_id), y = dominant_share)) +
+  geom_col() +
+  labs(
+    title = "Dominant conflict share per HDBSCAN cluster",
+    subtitle = paste0("minPts = ", minPts_value, " (Noise excluded)"),
+    x = "Cluster ID",
+    y = "Dominant share within cluster"
+  ) +
+  theme_minimal()
+
+p_dominance
+
+ggsave(
+  filename = paste0("plots/bar_dominant_share_per_cluster_minPts_", minPts_value, ".png"),
+  plot = p_dominance,
+  width = 10,
+  height = 6,
+  dpi = 300
+)
+
+```

@@ -1,11 +1,15 @@
 ---
-title: "Seminararbeit GED UCDP"
-author: "Teichgräber"
-date: "2026-02-16"
+title: "Geographische Clusteranalyse von Konfliktereignissen in Afrika"
+description: "Mastermodul Business Analytics mit R"
+author: 
+  - name: "Simon Teichgräber"
+    affiliation: "Universität der Bundeswehr München"
+date: "2026-03-31"
 output:
   distill::distill_article:
     toc: true
     toc_float: true
+    appendices: true
 bibliography: references.bib
 csl: apa.csl
 ---
@@ -22,131 +26,42 @@ knitr::opts_chunk$set(
 library(distill)
 ```
 
-# Titel: Geographische Clusteranalyse von Gewaltereignissen in Afrika
+## Einleitung
 
-## Datensatz
 
-**Datengrundlage:**
+## Deskriptive Beschreibung des Datensatzes
 
-UCDP Georeferenced Event Dataset (GED), Version 25.1
 
-**Kurzbeschreibung:**
+## Vorstellung der Analysemethode
 
--   Ereignisdatensatz zu organisierter Gewalt
--   Zeitraum: 1989–2024
--   Beobachtungseinheit: einzelnes tödliches Ereignis
--   Vollständig georeferenziert (Latitude/Longitude, WGS84)
--   Enthält eindeutige Konflikt-IDs (`conflict_new_id`)
--   Maximale zeitliche Auflösung: Tag
--   Maximale räumliche Auflösung: Ort (Dorf/Stadt)
 
-**Untersuchungsraum:**
+## Forschungsfrage
 
-Region „Africa“ (mit Fokus auf Sahel-Subregion)
 
-## ️Forschungsfrage
+## Durchführung der Clusteranalyse
 
-**Inwiefern entsprechen geographisch identifizierte Cluster von Gewaltereignissen bestehenden Konfliktzuordnungen im UCDP GED?**
 
-Neu: Rein explorative Analyse durchführen
+## Ergebnisse
 
-## Hypothese
 
-**H1:**
+## Zusammenfassung
 
-**Geographisch identifizierte Cluster von Gewaltereignissen weisen eine hohe Übereinstimmung mit den bestehenden Konfliktzuordnungen im UCDP GED auf.**
 
-**Begründung:**
+# Acknowledgments {.appendix .unnumbered toc=false}
 
--   Konflikte sind territorial verankert
--   Territoriale Konzentration erzeugt räumliche Dichte
--   Dichtebasierte Algorithmen sollten diese Struktur erkennen
+In dieser Arbeit wurde die APA-Zitierweise genutzt. Zur erleichterten Suche der Quellen wurden in den Zitationen von Dokumenten zusätzlich die Seitenzahlen angegeben.
 
-Neu: H1 streichen und eine rein explorative Clusteranalyse durchführen
+Jegliche URL- und DOI-Links der Quellen wurden am XX.XX.2026 zuletzt aufgerufen und überprüft. Es wird bestätigt, dass die im Literaturverzeichnis aufgelisteten Webadressen zu diesem Zeitpunkt im Internet auffindbar waren. Der Zugriff auf entgeltlich zu erwerbende Quellen wurde über das Netz der Universität ermöglicht.
 
-## Datenfilter & Eingrenzung
+Bei der Erstellung dieser Ausarbeitung wurden KI-Anwendungen zur Einarbeitung in R Studio, inhaltlichen Diskussion, sprachlichen Optimierung und Übersetzung von fremdsprachigen Quellen genutzt. Dabei handelt es sich um die KI-Modelle „ChatGPT“ von OpenAI und „DeepL“.
 
-### Zeitliche Eingrenzung
 
--   Zeitraum: 2000–2024 Begründung:
--   bessere Datenqualität
--   größere strukturelle Homogenität
--   Vermeidung von Kalter-Krieg-Effekten
+# Course Information {.appendix .unnumbered toc=false}
 
-### Räumliche Eingrenzung
-
--   Region: Africa (`region == "Africa"`)
--   Subregion: Sahel (definierte Länderliste)
-
-Begründung:
-
--   hohe Konfliktdichte
--   keine dominierenden Einzelgroßkonflikte
--   geeignete räumliche Heterogenität
-
-### Qualitätsfilter
-
--   `where_prec == 1 oder 2` → nur präzise Ortsangaben
--   `event_clarity == 1` → nur klar identifizierbare Einzelereignisse vollständige Koordinaten
-
-## Methodisches Vorgehen: Clusteranalyse
-
-### Schritt 1: Geodatenaufbereitung
-
--   Umwandlung in `sf`-Objekt
--   Projektion von WGS84 (Grad) in metrisches CRS
--   Verwendung von **Lambert Azimuthal Equal Area (LAEA)** für die Sahelregion
--   Koordinaten in Meter extrahieren
-
-Ziel: korrekte Distanzberechnung
-
-### Schritt 2: Clustering-Verfahren
-
-**Methode:** HDBSCAN (Hierarchical Density-Based Spatial Clustering)
-
-Begründung:
-
--   erkennt Cluster beliebiger Form
--   robust bei unterschiedlicher Dichte
--   benötigt kein fixes Distanzparameter (kein ε)
--   identifiziert Noise-Punkte
-
-Input:
-
-(x, y) in Meter
-
-Output:
-
--   cluster_id pro Event
--   membership_probability
--   Noise-Punkte
-
-### Schritt 3: Evaluation
-
-Vergleich:
-
-cluster_id ↔ conflict_new_id
-
-Analytische Schritte:
-
--   Kreuztabellen
--   Cluster-Purity
--   Anteil dominanter Konflikte pro Cluster
--   Identifikation gemischter Cluster
-
-Ziel:
-
--   Überprüfung der Hypothese
--   Bewertung der Übereinstimmung
-
-## Erwartete Ergebnisse
-
--   Teilweise hohe Kongruenz zwischen räumlichen Clustern und Konflikt-IDs
--   Konflikte mit klarer territorialer Begrenzung → hohe Übereinstimmung
--   Transnationale oder urbane Mehrfachkonflikte → geringere Übereinstimmung
-
-## Beitrag der Arbeit
-
--   Methodischer Beitrag: Anwendung dichtebasierter Clusterverfahren auf Konfliktdaten
--   Empirischer Beitrag: Prüfung der räumlichen Rekonstruierbarkeit von Konflikten
--   Validierungsbeitrag: Vergleich algorithmischer Struktur mit institutioneller Konfliktdefinition
+Name: Simon Teichgräber
+Adresse: Werner-Heisenberg-Weg 199, 85579 Neubiberg
+Matrikelnummer: 1229726
+Studiengang: HRM 2022
+Modul: Business Analytics mit R 
+Dozent: Prof. Dr. Uwe Messer
+Trimester: WT 2026
