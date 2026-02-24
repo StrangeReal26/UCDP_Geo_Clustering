@@ -10,7 +10,7 @@ output:
     toc: true
     toc_float: true
     appendices: true
-bibliography: references.bib
+bibliography: BAR_Quellen.bib
 csl: apa.csl
 ---
 
@@ -28,24 +28,47 @@ library(distill)
 
 ## Einleitung
 
+- Einführung in das Thema
+- Nennung eines (oder zwei) Nachrichtenartikel
+- Forschungsfrage nennen
+- Design und Analysemethode nennen
+- Aufbau der Arbeit schildern
 
-## Deskriptive Beschreibung des Datensatzes
+Auf der Welt gab und gibt es unzählige Konflikte. Die Rüstungsexporte steigen unermesslich an [@sinram_weltweite_2025].
 
+
+## Vorstellung und deskriptive Beschreibung des Datensatzes
+
+- Herkunft des Datensatzes
+- Veränderung bzw. Verkleinerung des Datensatzes
+- 
 
 ## Vorstellung der Analysemethode
 
+- Beschreibung und Erklärung von HDBSCAN
 
-## Forschungsfrage
+## Forschungsfrage und Methodik
 
+- Nennung der Forschungsfrage
+- Explorativer Ansatz
+- Weiteres Design der Arbeit
 
 ## Durchführung der Clusteranalyse
 
+- Ablauf der Analyse
+- Afbau der R Markdown Datei
+- Ausschnitte des Codes
 
 ## Ergebnisse
 
+- Abbildung der Cluster
+- Balkendiagramme der Zuweisungen
 
-## Zusammenfassung
+## Zusammenfassende SChlussbetrachtung
 
+- Zusammenfassung der Ergebnisse
+- Limitationen
+- Ausblick und weitere Analysen
 
 # Acknowledgments {.appendix .unnumbered toc=false}
 
@@ -65,3 +88,5 @@ Studiengang: HRM 2022
 Modul: Business Analytics mit R 
 Dozent: Prof. Dr. Uwe Messer
 Trimester: WT 2026
+Beginn der Erstellung. 19.02.2026
+Abgabetag der Arbeit: 26.03.2026
