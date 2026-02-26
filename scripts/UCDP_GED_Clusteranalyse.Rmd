@@ -38,6 +38,7 @@ str(GED)
 ```{r}
 
 # Prüfung fehlender Werte bei den geographischen Daten
+
 sum(is.na(GED$latitude)); sum(is.na(GED$longitude))
 
 ```
@@ -45,6 +46,7 @@ sum(is.na(GED$latitude)); sum(is.na(GED$longitude))
 ```{r}
 
 # Aufbereitung der Daten bzw. Variablen
+
 GED <- GED |>
   mutate(
     
@@ -126,13 +128,14 @@ head(st_geometry(GED_sahel_sf))
 ```{r}
 
 # Neuer Datensatz wird erstellt
-# Es werden die Vorherig erstellten Koordianten in Meter-Koordinaten auf Grundlage des LAEA erzeugt
 
-# 1) Projektion definieren (LAEA) – Zentrum grob in der Sahelzone
+# Es werden die Vorherig erstellten Koordinaten in Meter-Koordinaten auf Grundlage des LAEA erzeugt
+
+# 1) Projektion definieren (LAEA) –> Zentrum grob in der Sahelzone
 
 crs_laea_sahel <- "+proj=laea +lat_0=15 +lon_0=10 +datum=WGS84 +units=m +no_defs"
 
-# 2) Transformation: von WGS84 (Grad) -> LAEA (Meter)
+# 2) Transformation der Daten von WGS84 (Grad) zu LAEA (Meter)
 
 GED_sahel_laea <- GED_sahel_sf |>
   st_transform(crs = crs_laea_sahel)
@@ -159,7 +162,7 @@ summary(GED_sahel_laea$y_m)
 
 ```{r}
 
-# Clusteranalyse mit HDBSCAN clustering (explorativ) ---
+# Clusteranalyse mit HDBSCAN clustering (explorativ)
 
 # 1) Parameter setzen: Mindestgröße/Robustheit eines Clusters
 
@@ -180,7 +183,7 @@ GED_sahel_laea <- GED_sahel_laea |>
     cluster_prob = hdb$membership_prob
   )
 
-# 4) Erste Checks: Wie viele Cluster? Wie viel Noise?
+# 4) Erste Überprüfungen: Wie viele Cluster? Wie viel Noise?
 
 table(GED_sahel_laea$cluster_id)
 
@@ -224,10 +227,12 @@ ggsave(
 # Kreuztabelle: cluster_id vs conflict_new_id
 
 # Optional: Noise (cluster_id == 0) ausschließen, damit die Tabelle übersichtlicher wird
+
 GED_sahel_clustered <- GED_sahel_laea |>
   filter(cluster_id != 0)
 
 # Kreuztabelle (Counts)
+
 tab_cluster_conflict <- table(
   GED_sahel_clustered$cluster_id,
   GED_sahel_clustered$conflict_new_id
@@ -267,7 +272,7 @@ GED_sahel_laea |>
 
 ```{r}
 
-# Dominant conflict per cluster (share/purity-like measure)
+# Dominanter Konflikt pro Cluster (share/purity-like measure)
 
 dominance_by_cluster <- GED_sahel_clustered |>
   count(cluster_id, conflict_new_id, name = "n") |>
@@ -287,7 +292,7 @@ dominance_by_cluster
 
 ```{r}
 
-# Top conflicts per cluster (for interpretation)
+# Top-Konflikt pro Cluster
 
 top_conflicts_by_cluster <- GED_sahel_clustered |>
   count(cluster_id, conflict_new_id, name = "n") |>
