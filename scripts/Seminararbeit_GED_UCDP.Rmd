@@ -34,18 +34,34 @@ library(distill)
 - Design und Analysemethode nennen
 - Aufbau der Arbeit schildern
 
-Auf der Welt gab und gibt es unzählige Konflikte. Die Rüstungsexporte steigen unermesslich an [@sinram_weltweite_2025].
+Auch wenn der Kalte Krieg schon seit mehr als 30 Jahre her ist, gibt es auf der Welt weiterhin zahlreiche Konflikte und Kriege. 
+
+Die globale Aufrüstung wird weiter fortgeführt und die Umsätze der Rüstungsproduzenten steigen weiter an  [@sinram_weltweite_2025].
+
+Insbesondere in Arika hat sich die Anzahl der Konflikte erhöht.
+
+Die Anzahl von Kriege hat sich kin Afrika seit 1989 bis 2021 von 5 auf 21 erhöht (Zitat Internationale Politik)
+
+Jedoch erhalten diese Konflikte auf der internationalen medialen Bühne nur wenig aufmerksamkeit (Zitat Frankfurter Rundschau)
+
+In diesem Zusammenhang wird in dieser Ausarbeitung der Blick auf die Konflikte in Afrika gerichtet.
+
+Dabei wird der Fokus auf die Sahelzone gelegt, um die verwendeten Daten weiter einzugrenzen.
+
+Grundlegend für
+
+Die Seminararbeit in insgesamt sieben Kapitel unterteilt. 
+
+Nach der Einleitung
+
 
 
 ## Vorstellung und deskriptive Beschreibung des Datensatzes
 
-- Herkunft des Datensatzes
+- Herkunft und kurze Beschreibung des Datensatzes
 - Veränderung bzw. Verkleinerung des Datensatzes
-- 
+- Deskriptive Daten bezogen auf die Sahelzone
 
-## Vorstellung der Analysemethode
-
-- Beschreibung und Erklärung von HDBSCAN
 
 ## Forschungsfrage und Methodik
 
@@ -53,22 +69,34 @@ Auf der Welt gab und gibt es unzählige Konflikte. Die Rüstungsexporte steigen 
 - Explorativer Ansatz
 - Weiteres Design der Arbeit
 
+
+## Vorstellung der Analysemethode
+
+- Beschreibung und Erklärung von HDBSCAN
+
+
 ## Durchführung der Clusteranalyse
 
 - Ablauf der Analyse
 - Afbau der R Markdown Datei
 - Ausschnitte des Codes
 
+
 ## Ergebnisse
 
-- Abbildung der Cluster
-- Balkendiagramme der Zuweisungen
+- Abbildung der Cluster (Diagramm)
+- Diagramm beschreiben
+- Palette für Farbenblinde (z.B. Okabe-Ito)
+- Clusterdiagramm über eine Afrikakarte legen 
+- Balkendiagramme der Zuweisungen und Prozentzahlen
 
-## Zusammenfassende SChlussbetrachtung
+
+## Zusammenfassende Schlussbetrachtung
 
 - Zusammenfassung der Ergebnisse
 - Limitationen
 - Ausblick und weitere Analysen
+
 
 # Acknowledgments {.appendix .unnumbered toc=false}
 
