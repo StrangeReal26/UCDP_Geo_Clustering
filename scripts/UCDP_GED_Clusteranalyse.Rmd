@@ -2,7 +2,8 @@
 title: "UCDP GED Clusteranalyse"
 author: "Teichgräber"
 date: "2026-02-16"
-output: html_document
+output:
+  distill::distill_article:
 ---
 
 ```{r setup, include=FALSE}
@@ -17,7 +18,14 @@ library(distill)
 library(sf)
 library(dbscan)
 library(tidyr)
+library(rnaturalearth)
+library(rnaturalearthdata)
 ```
+
+# Aufbau und Beschreibung der Datenanalyse
+
+Text
+
 
 ```{r}
 GED = read.csv("data/GEDEvent_v25_1_small.csv", sep = ";")
@@ -215,6 +223,159 @@ p_clusters
 ggsave(
   filename = paste0("plots/hdbscan_clusters_minPts_", minPts_value, ".png"),
   plot = p_clusters,
+  width = 10,
+  height = 6,
+  dpi = 300
+)
+
+```
+
+```{r}
+
+# Zusätzliche Abbildung: Karte (Sahel) + HDBSCAN-Cluster in Longitude/Latitude
+
+# 1) Weltkarte als sf-Objekt laden
+
+world_sf <- rnaturalearth::ne_countries(
+  scale = "medium",        # ausreichend detailliert
+  returnclass = "sf"
+)
+
+# 2) Nur Sahel-Länder auswählen (gleiche Länder wie im Filter oben!)
+
+sahel_map_sf <- world_sf |>
+  filter(name %in% sahel_countries)
+
+# Optional: Falls du etwas mehr Raum um die Länder möchtest,
+# könntest du stattdessen mit st_crop() arbeiten.
+
+
+# 3) Plot erstellen
+
+p_clusters_map <- ggplot() +
+  
+  # Hintergrund: Ländergrenzen
+  geom_sf(
+    data = sahel_map_sf,
+    fill = "grey90",        # dezente Hintergrundfarbe
+    color = "grey40",       # Ländergrenzen sichtbar
+    linewidth = 0.3
+  ) +
+  
+  # Clusterpunkte darüber
+  geom_point(
+    data = GED_sahel_laea,  # hier nutzen wir weiterhin longitude/latitude
+    aes(
+      x = longitude,
+      y = latitude,
+      color = factor(cluster_id)
+    ),
+    size = 0.6,
+    alpha = 0.7
+  ) +
+  
+  # Koordinatensystem
+  coord_sf(
+    xlim = range(GED_sahel_laea$longitude),
+    ylim = range(GED_sahel_laea$latitude),
+    expand = FALSE
+  ) +
+  
+  labs(
+    color = "Cluster ID",
+    title = paste0("HDBSCAN clusters in the Sahel region (minPts = ", minPts_value, ")")
+  ) +
+  
+  theme_minimal()
+
+# Plot anzeigen
+
+p_clusters_map
+
+
+# 4) Speichern wie bisher
+
+ggsave(
+  filename = paste0("plots/hdbscan_clusters_map_africa.png"),
+  plot = p_clusters_map,
+  width = 10,
+  height = 6,
+  dpi = 300
+)
+
+```
+
+```{r}
+
+# Komplette Abbildung: Cluster + vollständige Afrika-Karte + Ländernamen
+
+# 1) Alle afrikanischen Länder laden
+
+africa_sf <- rnaturalearth::ne_countries(
+  scale = "medium",
+  continent = "Africa",
+  returnclass = "sf"
+)
+
+# 2) Bounding Box auf Basis deiner tatsächlichen Daten erzeugen
+
+bbox_sahel <- st_bbox(GED_sahel_sf)
+
+# 3) Afrika-Karte auf genau diesen Bereich zuschneiden
+
+africa_crop <- st_crop(africa_sf, bbox_sahel)
+
+# 4) Plot erstellen
+
+p_clusters_africa <- ggplot() +
+  
+  # Hintergrund: Länderflächen
+  geom_sf(
+    data = africa_crop,
+    fill = "grey90",
+    color = "grey40",
+    linewidth = 0.3
+  ) +
+  
+  # Ländernamen einfügen
+  geom_sf_text(
+    data = africa_crop,
+    aes(label = name),
+    size = 3,
+    color = "black"
+  ) +
+  
+  # Clusterpunkte
+  geom_sf(
+   data = GED_sahel_laea,
+   aes(color = factor(cluster_id)),
+   size = 0.6,
+   alpha = 0.7
+  ) +
+  
+  # Koordinatensystem
+  coord_sf(
+    xlim = c(bbox_sahel["xmin"], bbox_sahel["xmax"]),
+    ylim = c(bbox_sahel["ymin"], bbox_sahel["ymax"]),
+    expand = FALSE
+  ) +
+  
+  labs(
+    color = "Cluster ID",
+    title = paste0("HDBSCAN clusters in geographic context (minPts = ", minPts_value, ")")
+  ) +
+  
+  theme_minimal()
+
+# Plot anzeigen
+
+p_clusters_africa
+
+# Speichern
+
+ggsave(
+  filename = paste0("plots/hdbscan_clusters_map_africa_complete.png"),
+  plot = p_clusters_africa,
   width = 10,
   height = 6,
   dpi = 300

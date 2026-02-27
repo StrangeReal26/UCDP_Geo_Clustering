@@ -40,19 +40,23 @@ Die globale Aufrüstung wird weiter fortgeführt und die Umsätze der Rüstungsp
 
 Insbesondere in Arika hat sich die Anzahl der Konflikte erhöht.
 
-Die Anzahl von Kriege hat sich kin Afrika seit 1989 bis 2021 von 5 auf 21 erhöht (Zitat Internationale Politik)
+Die Anzahl von Kriegen hat sich in Afrika seit 1989 bis 2021 von 5 auf 21 erhöht (Zitat Internationale Politik).
 
-Jedoch erhalten diese Konflikte auf der internationalen medialen Bühne nur wenig aufmerksamkeit (Zitat Frankfurter Rundschau)
+Jedoch erhalten diese Konflikte auf der internationalen medialen Bühne nur wenig aufmerksamkeit (Zitat Frankfurter Rundschau).
 
 In diesem Zusammenhang wird in dieser Ausarbeitung der Blick auf die Konflikte in Afrika gerichtet.
 
-Dabei wird der Fokus auf die Sahelzone gelegt, um die verwendeten Daten weiter einzugrenzen.
+Dabei wird der Fokus auf die Sahelzone gelegt, um die verwendeten Daten und die Region weiter einzugrenzen.
 
-Grundlegend für
+Es wird die zentrale Frage gestellt, ob auschließlich anhand der geografischen Daten von Konfliktereignissen eine zutreffende Einordnung zu den übergeordnetetn Konflikten erreicht werden kann.
+
+Die zur Beantwortung der Fragestellung verwendete Analysemethode ist das hierarchische Clustering nach dem HDBSCAN-Format. 
+
+Die genutzten Daten stammen aus dem GED in der Version 25.1 des UCDP der Universitat Uppsala.
 
 Die Seminararbeit in insgesamt sieben Kapitel unterteilt. 
 
-Nach der Einleitung
+Nach der Einleitung...
 
 
 
