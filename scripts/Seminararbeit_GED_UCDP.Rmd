@@ -54,7 +54,7 @@ Die zur Beantwortung der Fragestellung verwendete Analysemethode ist das hierarc
 
 Die genutzten Daten stammen aus dem GED in der Version 25.1 des UCDP der Universitat Uppsala.
 
-Die Seminararbeit in insgesamt sieben Kapitel unterteilt. 
+Die Seminararbeit ist in insgesamt sieben Kapitel unterteilt.
 
 Nach der Einleitung...
 
