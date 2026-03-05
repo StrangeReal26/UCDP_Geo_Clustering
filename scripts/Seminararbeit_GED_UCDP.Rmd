@@ -52,7 +52,7 @@ Es wird die zentrale Frage gestellt, ob auschließlich anhand der geografischen 
 
 Die zur Beantwortung der Fragestellung verwendete Analysemethode ist das hierarchische Clustering nach dem HDBSCAN-Format. 
 
-Die genutzten Daten stammen aus dem GED in der Version 25.1 des UCDP der Universitat Uppsala.
+Die genutzten Daten stammen aus dem Georeferenced Event Dataset (GED) in der Version 25.1 des Uppsala Conflict Data Program (UCDP) der Universität Uppsala.
 
 Die Seminararbeit ist in insgesamt sechs Kapitel unterteilt.
 

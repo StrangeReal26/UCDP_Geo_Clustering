@@ -2417,9 +2417,8 @@ distill-header .nav a {
 <li><a href="#einleitung" id="toc-einleitung">Einleitung</a></li>
 <li><a href="#vorstellung-und-deskriptive-beschreibung-des-datensatzes" id="toc-vorstellung-und-deskriptive-beschreibung-des-datensatzes">Vorstellung und deskriptive Beschreibung des Datensatzes</a></li>
 <li><a href="#forschungsfrage-und-methodik" id="toc-forschungsfrage-und-methodik">Forschungsfrage und Methodik</a></li>
-<li><a href="#vorstellung-der-analysemethode" id="toc-vorstellung-der-analysemethode">Vorstellung der Analysemethode</a></li>
-<li><a href="#durchführung-der-clusteranalyse" id="toc-durchführung-der-clusteranalyse">Durchführung der Clusteranalyse</a></li>
-<li><a href="#ergebnisse" id="toc-ergebnisse">Ergebnisse</a></li>
+<li><a href="#vorstellung-und-durchführung-der-analysemethode" id="toc-vorstellung-und-durchführung-der-analysemethode">Vorstellung und Durchführung der Analysemethode</a></li>
+<li><a href="#ergebnisse-clusteranalyse" id="toc-ergebnisse-clusteranalyse">Ergebnisse Clusteranalyse</a></li>
 <li><a href="#zusammenfassende-schlussbetrachtung" id="toc-zusammenfassende-schlussbetrachtung">Zusammenfassende Schlussbetrachtung</a></li>
 <li><a href="#acknowledgments" id="toc-acknowledgments">Acknowledgments</a></li>
 <li><a href="#course-information" id="toc-course-information">Course Information</a></li>
@@ -2437,18 +2436,21 @@ distill-header .nav a {
 <li>Design und Analysemethode nennen</li>
 <li>Aufbau der Arbeit schildern</li>
 </ul>
-<p>Auch wenn der Kalte Krieg schon seit mehr als 30 Jahre her ist, gibt es auf der Welt weiterhin zahlreiche Konflikte und Kriege.</p>
+<p>Auch wenn der Kalte Krieg mehr als 30 Jahre her ist, gibt es auf der Welt weiterhin zahlreiche Konflikte und Kriege.</p>
 <p>Die globale Aufrüstung wird weiter fortgeführt und die Umsätze der Rüstungsproduzenten steigen weiter an <span class="citation" data-cites="sinram_weltweite_2025">(<a href="#ref-sinram_weltweite_2025" role="doc-biblioref">Sinram, 2025</a>)</span>.</p>
-<p>Insbesondere in Arika hat sich die Anzahl der Konflikte erhöht.</p>
-<p>Die Anzahl von Kriegen hat sich in Afrika seit 1989 bis 2021 von 5 auf 21 erhöht (Zitat Internationale Politik).</p>
+<p>Insbesondere in Afrika hat sich die Zahl der Konflikte erhöht.</p>
+<p>Die Anzahl von Kriegen hat sich in Afrika seit 1989 bis 2021 von 5 auf 21 gesteigert (Zitat Internationale Politik).</p>
 <p>Jedoch erhalten diese Konflikte auf der internationalen medialen Bühne nur wenig aufmerksamkeit (Zitat Frankfurter Rundschau).</p>
 <p>In diesem Zusammenhang wird in dieser Ausarbeitung der Blick auf die Konflikte in Afrika gerichtet.</p>
 <p>Dabei wird der Fokus auf die Sahelzone gelegt, um die verwendeten Daten und die Region weiter einzugrenzen.</p>
 <p>Es wird die zentrale Frage gestellt, ob auschließlich anhand der geografischen Daten von Konfliktereignissen eine zutreffende Einordnung zu den übergeordnetetn Konflikten erreicht werden kann.</p>
 <p>Die zur Beantwortung der Fragestellung verwendete Analysemethode ist das hierarchische Clustering nach dem HDBSCAN-Format.</p>
-<p>Die genutzten Daten stammen aus dem GED in der Version 25.1 des UCDP der Universitat Uppsala.</p>
-<p>Die Seminararbeit in insgesamt sieben Kapitel unterteilt.</p>
-<p>Nach der Einleitung…</p>
+<p>Die genutzten Daten stammen aus dem Georeferenced Event Dataset (GED) in der Version 25.1 des Uppsala Conflict Data Program (UCDP) der Universität Uppsala.</p>
+<p>Die Seminararbeit ist in insgesamt sechs Kapitel unterteilt.</p>
+<p>Nach der Einleitung wird zuerst der genutzte Datensatz beschrieben und es wird auf die wichtigsten deskriptiven Zahlen des gesamten Datensatzes sowie im spezielleren auf die Daten bezüglich Afrika eingegangen.</p>
+<p>Danach werden im dritte Kapitel Forschungsfrage und die dazugehörige Methodik erläutert, woraufhin im vierten Kapitel die Art und die Durchführung der Analysemethode erklärt wird.</p>
+<p>Im Anschluss daran werden im fünften Kapitel die Ergebnisse der Clusteranalyse vorgestellt.</p>
+<p>Zuletzt wird die gesamte Arbeit zusammengefasst sowie ein schließendes Gesamturteil getroffen.</p>
 <h2 id="vorstellung-und-deskriptive-beschreibung-des-datensatzes">Vorstellung und deskriptive Beschreibung des Datensatzes</h2>
 <ul>
 <li>Herkunft und kurze Beschreibung des Datensatzes</li>
@@ -2461,17 +2463,14 @@ distill-header .nav a {
 <li>Explorativer Ansatz</li>
 <li>Weiteres Design der Arbeit</li>
 </ul>
-<h2 id="vorstellung-der-analysemethode">Vorstellung der Analysemethode</h2>
+<h2 id="vorstellung-und-durchführung-der-analysemethode">Vorstellung und Durchführung der Analysemethode</h2>
 <ul>
 <li>Beschreibung und Erklärung von HDBSCAN</li>
-</ul>
-<h2 id="durchführung-der-clusteranalyse">Durchführung der Clusteranalyse</h2>
-<ul>
 <li>Ablauf der Analyse</li>
 <li>Afbau der R Markdown Datei</li>
 <li>Ausschnitte des Codes</li>
 </ul>
-<h2 id="ergebnisse">Ergebnisse</h2>
+<h2 id="ergebnisse-clusteranalyse">Ergebnisse Clusteranalyse</h2>
 <ul>
 <li>Abbildung der Cluster (Diagramm)</li>
 <li>Diagramm beschreiben</li>
@@ -2486,7 +2485,7 @@ distill-header .nav a {
 <li>Ausblick und weitere Analysen</li>
 </ul>
 <h1 class="appendix unnumbered" data-toc="false" id="acknowledgments">Acknowledgments</h1>
-<p>In dieser Arbeit wurde die APA-Zitierweise genutzt. Zur erleichterten Suche der Quellen wurden in den Zitationen von Dokumenten zusätzlich die Seitenzahlen angegeben.</p>
+<p>In dieser Arbeit wurde die APA-Zitierweise genutzt. (Zur erleichterten Suche der Quellen wurden in den Zitationen von Dokumenten zusätzlich die Seitenzahlen angegeben.)</p>
 <p>Jegliche URL- und DOI-Links der Quellen wurden am XX.XX.2026 zuletzt aufgerufen und überprüft. Es wird bestätigt, dass die im Literaturverzeichnis aufgelisteten Webadressen zu diesem Zeitpunkt im Internet auffindbar waren. Der Zugriff auf entgeltlich zu erwerbende Quellen wurde über das Netz der Universität ermöglicht.</p>
 <p>Bei der Erstellung dieser Ausarbeitung wurden KI-Anwendungen zur Einarbeitung in R Studio, inhaltlichen Diskussion, sprachlichen Optimierung und Übersetzung von fremdsprachigen Quellen genutzt. Dabei handelt es sich um die KI-Modelle „ChatGPT“ von OpenAI und „DeepL“.</p>
 <h1 class="appendix unnumbered" data-toc="false" id="course-information">Course Information</h1>

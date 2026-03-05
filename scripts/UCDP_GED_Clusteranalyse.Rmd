@@ -22,7 +22,11 @@ library(rnaturalearth)
 library(rnaturalearthdata)
 ```
 
-# Aufbau und Beschreibung der Datenanalyse
+# Deskriptive Analyse des gesamten Datensatzes
+
+# Deskriptive Analyse der Daten bezüglich Afrika und der Sahel-Zone
+
+# Aufbau und Durchführung der Datenanalyse (exploratives Clustering) mit Beschreibung
 
 Text
 
@@ -32,11 +36,11 @@ GED = read.csv("data/GEDEvent_v25_1_small.csv", sep = ";")
 ```
 
 ```{r}
-View(GED)
+#View(GED)
 ```
 
 ```{r}
-glimpse(GED)
+#glimpse(GED)
 ```
 
 ```{r}

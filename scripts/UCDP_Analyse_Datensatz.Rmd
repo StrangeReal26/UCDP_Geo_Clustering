@@ -79,6 +79,7 @@ str(UCDPsmall)
 
 ## Erklärung der wichtigsten Variablen
 
+Hier werden die wichtigsten Variablen des GED 25.1 nach den Informationen des Codebooks erklärt.
 
 **Variablen**
 
@@ -145,7 +146,7 @@ str(UCDPsmall)
 "low"
 
 
-*Wichtiges*
+*Zusätzlich*
 
 Aus der Beschreibung des Datensatzes geht hervor, dass keine fehlenden Werte in den gesamten Daten vorhanden sind.
 
@@ -209,7 +210,7 @@ conflict_13243 |>
 UCDPsmall |>
   summarise(across(everything(), ~ sum(is.na(.x)))) # Code von Tidyverse
 
-colSums(is.na(UCDPsmall)) # Code in R
+colSums(is.na(UCDPsmall)) # Code in Base R
 
 ```
 
@@ -292,16 +293,6 @@ ggplot(UCDPsmall, aes(x = year)) +
     y = "Anzahl der Ereignisse"
   )
 
-
-hist(
-  UCDPsmall$year,
-  breaks = "Sturges",
-  main = "Zeitliche Verteilung der Konfliktereignisse",
-  xlab = "Jahr",
-  ylab = "Anzahl der Ereignisse"
-)
-
-
 # Histogramm mit Balken pro Jahr
 
 UCDPsmall |>
@@ -331,8 +322,6 @@ UCDPsmall |>
 ## Zahlen zu Konflikten und Akteuren
 
 ```{r}
-
-n_distinct(UCDPsmall$conflict_name) # Anzahl unterschiedlicher Konflikte (dplyer)
 
 UCDPsmall |>
   count(conflict_name, sort = TRUE) |> # Die Häufigsten Konflikte nach Anzahl sortiert
@@ -405,8 +394,6 @@ Gibt es einen tödlichsten Monat?
 
 UCDPsmall <- UCDPsmall |>
   mutate(date_start = lubridate::dmy(date_start))
-
-class(UCDPsmall$date_start)
 
 UCDPsmall <- UCDPsmall |>
   mutate(start_month = month(date_start))
