@@ -10,7 +10,7 @@ output:
     toc: true
     toc_float: true
     appendices: true
-bibliography: BAR_Quellen.bib
+bibliography: Quellen.bib
 csl: apa.csl
 ---
 

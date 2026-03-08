@@ -14,13 +14,14 @@ list.files()
 list.files("data")
 ```
 
-
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
 
 # Vorstellung des Datensatzes GED 25.1 des Uppsala Conflict Data Program (UCDP)
+
+Georeferenzierte Daten zu Konfliktereignissen weltweit seit 1989
 
 
 ## Libraries laden (jedes Mal durchführen)
@@ -43,17 +44,7 @@ UCDPsmall = read.csv("data/GEDEvent_v25_1_small.csv", sep = ";")
 ```
 
 ```{r}
-view(UCDPsmall)
-```
-
-## Kurzer Überblick über den Datensatz mit "glimpse"
-
-```{r}
-
-# head(UCDPsmall, 10) --> Wird drauf verzichtet, da zu unübersichtlich!
-# tail(UCDPsmall, 10) --> Wird drauf verzichtet, da zu unübersichtlich!
-glimpse(UCDPsmall)
-
+#view(UCDPsmall)
 ```
 
 ## Allgemeine Informationen zum Datensatz
@@ -63,11 +54,15 @@ glimpse(UCDPsmall)
 nrow(UCDPsmall) # Anzahl der Zeilen
 ncol(UCDPsmall) # Anzahl der Spalten
 
-dim(UCDPsmall) # Vektor mit beiden Anzahlen
-
 ```
 
-## Deskriptive Beschreibung des Datensatzes
+## Kurzer Überblick über den Datensatz mit "glimpse"
+
+```{r}
+
+glimpse(UCDPsmall)
+
+```
 
 ## Überblick über die Variablen mit "str" (übersichtlicher)
 
@@ -77,87 +72,32 @@ str(UCDPsmall)
 
 ```
 
-## Erklärung der wichtigsten Variablen
+## Abrufen nur der Spaltennamen (Namen der Variablen)
 
-Hier werden die wichtigsten Variablen des GED 25.1 nach den Informationen des Codebooks erklärt.
+**Info**
 
-**Variablen**
+Eine Ausführliche Beschreibung der einezelnen Variablen ist im Codebook (UCDP Georeferenced Event Dataset Codebook Version 25.1) hinterlegt.
 
-"id"
+Link: https://ucdp.uu.se/downloads/replication_data/2025_ucdp-ged-251.pdf
 
-"year"
+```{r}
 
-"active_year" 
+colnames(UCDPsmall)
 
-"type_of_violence"
+```
 
-"conflict_new_id"
+## Anzahl fehlender Werte pro Variable
 
-"conflict_name"
-
-"dyad_new_id"
-
-"dyad_name"
-
-"side_a_new_id"
-
-"side_a"
-
-"side_b_new_id"
-
-"side_b"
-"number_of_sources"
-
-"where_prec"
-
-"where_coordinates"
-
-"where_description"
-
-"adm_1"
-
-"adm_2"
-
-"latitude"          
-"longitude"        
-"geom_wkt"
-
-"country"           
-"country_id"
-
-"region"
-
-"event_clarity"
-
-"date_prec"
-
-"date_start"        
-"date_end"
-
-"deaths_a"          
-"deaths_b"
-
-"deaths_civilians"  
-"deaths_unknown"
-
-"best"
-
-"high"              
-"low"
-
-
-*Zusätzlich*
+**Info**
 
 Aus der Beschreibung des Datensatzes geht hervor, dass keine fehlenden Werte in den gesamten Daten vorhanden sind.
 
 Weiter unten stehende Datenabfrage bestätigt dies.
 
-
-## Abrufen nur der Spaltennamen
-
 ```{r}
 
-colnames(UCDPsmall)
+UCDPsmall |>
+  summarise(across(everything(), ~ sum(is.na(.x)))) # Code von Tidyverse
 
 ```
 
@@ -173,6 +113,7 @@ summary(UCDPsmall) # Base Code
 
 ```{r}
 
+# Anzahl Tote der zehn tödlichsten Konflikte
 UCDPsmall |>
   group_by(conflict_new_id, dyad_name) |>
   summarise(
@@ -182,13 +123,9 @@ UCDPsmall |>
   arrange(desc(total_deaths)) |>
   slice_head(n = 10)
 
-
+# Übersicht über die Anzahl Toten des Ukrainekriegs
 conflict_13243 <- UCDPsmall |>
   filter(conflict_new_id == 13243)
-
-nrow(conflict_13243)
-
-summary(conflict_13243$best)
 
 conflict_13243 |>
   summarise(
@@ -200,17 +137,6 @@ conflict_13243 |>
     minimum = min(best, na.rm = TRUE),
     maximum = max(best, na.rm = TRUE)
   )
-
-```
-
-## Anzahl fehlender Werte pro Variable
-
-```{r}
-
-UCDPsmall |>
-  summarise(across(everything(), ~ sum(is.na(.x)))) # Code von Tidyverse
-
-colSums(is.na(UCDPsmall)) # Code in Base R
 
 ```
 
@@ -232,14 +158,19 @@ UCDPsmall |>
 
 ```{r}
 
-UCDPsmall |>
-  count(type_of_violence) # Einfaches Zählen der EIntragungen pro Art von "type_of_violance"
-
+# Einfaches Zählen der Eintragungen pro Art von "type_of_violance"
 # 1: state-based conflict 2: non-state conflict 3: one-sided violence
+
+UCDPsmall |>
+  count(type_of_violence) 
+
+# Anzahl von Konfliktereignissen sortiert nach Länder
 
 UCDPsmall |>
   count(country, sort = TRUE) |>
   slice_head(n = 30) # Begrenzung der Abfrage auf 30 Werte
+
+# Anzahl von Konfliktereignissen sortiert nach Regionen (Kontinenten)
 
 UCDPsmall |>
   count(region) # Wie viele Events gibt es in den angegebenen Regionen?
@@ -253,8 +184,7 @@ UCDPsmall |>
     n_conflicts = n_distinct(conflict_new_id)
   )
 
-
-# Anzahl Koonflikte im Datensatz insgesamt
+# Anzahl Konflikte im Datensatz insgesamt
 
 UCDPsmall |>
   summarise(
@@ -263,13 +193,16 @@ UCDPsmall |>
 
 ```
 
-## Zeitliche Verteilungen
+## Zeitliche Verteilung der Konfliktereignisse (1989 bis 2024)
 
 ```{r}
+
+# Unsortiert
 
 UCDPsmall |>
   count(year, sort = TRUE)
 
+# Sortiert nach Anzahl von Konfliktereignissen
 
 UCDPsmall |>
   group_by(year) |>
@@ -279,7 +212,7 @@ UCDPsmall |>
 
 ## Histogramm zur zeitlichen Verteilung
 
-Verwendung von Library "ggplot" zur besseren Ausgestaltung der Diagramme
+Verwendung von Library "ggplot2" zur besseren Ausgestaltung der Diagramme
 
 ```{r}
 
@@ -293,7 +226,7 @@ ggplot(UCDPsmall, aes(x = year)) +
     y = "Anzahl der Ereignisse"
   )
 
-# Histogramm mit Balken pro Jahr
+# Histogramm mit einem Balken pro Jahr
 
 UCDPsmall |>
   count(year) |>
@@ -307,7 +240,7 @@ UCDPsmall |>
 
 ```
 
-## Vergleich von zwei Variablen. Hier: Zivile und nicht zivile Opfer
+## Vergleich von zwei Variablen. Hier: Zivile und nicht zivile Opfer insgesamt
 
 ```{r}
 
@@ -323,8 +256,10 @@ UCDPsmall |>
 
 ```{r}
 
+# Die Häufigsten Konflikte nach Anzahl sortiert
+
 UCDPsmall |>
-  count(conflict_name, sort = TRUE) |> # Die Häufigsten Konflikte nach Anzahl sortiert
+  count(conflict_name, sort = TRUE) |> 
   slice_head(n = 30)
 
 ```
@@ -386,7 +321,7 @@ UCDPsmall |>
 
 ```
 
-## Vergleich der Toten aufgeschlüsselt nach Monat über kompletten Zeitraum --> Falsch
+## Vergleich der Toten aufgeschlüsselt nach Monat über kompletten Zeitraum
 
 Gibt es einen tödlichsten Monat?
 
