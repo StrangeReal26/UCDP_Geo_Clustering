@@ -44,11 +44,15 @@ Die Seminararbeit ist in insgesamt sechs Kapitel unterteilt. Nach der Einleitung
 - Deskriptive Daten bezogen auf die Sahelzone
 
 
+
+
 ## Forschungsfrage und Methodik
 
 - Nennung der Forschungsfrage
 - Explorativer Ansatz
 - Weiteres Design der Arbeit
+
+
 
 
 ## Vorstellung und Durchführung der Analysemethode
@@ -57,6 +61,8 @@ Die Seminararbeit ist in insgesamt sechs Kapitel unterteilt. Nach der Einleitung
 - Ablauf der Analyse
 - Afbau der R Markdown Datei
 - Ausschnitte des Codes
+
+
 
 
 ## Ergebnisse Clusteranalyse
@@ -68,11 +74,15 @@ Die Seminararbeit ist in insgesamt sechs Kapitel unterteilt. Nach der Einleitung
 - Balkendiagramme der Zuweisungen und Prozentzahlen
 
 
+
+
 ## Zusammenfassende Schlussbetrachtung
 
 - Zusammenfassung der Ergebnisse
 - Limitationen
 - Ausblick und weitere Analysen
+
+
 
 
 # Acknowledgments {.appendix .unnumbered toc=false}

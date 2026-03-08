@@ -8,6 +8,8 @@ output:
     code_folding: hide
 ---
 
+## Clusteranalyse von Konfliktereignissen in der Sahelzone
+
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
 ```
@@ -24,42 +26,53 @@ library(rnaturalearth)
 library(rnaturalearthdata)
 ```
 
-# Deskriptive Analyse des gesamten Datensatzes
-
-# Deskriptive Analyse der Daten bezüglich Afrika und der Sahel-Zone
-
-# Aufbau und Durchführung der Datenanalyse (exploratives Clustering) mit Beschreibung
-
-Text
-
-
 ```{r}
 GED = read.csv("data/GEDEvent_v25_1_small.csv", sep = ";")
 ```
 
 ```{r}
+
+# Ansichten des gesamten Datensatzes
+
 #View(GED)
-```
-
-```{r}
 #glimpse(GED)
-```
-
-```{r}
 str(GED)
+
 ```
+
+# Deskriptive Analyse des gesamten Datensatzes
 
 ```{r}
 
-# Prüfung fehlender Werte bei den geographischen Daten
+```
+
+
+# Deskriptive Analyse der Daten bezüglich Afrika und der Sahel-Zone
+
+```{r}
+
+```
+
+
+# Aufbau und Durchführung der Datenanalyse (exploratives Clustering) mit Beschreibung
+
+Für die Durchführung der Clusteranalyse sind verschiedene Schritte notwendig.
+
+# Prüfung der geographischen Daten
+
+```{r}
+
+# Sind fehlende Werte bei den geographischen Daten vorhanden?
 
 sum(is.na(GED$latitude)); sum(is.na(GED$longitude))
 
 ```
 
+# Aufbereitung der Daten bzw. Variablen
+
 ```{r}
 
-# Aufbereitung der Daten bzw. Variablen
+# Überschreibung des Datensatzes mit den veränderten Daten und entfernen von unvollständigen Zeilen
 
 GED <- GED |>
   mutate(
@@ -86,9 +99,11 @@ GED <- GED |>
 
 ```
 
+# Eingrenzung der Daten zur späteren Clusteranalyse
+
 ```{r}
 
-# Die Länder der Region der späteren Clusteranalyse werden festgehalten (dfür wird ein Vektor genutzt)
+# Die Länder der Region der späteren Clusteranalyse werden festgehalten (dafür wird ein Vektor genutzt)
 
 sahel_countries <- c("Senegal",
                      "Mauritania",
@@ -118,6 +133,8 @@ glimpse(GED_sahel)
 
 ```
 
+# Erstellung geometrischer Punkte
+
 ```{r}
 
 # Neuer Datensatz wird erstellt mit allen vorherigen Variablen und mit einer neuen Spalte geometry (geometrischer Punkt)
@@ -129,6 +146,10 @@ GED_sahel_sf <- GED_sahel |>
     remove = FALSE                        # Datensatz behält latitude/longitude als Spalten
   )
 
+```
+
+```{r}
+
 # Überprüfung: Welche Projektion/CRS hat das sf-Objekt?
 
 st_crs(GED_sahel_sf)
@@ -138,6 +159,8 @@ st_crs(GED_sahel_sf)
 head(st_geometry(GED_sahel_sf))
 
 ```
+
+# Definition der Kartenprojektion
 
 ```{r}
 
@@ -166,6 +189,10 @@ GED_sahel_laea <- GED_sahel_laea |>
     y_m = coords_m[, 2]
   )
 
+```
+
+```{r}
+
 # Kurze Überprüfung: CRS und Größenordnung der Koordinaten
 
 st_crs(GED_sahel_laea)
@@ -174,9 +201,11 @@ summary(GED_sahel_laea$y_m)
 
 ```
 
+# Clusteranalyse
+
 ```{r}
 
-# Clusteranalyse mit HDBSCAN clustering (explorativ)
+# HDBSCAN clustering (explorativ)
 
 # 1) Parameter setzen: Mindestgröße/Robustheit eines Clusters
 
@@ -197,7 +226,13 @@ GED_sahel_laea <- GED_sahel_laea |>
     cluster_prob = hdb$membership_prob
   )
 
-# 4) Erste Überprüfungen: Wie viele Cluster? Wie viel Noise?
+
+
+```
+
+```{r}
+
+# Erste Überprüfungen: Wie viele Cluster? Wie viel Noise?
 
 table(GED_sahel_laea$cluster_id)
 
@@ -209,6 +244,10 @@ noise_share
 summary(GED_sahel_laea$cluster_prob)
 
 ```
+
+# Erstellung der Karten
+
+# Einfache Karte der Cluster
 
 ```{r}
 
@@ -226,15 +265,17 @@ p_clusters <- ggplot(GED_sahel_laea,
 
 p_clusters
 
-ggsave(
-  filename = paste0("plots/hdbscan_clusters_minPts_", minPts_value, ".png"),
-  plot = p_clusters,
-  width = 10,
-  height = 6,
-  dpi = 300
-)
+# ggsave(
+#   filename = paste0("plots/hdbscan_clusters_minPts_", minPts_value, ".png"),
+#   plot = p_clusters,
+#   width = 10,
+#   height = 6,
+#   dpi = 300
+# )
 
 ```
+
+# Cluster mit Ländern der Sahelzone
 
 ```{r}
 
@@ -301,15 +342,17 @@ p_clusters_map
 
 # 4) Speichern wie bisher
 
-ggsave(
-  filename = paste0("plots/hdbscan_clusters_map_africa.png"),
-  plot = p_clusters_map,
-  width = 10,
-  height = 6,
-  dpi = 300
-)
+# ggsave(
+#   filename = paste0("plots/hdbscan_clusters_map_africa.png"),
+#   plot = p_clusters_map,
+#   width = 10,
+#   height = 6,
+#   dpi = 300
+# )
 
 ```
+
+# Cluster mit vollständiger Afrika-KArte
 
 ```{r}
 
@@ -379,15 +422,17 @@ p_clusters_africa
 
 # Speichern
 
-ggsave(
-  filename = paste0("plots/hdbscan_clusters_map_africa_complete.png"),
-  plot = p_clusters_africa,
-  width = 10,
-  height = 6,
-  dpi = 300
-)
+# ggsave(
+#   filename = paste0("plots/hdbscan_clusters_map_africa_complete.png"),
+#   plot = p_clusters_africa,
+#   width = 10,
+#   height = 6,
+#   dpi = 300
+# )
 
 ```
+
+# Deskriptive Daten zu den Clustern
 
 ```{r}
 
@@ -473,6 +518,10 @@ top_conflicts_by_cluster
 
 ```
 
+# Diagramme
+
+# Anzahl Konflikte pro Cluster
+
 ```{r}
 
 # Plot 1: Anzahl Konflikte pro Cluster (Balkendiagramm)
@@ -509,6 +558,8 @@ ggsave(
 )
 
 ```
+
+# Dominant Share pro Cluster
 
 ```{r}
 
