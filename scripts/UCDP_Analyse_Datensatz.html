@@ -111,7 +111,7 @@ code span.wa { color: #5e5e5e; font-style: italic; }
   <!--radix_placeholder_rmarkdown_metadata-->
 
   <script type="text/json" id="radix-rmarkdown-metadata">
-  {"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["title","author","date","output"]}},"value":[{"type":"character","attributes":{},"value":["UCDP Analyse Datensatz"]},{"type":"list","attributes":{},"value":[{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["name"]}},"value":[{"type":"character","attributes":{},"value":["Teichgräber"]}]}]},{"type":"character","attributes":{},"value":["2026-02-11"]},{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["distill::distill_article","html_document"]}},"value":[{"type":"character","attributes":{},"value":["default"]},{"type":"character","attributes":{},"value":["default"]}]}]}
+  {"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["title","author","date","output"]}},"value":[{"type":"character","attributes":{},"value":["UCDP Analyse Datensatz"]},{"type":"list","attributes":{},"value":[{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["name"]}},"value":[{"type":"character","attributes":{},"value":["Teichgräber"]}]}]},{"type":"character","attributes":{},"value":["2026-02-11"]},{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["distill::distill_article"]}},"value":[{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["toc","code_folding"]}},"value":[{"type":"logical","attributes":{},"value":[true]},{"type":"character","attributes":{},"value":["hide"]}]}]}]}
   </script>
   <!--/radix_placeholder_rmarkdown_metadata-->
   
@@ -2384,56 +2384,137 @@ distill-header .nav a {
 </div>
 
 <div class="d-article">
+<div class="d-contents d-contents-float">
+<nav class="l-text toc figcaption" id="TOC">
+<h3>Contents</h3>
+<ul>
+<li><a href="#vorstellung-des-datensatzes-ged-25.1-des-uppsala-conflict-data-program-ucdp" id="toc-vorstellung-des-datensatzes-ged-25.1-des-uppsala-conflict-data-program-ucdp">Vorstellung des Datensatzes GED 25.1 des Uppsala Conflict Data Program (UCDP)</a>
+<ul>
+<li><a href="#libraries-laden-jedes-mal-durchführen" id="toc-libraries-laden-jedes-mal-durchführen">Libraries laden (jedes Mal durchführen)</a></li>
+<li><a href="#einlesen-des-gekürzten-datensatzes-ged-25.1" id="toc-einlesen-des-gekürzten-datensatzes-ged-25.1">Einlesen des gekürzten Datensatzes GED 25.1</a></li>
+<li><a href="#allgemeine-informationen-zum-datensatz" id="toc-allgemeine-informationen-zum-datensatz">Allgemeine Informationen zum Datensatz</a></li>
+<li><a href="#kurzer-überblick-über-den-datensatz-mit-glimpse" id="toc-kurzer-überblick-über-den-datensatz-mit-glimpse">Kurzer Überblick über den Datensatz mit “glimpse”</a></li>
+<li><a href="#überblick-über-die-variablen-mit-str-übersichtlicher" id="toc-überblick-über-die-variablen-mit-str-übersichtlicher">Überblick über die Variablen mit “str” (übersichtlicher)</a></li>
+<li><a href="#abrufen-nur-der-spaltennamen-namen-der-variablen" id="toc-abrufen-nur-der-spaltennamen-namen-der-variablen">Abrufen nur der Spaltennamen (Namen der Variablen)</a></li>
+<li><a href="#anzahl-fehlender-werte-pro-variable" id="toc-anzahl-fehlender-werte-pro-variable">Anzahl fehlender Werte pro Variable</a></li>
+<li><a href="#überblick-über-die-deskriptive-statistik-aller-variablen-auch-bei-unsinnigen-variablen" id="toc-überblick-über-die-deskriptive-statistik-aller-variablen-auch-bei-unsinnigen-variablen">Überblick über die deskriptive Statistik aller Variablen (auch bei unsinnigen Variablen)</a></li>
+<li><a href="#überblick-über-deskriptive-daten-der-verluste-der-tödlichsten-konflikte" id="toc-überblick-über-deskriptive-daten-der-verluste-der-tödlichsten-konflikte">Überblick über deskriptive Daten der Verluste der tödlichsten Konflikte</a></li>
+<li><a href="#deskriptive-statistik-zur-variable-best-best-estimate-of-total-fatalities" id="toc-deskriptive-statistik-zur-variable-best-best-estimate-of-total-fatalities">Deskriptive Statistik zur Variable “best” (best estimate of total fatalities)</a></li>
+<li><a href="#zählen-von-werten-in-den-spalten" id="toc-zählen-von-werten-in-den-spalten">Zählen von Werten in den Spalten</a></li>
+<li><a href="#zeitliche-verteilung-der-konfliktereignisse-1989-bis-2024" id="toc-zeitliche-verteilung-der-konfliktereignisse-1989-bis-2024">Zeitliche Verteilung der Konfliktereignisse (1989 bis 2024)</a></li>
+<li><a href="#histogramm-zur-zeitlichen-verteilung" id="toc-histogramm-zur-zeitlichen-verteilung">Histogramm zur zeitlichen Verteilung</a></li>
+<li><a href="#vergleich-von-zwei-variablen.-hier-zivile-und-nicht-zivile-opfer-insgesamt" id="toc-vergleich-von-zwei-variablen.-hier-zivile-und-nicht-zivile-opfer-insgesamt">Vergleich von zwei Variablen. Hier: Zivile und nicht zivile Opfer insgesamt</a></li>
+<li><a href="#zahlen-zu-konflikten-und-akteuren" id="toc-zahlen-zu-konflikten-und-akteuren">Zahlen zu Konflikten und Akteuren</a></li>
+<li><a href="#berechnung-der-toten-aufgeschlüsselt-nach-einem-konflikt-konflikt-id" id="toc-berechnung-der-toten-aufgeschlüsselt-nach-einem-konflikt-konflikt-id">Berechnung der Toten aufgeschlüsselt nach einem Konflikt (Konflikt ID)</a></li>
+<li><a href="#tote-pro-jahr-in-einem-liniendiagramm-im-zeitraum-2000-bis-2025" id="toc-tote-pro-jahr-in-einem-liniendiagramm-im-zeitraum-2000-bis-2025">Tote pro Jahr in einem Liniendiagramm im Zeitraum 2000 bis 2025</a></li>
+<li><a href="#berechnung-der-durchschnittlichen-toten-aller-events-aufgegliedert-nach-konflikt-und-jahr-tödlichkeit" id="toc-berechnung-der-durchschnittlichen-toten-aller-events-aufgegliedert-nach-konflikt-und-jahr-tödlichkeit">Berechnung der durchschnittlichen Toten aller Events aufgegliedert nach Konflikt und Jahr (Tödlichkeit)</a></li>
+<li><a href="#vergleich-der-toten-aufgeschlüsselt-nach-monat-über-kompletten-zeitraum" id="toc-vergleich-der-toten-aufgeschlüsselt-nach-monat-über-kompletten-zeitraum">Vergleich der Toten aufgeschlüsselt nach Monat über kompletten Zeitraum</a></li>
+</ul></li>
+</ul>
+</nav>
+</div>
 <div class="layout-chunk" data-layout="l-body">
+<details>
+<summary>
+hide
+</summary>
 <div class="sourceCode">
 <pre class="sourceCode r"><code class="sourceCode r"><span><span class="fu"><a href="https://rdrr.io/r/base/getwd.html">getwd</a></span><span class="op">(</span><span class="op">)</span></span></code></pre>
 </div>
+</details>
 <pre><code>[1] &quot;C:/Users/simon/Documents/UCDP_Geo_Cluster&quot;</code></pre>
+<details>
+<summary>
+hide
+</summary>
 <div class="sourceCode">
 <pre class="sourceCode r"><code class="sourceCode r"><span><span class="fu"><a href="https://rdrr.io/r/base/list.files.html">list.files</a></span><span class="op">(</span><span class="op">)</span></span></code></pre>
 </div>
+</details>
 <pre><code>[1] &quot;data&quot;                   &quot;output&quot;                
 [3] &quot;plots&quot;                  &quot;scripts&quot;               
 [5] &quot;UCDP_Geo_Cluster.Rproj&quot;</code></pre>
+<details>
+<summary>
+hide
+</summary>
 <div class="sourceCode">
 <pre class="sourceCode r"><code class="sourceCode r"><span><span class="fu"><a href="https://rdrr.io/r/base/list.files.html">list.files</a></span><span class="op">(</span><span class="st">&quot;data&quot;</span><span class="op">)</span></span></code></pre>
 </div>
+</details>
 <pre><code>[1] &quot;GEDEvent_v25_1_small.csv&quot;</code></pre>
 </div>
 <h1 id="vorstellung-des-datensatzes-ged-25.1-des-uppsala-conflict-data-program-ucdp">Vorstellung des Datensatzes GED 25.1 des Uppsala Conflict Data Program (UCDP)</h1>
 <p>Georeferenzierte Daten zu Konfliktereignissen weltweit seit 1989</p>
 <h2 id="libraries-laden-jedes-mal-durchführen">Libraries laden (jedes Mal durchführen)</h2>
 <div class="layout-chunk" data-layout="l-body">
-
+<details>
+<summary>
+hide
+</summary>
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://tidyverse.tidyverse.org">tidyverse</a></span><span class="op">)</span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://lubridate.tidyverse.org">lubridate</a></span><span class="op">)</span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://dplyr.tidyverse.org">dplyr</a></span><span class="op">)</span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/apache/arrow/">arrow</a></span><span class="op">)</span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://ggplot2.tidyverse.org">ggplot2</a></span><span class="op">)</span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/rstudio/distill">distill</a></span><span class="op">)</span></span></code></pre>
+</div>
+</details>
 </div>
 <h2 id="einlesen-des-gekürzten-datensatzes-ged-25.1">Einlesen des gekürzten Datensatzes GED 25.1</h2>
 <p>Umgewandelte Datei (von xlsx zu csv) muss mit Semikolon als Trennzeichen gelesen werden wegen der Deutschen Version!</p>
 <div class="layout-chunk" data-layout="l-body">
+<details>
+<summary>
+hide
+</summary>
 <div class="sourceCode">
 <pre class="sourceCode r"><code class="sourceCode r"><span><span class="va">UCDPsmall</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/utils/read.table.html">read.csv</a></span><span class="op">(</span><span class="st">&quot;data/GEDEvent_v25_1_small.csv&quot;</span>, sep <span class="op">=</span> <span class="st">&quot;;&quot;</span><span class="op">)</span></span></code></pre>
 </div>
+</details>
 </div>
 <div class="layout-chunk" data-layout="l-body">
+<details>
+<summary>
+hide
+</summary>
 <div class="sourceCode">
-<pre class="sourceCode r"><code class="sourceCode r"><span><span class="fu">view</span><span class="op">(</span><span class="va">UCDPsmall</span><span class="op">)</span></span></code></pre>
+<pre class="sourceCode r"><code class="sourceCode r"><span><span class="co">#view(UCDPsmall)</span></span></code></pre>
 </div>
+</details>
 </div>
 <h2 id="allgemeine-informationen-zum-datensatz">Allgemeine Informationen zum Datensatz</h2>
 <div class="layout-chunk" data-layout="l-body">
+<details>
+<summary>
+hide
+</summary>
 <div class="sourceCode">
 <pre class="sourceCode r"><code class="sourceCode r"><span><span class="fu"><a href="https://rdrr.io/r/base/nrow.html">nrow</a></span><span class="op">(</span><span class="va">UCDPsmall</span><span class="op">)</span> <span class="co"># Anzahl der Zeilen</span></span></code></pre>
 </div>
+</details>
 <pre><code>[1] 385918</code></pre>
+<details>
+<summary>
+hide
+</summary>
 <div class="sourceCode">
 <pre class="sourceCode r"><code class="sourceCode r"><span><span class="fu"><a href="https://rdrr.io/r/base/nrow.html">ncol</a></span><span class="op">(</span><span class="va">UCDPsmall</span><span class="op">)</span> <span class="co"># Anzahl der Spalten</span></span></code></pre>
 </div>
+</details>
 <pre><code>[1] 35</code></pre>
 </div>
 <h2 id="kurzer-überblick-über-den-datensatz-mit-glimpse">Kurzer Überblick über den Datensatz mit “glimpse”</h2>
 <div class="layout-chunk" data-layout="l-body">
+<details>
+<summary>
+hide
+</summary>
 <div class="sourceCode">
-<pre class="sourceCode r"><code class="sourceCode r"><span><span class="fu">glimpse</span><span class="op">(</span><span class="va">UCDPsmall</span><span class="op">)</span></span></code></pre>
+<pre class="sourceCode r"><code class="sourceCode r"><span><span class="fu"><a href="https://pillar.r-lib.org/reference/glimpse.html">glimpse</a></span><span class="op">(</span><span class="va">UCDPsmall</span><span class="op">)</span></span></code></pre>
 </div>
+</details>
 <pre><code>Rows: 385,918
 Columns: 35
 $ id                &lt;int&gt; 244657, 412700, 413023, 412909, 132140, 13…
@@ -2474,9 +2555,14 @@ $ low               &lt;int&gt; 6, 171, 0, 9, 6, 0, 600, 0, 70, 0, 0, 1, 5…</c
 </div>
 <h2 id="überblick-über-die-variablen-mit-str-übersichtlicher">Überblick über die Variablen mit “str” (übersichtlicher)</h2>
 <div class="layout-chunk" data-layout="l-body">
+<details>
+<summary>
+hide
+</summary>
 <div class="sourceCode">
 <pre class="sourceCode r"><code class="sourceCode r"><span><span class="fu"><a href="https://rdrr.io/r/utils/str.html">str</a></span><span class="op">(</span><span class="va">UCDPsmall</span><span class="op">)</span> </span></code></pre>
 </div>
+</details>
 <pre><code>&#39;data.frame&#39;:   385918 obs. of  35 variables:
  $ id               : int  244657 412700 413023 412909 132140 130364 130359 133883 133874 133878 ...
  $ year             : int  2017 2021 2021 2021 1989 1989 1989 1989 1989 1989 ...
@@ -2519,9 +2605,14 @@ $ low               &lt;int&gt; 6, 171, 0, 9, 6, 0, 600, 0, 70, 0, 0, 1, 5…</c
 <p>Eine Ausführliche Beschreibung der einezelnen Variablen ist im Codebook (UCDP Georeferenced Event Dataset Codebook Version 25.1) hinterlegt.</p>
 <p>Link: <a href="https://ucdp.uu.se/downloads/replication_data/2025_ucdp-ged-251.pdf" class="uri">https://ucdp.uu.se/downloads/replication_data/2025_ucdp-ged-251.pdf</a></p>
 <div class="layout-chunk" data-layout="l-body">
+<details>
+<summary>
+hide
+</summary>
 <div class="sourceCode">
 <pre class="sourceCode r"><code class="sourceCode r"><span><span class="fu"><a href="https://rdrr.io/r/base/colnames.html">colnames</a></span><span class="op">(</span><span class="va">UCDPsmall</span><span class="op">)</span></span></code></pre>
 </div>
+</details>
 <pre><code> [1] &quot;id&quot;                &quot;year&quot;              &quot;active_year&quot;      
  [4] &quot;type_of_violence&quot;  &quot;conflict_new_id&quot;   &quot;conflict_name&quot;    
  [7] &quot;dyad_new_id&quot;       &quot;dyad_name&quot;         &quot;side_a_new_id&quot;    
@@ -2540,10 +2631,15 @@ $ low               &lt;int&gt; 6, 171, 0, 9, 6, 0, 600, 0, 70, 0, 0, 1, 5…</c
 <p>Aus der Beschreibung des Datensatzes geht hervor, dass keine fehlenden Werte in den gesamten Daten vorhanden sind.</p>
 <p>Weiter unten stehende Datenabfrage bestätigt dies.</p>
 <div class="layout-chunk" data-layout="l-body">
+<details>
+<summary>
+hide
+</summary>
 <div class="sourceCode">
 <pre class="sourceCode r"><code class="sourceCode r"><span><span class="va">UCDPsmall</span> <span class="op">|&gt;</span></span>
-<span>  <span class="fu">summarise</span><span class="op">(</span><span class="fu">across</span><span class="op">(</span><span class="fu">everything</span><span class="op">(</span><span class="op">)</span>, <span class="op">~</span> <span class="fu"><a href="https://rdrr.io/r/base/sum.html">sum</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/NA.html">is.na</a></span><span class="op">(</span><span class="va">.x</span><span class="op">)</span><span class="op">)</span><span class="op">)</span><span class="op">)</span> <span class="co"># Code von Tidyverse</span></span></code></pre>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/summarise.html">summarise</a></span><span class="op">(</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/across.html">across</a></span><span class="op">(</span><span class="fu"><a href="https://tidyselect.r-lib.org/reference/everything.html">everything</a></span><span class="op">(</span><span class="op">)</span>, <span class="op">~</span> <span class="fu"><a href="https://rdrr.io/r/base/sum.html">sum</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/NA.html">is.na</a></span><span class="op">(</span><span class="va">.x</span><span class="op">)</span><span class="op">)</span><span class="op">)</span><span class="op">)</span> <span class="co"># Code von Tidyverse</span></span></code></pre>
 </div>
+</details>
 <pre><code>  id year active_year type_of_violence conflict_new_id conflict_name
 1  0    0           0                0               0             0
   dyad_new_id dyad_name side_a_new_id side_a side_b_new_id side_b
@@ -2559,9 +2655,14 @@ $ low               &lt;int&gt; 6, 171, 0, 9, 6, 0, 600, 0, 70, 0, 0, 1, 5…</c
 </div>
 <h2 id="überblick-über-die-deskriptive-statistik-aller-variablen-auch-bei-unsinnigen-variablen">Überblick über die deskriptive Statistik aller Variablen (auch bei unsinnigen Variablen)</h2>
 <div class="layout-chunk" data-layout="l-body">
+<details>
+<summary>
+hide
+</summary>
 <div class="sourceCode">
 <pre class="sourceCode r"><code class="sourceCode r"><span><span class="fu"><a href="https://rdrr.io/r/base/summary.html">summary</a></span><span class="op">(</span><span class="va">UCDPsmall</span><span class="op">)</span> <span class="co"># Base Code</span></span></code></pre>
 </div>
+</details>
 <pre><code>       id              year      active_year        type_of_violence
  Min.   :     2   Min.   :1989   Length:385918      Min.   :1.000   
  1st Qu.:162928   1st Qu.:2007   Class :character   1st Qu.:1.000   
@@ -2642,17 +2743,22 @@ $ low               &lt;int&gt; 6, 171, 0, 9, 6, 0, 600, 0, 70, 0, 0, 1, 5…</c
 </div>
 <h2 id="überblick-über-deskriptive-daten-der-verluste-der-tödlichsten-konflikte">Überblick über deskriptive Daten der Verluste der tödlichsten Konflikte</h2>
 <div class="layout-chunk" data-layout="l-body">
+<details>
+<summary>
+hide
+</summary>
 <div class="sourceCode">
 <pre class="sourceCode r"><code class="sourceCode r"><span><span class="co"># Anzahl Tote der zehn tödlichsten Konflikte</span></span>
 <span><span class="va">UCDPsmall</span> <span class="op">|&gt;</span></span>
-<span>  <span class="fu">group_by</span><span class="op">(</span><span class="va">conflict_new_id</span>, <span class="va">dyad_name</span><span class="op">)</span> <span class="op">|&gt;</span></span>
-<span>  <span class="fu">summarise</span><span class="op">(</span></span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/group_by.html">group_by</a></span><span class="op">(</span><span class="va">conflict_new_id</span>, <span class="va">dyad_name</span><span class="op">)</span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/summarise.html">summarise</a></span><span class="op">(</span></span>
 <span>    total_deaths <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/sum.html">sum</a></span><span class="op">(</span><span class="va">best</span>, na.rm <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span>,</span>
 <span>    .groups <span class="op">=</span> <span class="st">&quot;drop&quot;</span></span>
 <span>  <span class="op">)</span> <span class="op">|&gt;</span></span>
-<span>  <span class="fu">arrange</span><span class="op">(</span><span class="fu">desc</span><span class="op">(</span><span class="va">total_deaths</span><span class="op">)</span><span class="op">)</span> <span class="op">|&gt;</span></span>
-<span>  <span class="fu">slice_head</span><span class="op">(</span>n <span class="op">=</span> <span class="fl">10</span><span class="op">)</span></span></code></pre>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/arrange.html">arrange</a></span><span class="op">(</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/desc.html">desc</a></span><span class="op">(</span><span class="va">total_deaths</span><span class="op">)</span><span class="op">)</span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/slice.html">slice_head</a></span><span class="op">(</span>n <span class="op">=</span> <span class="fl">10</span><span class="op">)</span></span></code></pre>
 </div>
+</details>
 <pre><code># A tibble: 10 × 3
    conflict_new_id dyad_name                              total_deaths
              &lt;int&gt; &lt;chr&gt;                                         &lt;int&gt;
@@ -2666,14 +2772,18 @@ $ low               &lt;int&gt; 6, 171, 0, 9, 6, 0, 600, 0, 70, 0, 0, 1, 5…</c
  8             352 Government of Sri Lanka - LTTE                60697
  9             230 Government of Yemen (North Yemen) - F…        54607
 10             234 Government of Israel - Hamas                  52801</code></pre>
+<details>
+<summary>
+hide
+</summary>
 <div class="sourceCode">
 <pre class="sourceCode r"><code class="sourceCode r"><span><span class="co"># Übersicht über die Anzahl Toten des Ukrainekriegs</span></span>
 <span><span class="va">conflict_13243</span> <span class="op">&lt;-</span> <span class="va">UCDPsmall</span> <span class="op">|&gt;</span></span>
-<span>  <span class="fu"><a href="https://rdrr.io/r/stats/filter.html">filter</a></span><span class="op">(</span><span class="va">conflict_new_id</span> <span class="op">==</span> <span class="fl">13243</span><span class="op">)</span></span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html">filter</a></span><span class="op">(</span><span class="va">conflict_new_id</span> <span class="op">==</span> <span class="fl">13243</span><span class="op">)</span></span>
 <span></span>
 <span><span class="va">conflict_13243</span> <span class="op">|&gt;</span></span>
-<span>  <span class="fu">summarise</span><span class="op">(</span></span>
-<span>    anzahl_events <span class="op">=</span> <span class="fu">n</span><span class="op">(</span><span class="op">)</span>,</span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/summarise.html">summarise</a></span><span class="op">(</span></span>
+<span>    anzahl_events <span class="op">=</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/context.html">n</a></span><span class="op">(</span><span class="op">)</span>,</span>
 <span>    summe_tote <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/sum.html">sum</a></span><span class="op">(</span><span class="va">best</span>, na.rm <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span>,</span>
 <span>    mittelwert <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/mean.html">mean</a></span><span class="op">(</span><span class="va">best</span>, na.rm <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span>,</span>
 <span>    median <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/stats/median.html">median</a></span><span class="op">(</span><span class="va">best</span>, na.rm <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span>,</span>
@@ -2682,6 +2792,7 @@ $ low               &lt;int&gt; 6, 171, 0, 9, 6, 0, 600, 0, 70, 0, 0, 1, 5…</c
 <span>    maximum <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/Extremes.html">max</a></span><span class="op">(</span><span class="va">best</span>, na.rm <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
 <span>  <span class="op">)</span></span></code></pre>
 </div>
+</details>
 <pre><code>  anzahl_events summe_tote mittelwert median standardabweichung
 1         28499     242373   8.504614      2           141.1572
   minimum maximum
@@ -2689,38 +2800,53 @@ $ low               &lt;int&gt; 6, 171, 0, 9, 6, 0, 600, 0, 70, 0, 0, 1, 5…</c
 </div>
 <h2 id="deskriptive-statistik-zur-variable-best-best-estimate-of-total-fatalities">Deskriptive Statistik zur Variable “best” (best estimate of total fatalities)</h2>
 <div class="layout-chunk" data-layout="l-body">
+<details>
+<summary>
+hide
+</summary>
 <div class="sourceCode">
 <pre class="sourceCode r"><code class="sourceCode r"><span><span class="va">UCDPsmall</span> <span class="op">|&gt;</span></span>
-<span>  <span class="fu">summarise</span><span class="op">(</span></span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/summarise.html">summarise</a></span><span class="op">(</span></span>
 <span>    mean_best <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/mean.html">mean</a></span><span class="op">(</span><span class="va">best</span>, na.rm <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span>,</span>
 <span>    median_best <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/stats/median.html">median</a></span><span class="op">(</span><span class="va">best</span>, na.rm <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span>,</span>
 <span>    sd_best <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/stats/sd.html">sd</a></span><span class="op">(</span><span class="va">best</span>, na.rm <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span>,</span>
 <span>    max_best <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/Extremes.html">max</a></span><span class="op">(</span><span class="va">best</span>, na.rm <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
 <span>  <span class="op">)</span></span></code></pre>
 </div>
+</details>
 <pre><code>  mean_best median_best  sd_best max_best
 1  10.25384           2 347.6807   121848</code></pre>
 </div>
 <h2 id="zählen-von-werten-in-den-spalten">Zählen von Werten in den Spalten</h2>
 <div class="layout-chunk" data-layout="l-body">
+<details>
+<summary>
+hide
+</summary>
 <div class="sourceCode">
 <pre class="sourceCode r"><code class="sourceCode r"><span><span class="co"># Einfaches Zählen der Eintragungen pro Art von &quot;type_of_violance&quot;</span></span>
 <span><span class="co"># 1: state-based conflict 2: non-state conflict 3: one-sided violence</span></span>
 <span></span>
 <span><span class="va">UCDPsmall</span> <span class="op">|&gt;</span></span>
-<span>  <span class="fu">count</span><span class="op">(</span><span class="va">type_of_violence</span><span class="op">)</span> </span></code></pre>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/count.html">count</a></span><span class="op">(</span><span class="va">type_of_violence</span><span class="op">)</span> </span></code></pre>
 </div>
+</details>
 <pre><code>  type_of_violence      n
 1                1 271331
 2                2  54982
 3                3  59605</code></pre>
+<details>
+<summary>
+hide
+</summary>
 <div class="sourceCode">
 <pre class="sourceCode r"><code class="sourceCode r"><span><span class="co"># Anzahl von Konfliktereignissen sortiert nach Länder</span></span>
 <span></span>
 <span><span class="va">UCDPsmall</span> <span class="op">|&gt;</span></span>
-<span>  <span class="fu">count</span><span class="op">(</span><span class="va">country</span>, sort <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span> <span class="op">|&gt;</span></span>
-<span>  <span class="fu">slice_head</span><span class="op">(</span>n <span class="op">=</span> <span class="fl">30</span><span class="op">)</span> <span class="co"># Begrenzung der Abfrage auf 30 Werte</span></span></code></pre>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/count.html">count</a></span><span class="op">(</span><span class="va">country</span>, sort <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/slice.html">slice_head</a></span><span class="op">(</span>n <span class="op">=</span> <span class="fl">30</span><span class="op">)</span> <span class="co"># Begrenzung der Abfrage auf 30 Werte</span></span></code></pre>
 </div>
+</details>
 <pre><code>                 country     n
 1                  Syria 87861
 2            Afghanistan 42220
@@ -2752,27 +2878,37 @@ $ low               &lt;int&gt; 6, 171, 0, 9, 6, 0, 600, 0, 70, 0, 0, 1, 5…</c
 28                Rwanda  2604
 29                  Mali  2573
 30               Lebanon  2385</code></pre>
+<details>
+<summary>
+hide
+</summary>
 <div class="sourceCode">
 <pre class="sourceCode r"><code class="sourceCode r"><span><span class="co"># Anzahl von Konfliktereignissen sortiert nach Regionen (Kontinenten)</span></span>
 <span></span>
 <span><span class="va">UCDPsmall</span> <span class="op">|&gt;</span></span>
-<span>  <span class="fu">count</span><span class="op">(</span><span class="va">region</span><span class="op">)</span> <span class="co"># Wie viele Events gibt es in den angegebenen Regionen?</span></span></code></pre>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/count.html">count</a></span><span class="op">(</span><span class="va">region</span><span class="op">)</span> <span class="co"># Wie viele Events gibt es in den angegebenen Regionen?</span></span></code></pre>
 </div>
+</details>
 <pre><code>       region      n
 1      Africa  68354
 2    Americas  48884
 3        Asia  97879
 4      Europe  48586
 5 Middle East 122215</code></pre>
+<details>
+<summary>
+hide
+</summary>
 <div class="sourceCode">
 <pre class="sourceCode r"><code class="sourceCode r"><span><span class="co"># Anzahl Konflikte pro Region</span></span>
 <span></span>
 <span><span class="va">UCDPsmall</span> <span class="op">|&gt;</span></span>
-<span>  <span class="fu">group_by</span><span class="op">(</span><span class="va">region</span><span class="op">)</span> <span class="op">|&gt;</span></span>
-<span>  <span class="fu">summarise</span><span class="op">(</span></span>
-<span>    n_conflicts <span class="op">=</span> <span class="fu">n_distinct</span><span class="op">(</span><span class="va">conflict_new_id</span><span class="op">)</span></span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/group_by.html">group_by</a></span><span class="op">(</span><span class="va">region</span><span class="op">)</span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/summarise.html">summarise</a></span><span class="op">(</span></span>
+<span>    n_conflicts <span class="op">=</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/n_distinct.html">n_distinct</a></span><span class="op">(</span><span class="va">conflict_new_id</span><span class="op">)</span></span>
 <span>  <span class="op">)</span></span></code></pre>
 </div>
+</details>
 <pre><code># A tibble: 5 × 2
   region      n_conflicts
   &lt;chr&gt;             &lt;int&gt;
@@ -2781,25 +2917,35 @@ $ low               &lt;int&gt; 6, 171, 0, 9, 6, 0, 600, 0, 70, 0, 0, 1, 5…</c
 3 Asia                241
 4 Europe               67
 5 Middle East         192</code></pre>
+<details>
+<summary>
+hide
+</summary>
 <div class="sourceCode">
 <pre class="sourceCode r"><code class="sourceCode r"><span><span class="co"># Anzahl Konflikte im Datensatz insgesamt</span></span>
 <span></span>
 <span><span class="va">UCDPsmall</span> <span class="op">|&gt;</span></span>
-<span>  <span class="fu">summarise</span><span class="op">(</span></span>
-<span>    n_conflicts_global <span class="op">=</span> <span class="fu">n_distinct</span><span class="op">(</span><span class="va">conflict_new_id</span><span class="op">)</span></span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/summarise.html">summarise</a></span><span class="op">(</span></span>
+<span>    n_conflicts_global <span class="op">=</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/n_distinct.html">n_distinct</a></span><span class="op">(</span><span class="va">conflict_new_id</span><span class="op">)</span></span>
 <span>  <span class="op">)</span></span></code></pre>
 </div>
+</details>
 <pre><code>  n_conflicts_global
 1               1531</code></pre>
 </div>
 <h2 id="zeitliche-verteilung-der-konfliktereignisse-1989-bis-2024">Zeitliche Verteilung der Konfliktereignisse (1989 bis 2024)</h2>
 <div class="layout-chunk" data-layout="l-body">
+<details>
+<summary>
+hide
+</summary>
 <div class="sourceCode">
 <pre class="sourceCode r"><code class="sourceCode r"><span><span class="co"># Unsortiert</span></span>
 <span></span>
 <span><span class="va">UCDPsmall</span> <span class="op">|&gt;</span></span>
-<span>  <span class="fu">count</span><span class="op">(</span><span class="va">year</span>, sort <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></code></pre>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/count.html">count</a></span><span class="op">(</span><span class="va">year</span>, sort <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></code></pre>
 </div>
+</details>
 <pre><code>   year     n
 1  2024 28816
 2  2023 26486
@@ -2837,13 +2983,18 @@ $ low               &lt;int&gt; 6, 171, 0, 9, 6, 0, 600, 0, 70, 0, 0, 1, 5…</c
 34 1997  3007
 35 1991  2870
 36 1989  2624</code></pre>
+<details>
+<summary>
+hide
+</summary>
 <div class="sourceCode">
 <pre class="sourceCode r"><code class="sourceCode r"><span><span class="co"># Sortiert nach Anzahl von Konfliktereignissen</span></span>
 <span></span>
 <span><span class="va">UCDPsmall</span> <span class="op">|&gt;</span></span>
-<span>  <span class="fu">group_by</span><span class="op">(</span><span class="va">year</span><span class="op">)</span> <span class="op">|&gt;</span></span>
-<span>  <span class="fu">summarise</span><span class="op">(</span>events <span class="op">=</span> <span class="fu">n</span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span></code></pre>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/group_by.html">group_by</a></span><span class="op">(</span><span class="va">year</span><span class="op">)</span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/summarise.html">summarise</a></span><span class="op">(</span>events <span class="op">=</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/context.html">n</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span></code></pre>
 </div>
+</details>
 <pre><code># A tibble: 36 × 2
     year events
    &lt;int&gt;  &lt;int&gt;
@@ -2862,54 +3013,74 @@ $ low               &lt;int&gt; 6, 171, 0, 9, 6, 0, 600, 0, 70, 0, 0, 1, 5…</c
 <h2 id="histogramm-zur-zeitlichen-verteilung">Histogramm zur zeitlichen Verteilung</h2>
 <p>Verwendung von Library “ggplot2” zur besseren Ausgestaltung der Diagramme</p>
 <div class="layout-chunk" data-layout="l-body">
+<details>
+<summary>
+hide
+</summary>
 <div class="sourceCode">
 <pre class="sourceCode r"><code class="sourceCode r"><span><span class="co"># Histogramm mit Balken für je zwei Jahre zusammengefasst</span></span>
 <span></span>
-<span><span class="fu">ggplot</span><span class="op">(</span><span class="va">UCDPsmall</span>, <span class="fu">aes</span><span class="op">(</span>x <span class="op">=</span> <span class="va">year</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
-<span>  <span class="fu">geom_histogram</span><span class="op">(</span>binwidth <span class="op">=</span> <span class="fl">2</span><span class="op">)</span> <span class="op">+</span></span>
-<span>  <span class="fu">labs</span><span class="op">(</span></span>
+<span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html">ggplot</a></span><span class="op">(</span><span class="va">UCDPsmall</span>, <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">year</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_histogram.html">geom_histogram</a></span><span class="op">(</span>binwidth <span class="op">=</span> <span class="fl">2</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html">labs</a></span><span class="op">(</span></span>
 <span>    title <span class="op">=</span> <span class="st">&quot;Zeitliche Verteilung der Konfliktereignisse&quot;</span>,</span>
 <span>    x <span class="op">=</span> <span class="st">&quot;Jahr&quot;</span>,</span>
 <span>    y <span class="op">=</span> <span class="st">&quot;Anzahl der Ereignisse&quot;</span></span>
 <span>  <span class="op">)</span></span></code></pre>
 </div>
+</details>
 <img role="img" aria-label src="data:image/png;base64,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" alt width="624" />
+<details>
+<summary>
+hide
+</summary>
 <div class="sourceCode">
 <pre class="sourceCode r"><code class="sourceCode r"><span><span class="co"># Histogramm mit einem Balken pro Jahr</span></span>
 <span></span>
 <span><span class="va">UCDPsmall</span> <span class="op">|&gt;</span></span>
-<span>  <span class="fu">count</span><span class="op">(</span><span class="va">year</span><span class="op">)</span> <span class="op">|&gt;</span></span>
-<span>  <span class="fu">ggplot</span><span class="op">(</span><span class="fu">aes</span><span class="op">(</span>x <span class="op">=</span> <span class="va">year</span>, y <span class="op">=</span> <span class="va">n</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
-<span>  <span class="fu">geom_col</span><span class="op">(</span><span class="op">)</span> <span class="op">+</span></span>
-<span>  <span class="fu">labs</span><span class="op">(</span></span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/count.html">count</a></span><span class="op">(</span><span class="va">year</span><span class="op">)</span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html">ggplot</a></span><span class="op">(</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">year</span>, y <span class="op">=</span> <span class="va">n</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_bar.html">geom_col</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html">labs</a></span><span class="op">(</span></span>
 <span>    title <span class="op">=</span> <span class="st">&quot;Anzahl der Konfliktereignisse pro Jahr&quot;</span>,</span>
 <span>    x <span class="op">=</span> <span class="st">&quot;Jahr&quot;</span>,</span>
 <span>    y <span class="op">=</span> <span class="st">&quot;Anzahl der Ereignisse&quot;</span></span>
 <span>  <span class="op">)</span></span></code></pre>
 </div>
+</details>
 <p><img role="img" aria-label src="data:image/png;base64,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" alt width="624" /></p>
 </div>
 <h2 id="vergleich-von-zwei-variablen.-hier-zivile-und-nicht-zivile-opfer-insgesamt">Vergleich von zwei Variablen. Hier: Zivile und nicht zivile Opfer insgesamt</h2>
 <div class="layout-chunk" data-layout="l-body">
+<details>
+<summary>
+hide
+</summary>
 <div class="sourceCode">
 <pre class="sourceCode r"><code class="sourceCode r"><span><span class="va">UCDPsmall</span> <span class="op">|&gt;</span></span>
-<span>  <span class="fu">summarise</span><span class="op">(</span></span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/summarise.html">summarise</a></span><span class="op">(</span></span>
 <span>    deaths_civ <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/sum.html">sum</a></span><span class="op">(</span><span class="va">deaths_civilians</span>, na.rm <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span>,</span>
 <span>    deaths_non_civ <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/sum.html">sum</a></span><span class="op">(</span><span class="va">deaths_a</span> <span class="op">+</span> <span class="va">deaths_b</span>, na.rm <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
 <span>  <span class="op">)</span></span></code></pre>
 </div>
+</details>
 <pre><code>  deaths_civ deaths_non_civ
 1    1474095        1820082</code></pre>
 </div>
 <h2 id="zahlen-zu-konflikten-und-akteuren">Zahlen zu Konflikten und Akteuren</h2>
 <div class="layout-chunk" data-layout="l-body">
+<details>
+<summary>
+hide
+</summary>
 <div class="sourceCode">
 <pre class="sourceCode r"><code class="sourceCode r"><span><span class="co"># Die Häufigsten Konflikte nach Anzahl sortiert</span></span>
 <span></span>
 <span><span class="va">UCDPsmall</span> <span class="op">|&gt;</span></span>
-<span>  <span class="fu">count</span><span class="op">(</span><span class="va">conflict_name</span>, sort <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span> <span class="op">|&gt;</span> </span>
-<span>  <span class="fu">slice_head</span><span class="op">(</span>n <span class="op">=</span> <span class="fl">30</span><span class="op">)</span></span></code></pre>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/count.html">count</a></span><span class="op">(</span><span class="va">conflict_name</span>, sort <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span> <span class="op">|&gt;</span> </span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/slice.html">slice_head</a></span><span class="op">(</span>n <span class="op">=</span> <span class="fl">30</span><span class="op">)</span></span></code></pre>
 </div>
+</details>
 <pre><code>                                               conflict_name     n
 1                                          Syria: Government 66186
 2                                    Afghanistan: Government 37828
@@ -2944,16 +3115,21 @@ $ low               &lt;int&gt; 6, 171, 0, 9, 6, 0, 600, 0, 70, 0, 0, 1, 5…</c
 </div>
 <h2 id="berechnung-der-toten-aufgeschlüsselt-nach-einem-konflikt-konflikt-id">Berechnung der Toten aufgeschlüsselt nach einem Konflikt (Konflikt ID)</h2>
 <div class="layout-chunk" data-layout="l-body">
+<details>
+<summary>
+hide
+</summary>
 <div class="sourceCode">
 <pre class="sourceCode r"><code class="sourceCode r"><span><span class="va">UCDPsmall</span> <span class="op">|&gt;</span></span>
-<span>  <span class="fu">group_by</span><span class="op">(</span><span class="va">conflict_new_id</span>, <span class="va">dyad_name</span><span class="op">)</span> <span class="op">|&gt;</span></span>
-<span>  <span class="fu">summarise</span><span class="op">(</span></span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/group_by.html">group_by</a></span><span class="op">(</span><span class="va">conflict_new_id</span>, <span class="va">dyad_name</span><span class="op">)</span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/summarise.html">summarise</a></span><span class="op">(</span></span>
 <span>    total_deaths <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/sum.html">sum</a></span><span class="op">(</span><span class="va">best</span>, na.rm <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span>,</span>
 <span>    .groups <span class="op">=</span> <span class="st">&quot;drop&quot;</span></span>
 <span>  <span class="op">)</span> <span class="op">|&gt;</span></span>
-<span>  <span class="fu">arrange</span><span class="op">(</span><span class="fu">desc</span><span class="op">(</span><span class="va">total_deaths</span><span class="op">)</span><span class="op">)</span> <span class="op">|&gt;</span></span>
-<span>  <span class="fu">slice_head</span><span class="op">(</span>n <span class="op">=</span> <span class="fl">30</span><span class="op">)</span></span></code></pre>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/arrange.html">arrange</a></span><span class="op">(</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/desc.html">desc</a></span><span class="op">(</span><span class="va">total_deaths</span><span class="op">)</span><span class="op">)</span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/slice.html">slice_head</a></span><span class="op">(</span>n <span class="op">=</span> <span class="fl">30</span><span class="op">)</span></span></code></pre>
 </div>
+</details>
 <pre><code># A tibble: 30 × 3
    conflict_new_id dyad_name                              total_deaths
              &lt;int&gt; &lt;chr&gt;                                         &lt;int&gt;
@@ -2971,42 +3147,52 @@ $ low               &lt;int&gt; 6, 171, 0, 9, 6, 0, 600, 0, 70, 0, 0, 1, 5…</c
 </div>
 <h2 id="tote-pro-jahr-in-einem-liniendiagramm-im-zeitraum-2000-bis-2025">Tote pro Jahr in einem Liniendiagramm im Zeitraum 2000 bis 2025</h2>
 <div class="layout-chunk" data-layout="l-body">
+<details>
+<summary>
+hide
+</summary>
 <div class="sourceCode">
 <pre class="sourceCode r"><code class="sourceCode r"><span><span class="va">todesfaelle_pro_jahr</span> <span class="op">&lt;-</span> <span class="va">UCDPsmall</span> <span class="op">|&gt;</span></span>
-<span>  <span class="fu"><a href="https://rdrr.io/r/stats/filter.html">filter</a></span><span class="op">(</span><span class="va">year</span> <span class="op">&gt;=</span> <span class="fl">2000</span>, <span class="va">year</span> <span class="op">&lt;=</span> <span class="fl">2025</span><span class="op">)</span> <span class="op">|&gt;</span></span>
-<span>  <span class="fu">group_by</span><span class="op">(</span><span class="va">year</span><span class="op">)</span> <span class="op">|&gt;</span></span>
-<span>  <span class="fu">summarise</span><span class="op">(</span></span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html">filter</a></span><span class="op">(</span><span class="va">year</span> <span class="op">&gt;=</span> <span class="fl">2000</span>, <span class="va">year</span> <span class="op">&lt;=</span> <span class="fl">2025</span><span class="op">)</span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/group_by.html">group_by</a></span><span class="op">(</span><span class="va">year</span><span class="op">)</span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/summarise.html">summarise</a></span><span class="op">(</span></span>
 <span>    total_deaths <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/sum.html">sum</a></span><span class="op">(</span><span class="va">best</span>, na.rm <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span>,</span>
 <span>    .groups <span class="op">=</span> <span class="st">&quot;drop&quot;</span></span>
 <span>  <span class="op">)</span></span>
 <span></span>
-<span><span class="fu">ggplot</span><span class="op">(</span><span class="va">todesfaelle_pro_jahr</span>, <span class="fu">aes</span><span class="op">(</span>x <span class="op">=</span> <span class="va">year</span>, y <span class="op">=</span> <span class="va">total_deaths</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
-<span>  <span class="fu">geom_line</span><span class="op">(</span><span class="op">)</span> <span class="op">+</span></span>
-<span>  <span class="fu">geom_point</span><span class="op">(</span><span class="op">)</span> <span class="op">+</span></span>
-<span>  <span class="fu">scale_y_continuous</span><span class="op">(</span>labels <span class="op">=</span> <span class="fu">scales</span><span class="fu">::</span><span class="fu"><a href="https://scales.r-lib.org/reference/label_number.html">label_comma</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
-<span>  <span class="fu">labs</span><span class="op">(</span></span>
+<span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html">ggplot</a></span><span class="op">(</span><span class="va">todesfaelle_pro_jahr</span>, <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">year</span>, y <span class="op">=</span> <span class="va">total_deaths</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_path.html">geom_line</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_point.html">geom_point</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/scale_continuous.html">scale_y_continuous</a></span><span class="op">(</span>labels <span class="op">=</span> <span class="fu">scales</span><span class="fu">::</span><span class="fu"><a href="https://scales.r-lib.org/reference/label_number.html">label_comma</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html">labs</a></span><span class="op">(</span></span>
 <span>    title <span class="op">=</span> <span class="st">&quot;Todesfälle durch bewaffnete Konflikte (2000–2025)&quot;</span>,</span>
 <span>    x <span class="op">=</span> <span class="st">&quot;Jahr&quot;</span>,</span>
 <span>    y <span class="op">=</span> <span class="st">&quot;Anzahl der Todesfälle (best)&quot;</span></span>
 <span>  <span class="op">)</span></span></code></pre>
 </div>
+</details>
 <p><img role="img" aria-label src="data:image/png;base64,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" alt width="624" /></p>
 </div>
 <h2 id="berechnung-der-durchschnittlichen-toten-aller-events-aufgegliedert-nach-konflikt-und-jahr-tödlichkeit">Berechnung der durchschnittlichen Toten aller Events aufgegliedert nach Konflikt und Jahr (Tödlichkeit)</h2>
 <div class="layout-chunk" data-layout="l-body">
+<details>
+<summary>
+hide
+</summary>
 <div class="sourceCode">
 <pre class="sourceCode r"><code class="sourceCode r"><span><span class="va">UCDPsmall</span> <span class="op">|&gt;</span></span>
-<span>  <span class="fu">group_by</span><span class="op">(</span><span class="va">year</span><span class="op">)</span> <span class="op">|&gt;</span></span>
-<span>  <span class="fu">summarise</span><span class="op">(</span></span>
-<span>    anzahl_events <span class="op">=</span> <span class="fu">n</span><span class="op">(</span><span class="op">)</span>,</span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/group_by.html">group_by</a></span><span class="op">(</span><span class="va">year</span><span class="op">)</span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/summarise.html">summarise</a></span><span class="op">(</span></span>
+<span>    anzahl_events <span class="op">=</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/context.html">n</a></span><span class="op">(</span><span class="op">)</span>,</span>
 <span>    gesamt_tote <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/sum.html">sum</a></span><span class="op">(</span><span class="va">best</span>, na.rm <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span>,</span>
 <span>    durchschnitt_tote_pro_event <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/mean.html">mean</a></span><span class="op">(</span><span class="va">best</span>, na.rm <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span>,</span>
 <span>    median_tote <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/stats/median.html">median</a></span><span class="op">(</span><span class="va">best</span>, na.rm <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span>,</span>
 <span>    sd_tote <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/stats/sd.html">sd</a></span><span class="op">(</span><span class="va">best</span>, na.rm <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span>,</span>
 <span>    .groups <span class="op">=</span> <span class="st">&quot;drop&quot;</span></span>
 <span>  <span class="op">)</span> <span class="op">|&gt;</span></span>
-<span>  <span class="fu">arrange</span><span class="op">(</span><span class="va">year</span><span class="op">)</span></span></code></pre>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/arrange.html">arrange</a></span><span class="op">(</span><span class="va">year</span><span class="op">)</span></span></code></pre>
 </div>
+</details>
 <pre><code># A tibble: 36 × 6
     year anzahl_events gesamt_tote durchschnitt_tote_pro…¹ median_tote
    &lt;int&gt;         &lt;int&gt;       &lt;int&gt;                   &lt;dbl&gt;       &lt;dbl&gt;
@@ -3027,47 +3213,67 @@ $ low               &lt;int&gt; 6, 171, 0, 9, 6, 0, 600, 0, 70, 0, 0, 1, 5…</c
 <h2 id="vergleich-der-toten-aufgeschlüsselt-nach-monat-über-kompletten-zeitraum">Vergleich der Toten aufgeschlüsselt nach Monat über kompletten Zeitraum</h2>
 <p>Gibt es einen tödlichsten Monat?</p>
 <div class="layout-chunk" data-layout="l-body">
+<details>
+<summary>
+hide
+</summary>
 <div class="sourceCode">
 <pre class="sourceCode r"><code class="sourceCode r"><span><span class="va">UCDPsmall</span> <span class="op">&lt;-</span> <span class="va">UCDPsmall</span> <span class="op">|&gt;</span></span>
-<span>  <span class="fu">mutate</span><span class="op">(</span>date_start <span class="op">=</span> <span class="fu">lubridate</span><span class="fu">::</span><span class="fu"><a href="https://lubridate.tidyverse.org/reference/ymd.html">dmy</a></span><span class="op">(</span><span class="va">date_start</span><span class="op">)</span><span class="op">)</span></span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html">mutate</a></span><span class="op">(</span>date_start <span class="op">=</span> <span class="fu">lubridate</span><span class="fu">::</span><span class="fu"><a href="https://lubridate.tidyverse.org/reference/ymd.html">dmy</a></span><span class="op">(</span><span class="va">date_start</span><span class="op">)</span><span class="op">)</span></span>
 <span></span>
 <span><span class="va">UCDPsmall</span> <span class="op">&lt;-</span> <span class="va">UCDPsmall</span> <span class="op">|&gt;</span></span>
-<span>  <span class="fu">mutate</span><span class="op">(</span>start_month <span class="op">=</span> <span class="fu">month</span><span class="op">(</span><span class="va">date_start</span><span class="op">)</span><span class="op">)</span></span></code></pre>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html">mutate</a></span><span class="op">(</span>start_month <span class="op">=</span> <span class="fu"><a href="https://lubridate.tidyverse.org/reference/month.html">month</a></span><span class="op">(</span><span class="va">date_start</span><span class="op">)</span><span class="op">)</span></span></code></pre>
 </div>
+</details>
 </div>
 <div class="layout-chunk" data-layout="l-body">
+<details>
+<summary>
+hide
+</summary>
 <div class="sourceCode">
 <pre class="sourceCode r"><code class="sourceCode r"><span><span class="va">monthly_yearly</span> <span class="op">&lt;-</span> <span class="va">UCDPsmall</span> <span class="op">|&gt;</span></span>
-<span>  <span class="fu">group_by</span><span class="op">(</span><span class="va">year</span>, <span class="va">start_month</span><span class="op">)</span> <span class="op">|&gt;</span></span>
-<span>  <span class="fu">summarise</span><span class="op">(</span></span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/group_by.html">group_by</a></span><span class="op">(</span><span class="va">year</span>, <span class="va">start_month</span><span class="op">)</span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/summarise.html">summarise</a></span><span class="op">(</span></span>
 <span>    deaths_month <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/sum.html">sum</a></span><span class="op">(</span><span class="va">best</span>, na.rm <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span>,</span>
-<span>    events_month <span class="op">=</span> <span class="fu">n</span><span class="op">(</span><span class="op">)</span>,</span>
+<span>    events_month <span class="op">=</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/context.html">n</a></span><span class="op">(</span><span class="op">)</span>,</span>
 <span>    .groups <span class="op">=</span> <span class="st">&quot;drop&quot;</span></span>
 <span>  <span class="op">)</span></span></code></pre>
 </div>
+</details>
 </div>
 <div class="layout-chunk" data-layout="l-body">
+<details>
+<summary>
+hide
+</summary>
 <div class="sourceCode">
 <pre class="sourceCode r"><code class="sourceCode r"><span><span class="va">month_stats</span> <span class="op">&lt;-</span> <span class="va">monthly_yearly</span> <span class="op">|&gt;</span></span>
-<span>  <span class="fu">group_by</span><span class="op">(</span><span class="va">start_month</span><span class="op">)</span> <span class="op">|&gt;</span></span>
-<span>  <span class="fu">summarise</span><span class="op">(</span></span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/group_by.html">group_by</a></span><span class="op">(</span><span class="va">start_month</span><span class="op">)</span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/summarise.html">summarise</a></span><span class="op">(</span></span>
 <span>    mean_deaths   <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/mean.html">mean</a></span><span class="op">(</span><span class="va">deaths_month</span>, na.rm <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span>,</span>
 <span>    median_deaths <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/stats/median.html">median</a></span><span class="op">(</span><span class="va">deaths_month</span>, na.rm <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span>,</span>
 <span>    sd_deaths     <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/stats/sd.html">sd</a></span><span class="op">(</span><span class="va">deaths_month</span>, na.rm <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span>,</span>
 <span>    min_deaths    <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/Extremes.html">min</a></span><span class="op">(</span><span class="va">deaths_month</span>, na.rm <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span>,</span>
 <span>    max_deaths    <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/Extremes.html">max</a></span><span class="op">(</span><span class="va">deaths_month</span>, na.rm <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span>,</span>
 <span>    total_deaths  <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/sum.html">sum</a></span><span class="op">(</span><span class="va">deaths_month</span>, na.rm <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span>,</span>
-<span>    n_months      <span class="op">=</span> <span class="fu">n</span><span class="op">(</span><span class="op">)</span>,</span>
+<span>    n_months      <span class="op">=</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/context.html">n</a></span><span class="op">(</span><span class="op">)</span>,</span>
 <span>    .groups <span class="op">=</span> <span class="st">&quot;drop&quot;</span></span>
 <span>  <span class="op">)</span> <span class="op">|&gt;</span></span>
-<span>  <span class="fu">arrange</span><span class="op">(</span><span class="fu">desc</span><span class="op">(</span><span class="va">mean_deaths</span><span class="op">)</span><span class="op">)</span></span></code></pre>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/arrange.html">arrange</a></span><span class="op">(</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/desc.html">desc</a></span><span class="op">(</span><span class="va">mean_deaths</span><span class="op">)</span><span class="op">)</span></span></code></pre>
 </div>
+</details>
 </div>
 <div class="layout-chunk" data-layout="l-body">
+<details>
+<summary>
+hide
+</summary>
 <div class="sourceCode">
 <pre class="sourceCode r"><code class="sourceCode r"><span><span class="va">month_stats</span> <span class="op">|&gt;</span></span>
-<span>  <span class="fu">slice_head</span><span class="op">(</span>n <span class="op">=</span> <span class="fl">10</span><span class="op">)</span></span></code></pre>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/slice.html">slice_head</a></span><span class="op">(</span>n <span class="op">=</span> <span class="fl">10</span><span class="op">)</span></span></code></pre>
 </div>
+</details>
 <pre><code># A tibble: 10 × 8
    start_month mean_deaths median_deaths sd_deaths min_deaths
          &lt;dbl&gt;       &lt;dbl&gt;         &lt;dbl&gt;     &lt;dbl&gt;      &lt;int&gt;
@@ -3085,11 +3291,16 @@ $ low               &lt;int&gt; 6, 171, 0, 9, 6, 0, 600, 0, 70, 0, 0, 1, 5…</c
 #   n_months &lt;int&gt;</code></pre>
 </div>
 <div class="layout-chunk" data-layout="l-body">
+<details>
+<summary>
+hide
+</summary>
 <div class="sourceCode">
 <pre class="sourceCode r"><code class="sourceCode r"><span><span class="va">month_stats</span> <span class="op">|&gt;</span></span>
-<span>  <span class="fu">arrange</span><span class="op">(</span><span class="fu">desc</span><span class="op">(</span><span class="va">total_deaths</span><span class="op">)</span><span class="op">)</span> <span class="op">|&gt;</span></span>
-<span>  <span class="fu">slice_head</span><span class="op">(</span>n <span class="op">=</span> <span class="fl">12</span><span class="op">)</span></span></code></pre>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/arrange.html">arrange</a></span><span class="op">(</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/desc.html">desc</a></span><span class="op">(</span><span class="va">total_deaths</span><span class="op">)</span><span class="op">)</span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/slice.html">slice_head</a></span><span class="op">(</span>n <span class="op">=</span> <span class="fl">12</span><span class="op">)</span></span></code></pre>
 </div>
+</details>
 <pre><code># A tibble: 12 × 8
    start_month mean_deaths median_deaths sd_deaths min_deaths
          &lt;dbl&gt;       &lt;dbl&gt;         &lt;dbl&gt;     &lt;dbl&gt;      &lt;int&gt;

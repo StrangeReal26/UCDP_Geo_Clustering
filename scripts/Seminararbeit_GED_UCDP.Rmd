@@ -28,41 +28,13 @@ library(distill)
 
 ## Einleitung
 
-- Einführung in das Thema
-- Nennung eines (oder zwei) Nachrichtenartikel
-- Forschungsfrage nennen
-- Design und Analysemethode nennen
-- Aufbau der Arbeit schildern
+Auch wenn der Kalte Krieg mehr als 30 Jahre her ist, gibt es auf der Welt weiterhin zahlreiche Konflikte und Kriege. Die globale Aufrüstung wird weiter fortgeführt und die Umsätze der Rüstungsproduzenten steigen weiter an  [@sinram_weltweite_2025]. Insbesondere in Afrika hat sich die Zahl der Konflikte erhöht. Beispielsweise hat sich die Anzahl von Bürgerkriegen in Afrika seit 2013 bis 2023 von 15 auf 28 fast verdoppelt [@lacher_konflikte_2025].
 
-Auch wenn der Kalte Krieg mehr als 30 Jahre her ist, gibt es auf der Welt weiterhin zahlreiche Konflikte und Kriege. 
+Jedoch erhalten diese Konflikte auf der internationalen Bühne nur wenig aufmerksamkeit [@frankfurter_rundschau_kriege_2025]. In diesem Zusammenhang wird in dieser Ausarbeitung der Blick auf die Konflikte in Afrika gerichtet. Dabei wird der Fokus auf die Sahelzone gelegt, um die verwendeten Daten und die Region weiter einzugrenzen.
 
-Die globale Aufrüstung wird weiter fortgeführt und die Umsätze der Rüstungsproduzenten steigen weiter an  [@sinram_weltweite_2025].
+Es wird die zentrale Frage gestellt, ob auschließlich anhand der geografischen Daten von Konfliktereignissen eine zutreffende Einordnung zu den übergeordnetetn Konflikten erreicht werden kann. Die zur Beantwortung der Fragestellung verwendete Analysemethode ist hierbei das hierarchische Clustering nach dem HDBSCAN-Format. Die genutzten Daten stammen aus dem Georeferenced Event Dataset (GED) in der Version 25.1 des Uppsala Conflict Data Program (UCDP) der Universität Uppsala [@uppsala_university_department_of_peace_and_conflict_ucdp_nodate].
 
-Insbesondere in Afrika hat sich die Zahl der Konflikte erhöht.
-
-Die Anzahl von Kriegen hat sich in Afrika seit 1989 bis 2021 von 5 auf 21 gesteigert (Zitat Internationale Politik).
-
-Jedoch erhalten diese Konflikte auf der internationalen medialen Bühne nur wenig aufmerksamkeit (Zitat Frankfurter Rundschau).
-
-In diesem Zusammenhang wird in dieser Ausarbeitung der Blick auf die Konflikte in Afrika gerichtet.
-
-Dabei wird der Fokus auf die Sahelzone gelegt, um die verwendeten Daten und die Region weiter einzugrenzen.
-
-Es wird die zentrale Frage gestellt, ob auschließlich anhand der geografischen Daten von Konfliktereignissen eine zutreffende Einordnung zu den übergeordnetetn Konflikten erreicht werden kann.
-
-Die zur Beantwortung der Fragestellung verwendete Analysemethode ist das hierarchische Clustering nach dem HDBSCAN-Format. 
-
-Die genutzten Daten stammen aus dem Georeferenced Event Dataset (GED) in der Version 25.1 des Uppsala Conflict Data Program (UCDP) der Universität Uppsala.
-
-Die Seminararbeit ist in insgesamt sechs Kapitel unterteilt.
-
-Nach der Einleitung wird zuerst der genutzte Datensatz beschrieben und es wird auf die wichtigsten deskriptiven Zahlen des gesamten Datensatzes sowie im spezielleren auf die Daten bezüglich Afrika eingegangen.
-
-Danach werden im dritte Kapitel Forschungsfrage und die dazugehörige Methodik erläutert, woraufhin im vierten Kapitel die Art und die Durchführung der Analysemethode erklärt wird.
-
-Im Anschluss daran werden im fünften Kapitel die Ergebnisse der Clusteranalyse vorgestellt.
-
-Zuletzt wird die gesamte Arbeit zusammengefasst sowie ein schließendes Gesamturteil getroffen.
+Die Seminararbeit ist in insgesamt sechs Kapitel unterteilt. Nach der Einleitung wird zuerst der genutzte Datensatz beschrieben und es wird auf die wichtigsten deskriptiven Zahlen des gesamten Datensatzes sowie im spezielleren auf die Daten bezüglich Afrika eingegangen.Danach werden im dritte Kapitel Forschungsfrage und die dazugehörige Methodik erläutert, woraufhin im vierten Kapitel die Art und die Durchführung der Analysemethode erklärt wird. Im Anschluss daran werden im fünften Kapitel die Ergebnisse der Clusteranalyse vorgestellt. Zuletzt wird die gesamte Arbeit zusammengefasst sowie ein schließendes Gesamturteil getroffen.
 
 
 ## Vorstellung und deskriptive Beschreibung des Datensatzes

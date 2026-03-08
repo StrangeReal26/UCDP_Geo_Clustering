@@ -4,6 +4,8 @@ author: "Teichgräber"
 date: "2026-02-16"
 output:
   distill::distill_article:
+    toc: true
+    code_folding: hide
 ---
 
 ```{r setup, include=FALSE}

@@ -3,8 +3,9 @@ title: "UCDP Analyse Datensatz"
 author: "Teichgräber"
 date: "2026-02-11"
 output: 
-  distill::distill_article: default
-  html_document: default
+  distill::distill_article:
+    toc: true
+    code_folding: hide
 ---
 
 
