@@ -141,7 +141,7 @@ margin-left: 2em;
   <!--radix_placeholder_rmarkdown_metadata-->
 
   <script type="text/json" id="radix-rmarkdown-metadata">
-  {"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["title","description","author","date","output","bibliography","csl"]}},"value":[{"type":"character","attributes":{},"value":["Geographische Clusteranalyse von Konfliktereignissen in Afrika"]},{"type":"character","attributes":{},"value":["Mastermodul Business Analytics mit R"]},{"type":"list","attributes":{},"value":[{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["name","affiliation"]}},"value":[{"type":"character","attributes":{},"value":["Simon Teichgräber"]},{"type":"character","attributes":{},"value":["Universität der Bundeswehr München"]}]}]},{"type":"character","attributes":{},"value":["2026-03-31"]},{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["distill::distill_article"]}},"value":[{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["toc","toc_float","appendices"]}},"value":[{"type":"logical","attributes":{},"value":[true]},{"type":"logical","attributes":{},"value":[true]},{"type":"logical","attributes":{},"value":[true]}]}]},{"type":"character","attributes":{},"value":["Quellen.bib"]},{"type":"character","attributes":{},"value":["apa.csl"]}]}
+  {"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["title","description","author","date","output","bibliography","csl"]}},"value":[{"type":"character","attributes":{},"value":["Geographische Clusteranalyse von Konfliktereignissen in Afrika"]},{"type":"character","attributes":{},"value":["Mastermodul Business Analytics mit R"]},{"type":"list","attributes":{},"value":[{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["name","affiliation"]}},"value":[{"type":"character","attributes":{},"value":["Simon Teichgräber"]},{"type":"character","attributes":{},"value":["Universität der Bundeswehr München"]}]}]},{"type":"character","attributes":{},"value":["2026-03-31"]},{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["distill::distill_article"]}},"value":[{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["self_contained","toc","toc_float","appendices"]}},"value":[{"type":"logical","attributes":{},"value":[true]},{"type":"logical","attributes":{},"value":[true]},{"type":"logical","attributes":{},"value":[true]},{"type":"logical","attributes":{},"value":[true]}]}]},{"type":"character","attributes":{},"value":["Quellen.bib"]},{"type":"character","attributes":{},"value":["apa.csl"]}]}
   </script>
   <!--/radix_placeholder_rmarkdown_metadata-->
   
@@ -2433,7 +2433,7 @@ distill-header .nav a {
 </div>
 <h2 id="einleitung">Einleitung</h2>
 <p>Auch wenn der Kalte Krieg mehr als 30 Jahre her ist, gibt es auf der Welt weiterhin zahlreiche Konflikte und Kriege. Die globale Aufrüstung wird weiter fortgeführt und die Umsätze der Rüstungsproduzenten steigen weiter an <span class="citation" data-cites="sinram_weltweite_2025">(<a href="#ref-sinram_weltweite_2025" role="doc-biblioref">Sinram, 2025</a>)</span>. Insbesondere in Afrika hat sich die Zahl der Konflikte erhöht. Beispielsweise hat sich die Anzahl von Bürgerkriegen in Afrika seit 2013 bis 2023 von 15 auf 28 fast verdoppelt <span class="citation" data-cites="lacher_konflikte_2025">(<a href="#ref-lacher_konflikte_2025" role="doc-biblioref">Lacher &amp; Tull, 2025</a>)</span>.</p>
-<p>Jedoch erhalten diese Konflikte auf der internationalen Bühne nur wenig aufmerksamkeit <span class="citation" data-cites="frankfurter_rundschau_kriege_2025">(<a href="#ref-frankfurter_rundschau_kriege_2025" role="doc-biblioref">Frankfurter Rundschau, 2025</a>)</span>. In diesem Zusammenhang wird in dieser Ausarbeitung der Blick auf die Konflikte in Afrika gerichtet. Dabei wird der Fokus auf die Sahelzone gelegt, um die verwendeten Daten und die Region weiter einzugrenzen.</p>
+<p>Jedoch erhalten diese Konflikte auf der internationalen Bühne nur wenig aufmerksamkeit <span class="citation" data-cites="frankfurter_rundschau_kriege_2025">(<a href="#ref-frankfurter_rundschau_kriege_2025" role="doc-biblioref">Frankfurter Rundschau, 2025</a>)</span>. In diesem Zusammenhang wird in dieser Ausarbeitung der Blick auf die Konflikte seit dem Jahr 2000 in Afrika gerichtet, wobei der Fokus auf die Sahelzone gelegt, um die verwendeten Daten und die Region weiter einzugrenzen.</p>
 <p>Es wird die zentrale Frage gestellt, ob auschließlich anhand der geografischen Daten von Konfliktereignissen eine zutreffende Einordnung zu den übergeordnetetn Konflikten erreicht werden kann. Die zur Beantwortung der Fragestellung verwendete Analysemethode ist hierbei das hierarchische Clustering nach dem HDBSCAN-Format. Die genutzten Daten stammen aus dem Georeferenced Event Dataset (GED) in der Version 25.1 des Uppsala Conflict Data Program (UCDP) der Universität Uppsala <span class="citation" data-cites="uppsala_university_department_of_peace_and_conflict_ucdp_nodate">(<a href="#ref-uppsala_university_department_of_peace_and_conflict_ucdp_nodate" role="doc-biblioref">Uppsala University Department of Peace and Conflict, n.d.</a>)</span>.</p>
 <p>Die Seminararbeit ist in insgesamt sechs Kapitel unterteilt. Nach der Einleitung wird zuerst der genutzte Datensatz beschrieben und es wird auf die wichtigsten deskriptiven Zahlen des gesamten Datensatzes sowie im spezielleren auf die Daten bezüglich Afrika eingegangen.Danach werden im dritte Kapitel Forschungsfrage und die dazugehörige Methodik erläutert, woraufhin im vierten Kapitel die Art und die Durchführung der Analysemethode erklärt wird. Im Anschluss daran werden im fünften Kapitel die Ergebnisse der Clusteranalyse vorgestellt. Zuletzt wird die gesamte Arbeit zusammengefasst sowie ein schließendes Gesamturteil getroffen.</p>
 <h2 id="vorstellung-und-deskriptive-beschreibung-des-datensatzes">Vorstellung und deskriptive Beschreibung des Datensatzes</h2>
@@ -2448,6 +2448,8 @@ distill-header .nav a {
 <li>Explorativer Ansatz</li>
 <li>Weiteres Design der Arbeit</li>
 </ul>
+<p>Diese mit der Datenanalyse verbundene Seminararbeit verfolgt einen erxplorativen Ansatz.</p>
+<p><strong>In welchem Maße entsprechen räumlich identifizierte Cluster von Konfliktereignissen in der Sahlezone den übergeordneten Konflikten, denen die Erignissen im GED-Datensatz des UCDP zugeordnet sind?</strong></p>
 <h2 id="vorstellung-und-durchführung-der-analysemethode">Vorstellung und Durchführung der Analysemethode</h2>
 <ul>
 <li>Beschreibung und Erklärung von HDBSCAN</li>
@@ -2463,6 +2465,9 @@ distill-header .nav a {
 <li>Clusterdiagramm über eine Afrikakarte legen</li>
 <li>Balkendiagramme der Zuweisungen und Prozentzahlen</li>
 </ul>
+<div class="layout-chunk" data-layout="l-body">
+<p><img role="img" src="plots/clusters_map_okabeito_africa_complete.png" /><!-- --></p>
+</div>
 <h2 id="zusammenfassende-schlussbetrachtung">Zusammenfassende Schlussbetrachtung</h2>
 <ul>
 <li>Zusammenfassung der Ergebnisse</li>

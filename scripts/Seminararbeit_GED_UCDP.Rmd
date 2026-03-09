@@ -7,6 +7,7 @@ author:
 date: "2026-03-31"
 output:
   distill::distill_article:
+    self_contained: true
     toc: true
     toc_float: true
     appendices: true
@@ -30,7 +31,7 @@ library(distill)
 
 Auch wenn der Kalte Krieg mehr als 30 Jahre her ist, gibt es auf der Welt weiterhin zahlreiche Konflikte und Kriege. Die globale Aufrüstung wird weiter fortgeführt und die Umsätze der Rüstungsproduzenten steigen weiter an  [@sinram_weltweite_2025]. Insbesondere in Afrika hat sich die Zahl der Konflikte erhöht. Beispielsweise hat sich die Anzahl von Bürgerkriegen in Afrika seit 2013 bis 2023 von 15 auf 28 fast verdoppelt [@lacher_konflikte_2025].
 
-Jedoch erhalten diese Konflikte auf der internationalen Bühne nur wenig aufmerksamkeit [@frankfurter_rundschau_kriege_2025]. In diesem Zusammenhang wird in dieser Ausarbeitung der Blick auf die Konflikte in Afrika gerichtet. Dabei wird der Fokus auf die Sahelzone gelegt, um die verwendeten Daten und die Region weiter einzugrenzen.
+Jedoch erhalten diese Konflikte auf der internationalen Bühne nur wenig aufmerksamkeit [@frankfurter_rundschau_kriege_2025]. In diesem Zusammenhang wird in dieser Ausarbeitung der Blick auf die Konflikte seit dem Jahr 2000 in Afrika gerichtet, wobei der Fokus auf die Sahelzone gelegt, um die verwendeten Daten und die Region weiter einzugrenzen.
 
 Es wird die zentrale Frage gestellt, ob auschließlich anhand der geografischen Daten von Konfliktereignissen eine zutreffende Einordnung zu den übergeordnetetn Konflikten erreicht werden kann. Die zur Beantwortung der Fragestellung verwendete Analysemethode ist hierbei das hierarchische Clustering nach dem HDBSCAN-Format. Die genutzten Daten stammen aus dem Georeferenced Event Dataset (GED) in der Version 25.1 des Uppsala Conflict Data Program (UCDP) der Universität Uppsala [@uppsala_university_department_of_peace_and_conflict_ucdp_nodate].
 
@@ -52,7 +53,9 @@ Die Seminararbeit ist in insgesamt sechs Kapitel unterteilt. Nach der Einleitung
 - Explorativer Ansatz
 - Weiteres Design der Arbeit
 
+Diese mit der Datenanalyse verbundene Seminararbeit verfolgt einen erxplorativen Ansatz.
 
+**In welchem Maße entsprechen räumlich identifizierte Cluster von Konfliktereignissen in der Sahlezone den übergeordneten Konflikten, denen die Erignissen im GED-Datensatz des UCDP zugeordnet sind?**
 
 
 ## Vorstellung und Durchführung der Analysemethode
@@ -74,6 +77,9 @@ Die Seminararbeit ist in insgesamt sechs Kapitel unterteilt. Nach der Einleitung
 - Balkendiagramme der Zuweisungen und Prozentzahlen
 
 
+```{r}
+knitr::include_graphics("plots/clusters_map_okabeito_africa_complete.png")
+```
 
 
 ## Zusammenfassende Schlussbetrachtung
