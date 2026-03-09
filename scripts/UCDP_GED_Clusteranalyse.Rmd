@@ -27,44 +27,20 @@ library(rnaturalearthdata)
 ```
 
 ```{r}
+
+# Laden der Daten
+# Das Trennzeichen ist wegen der Deutschen Version von xlsx bzw. csv ein Semikolon
+
 GED = read.csv("data/GEDEvent_v25_1_small.csv", sep = ";")
+
 ```
 
 ```{r}
 
-# Ansichten des gesamten Datensatzes
+# Strukturprüfung des gesamten Datensatzes
+# Anzahl der Beobachtungen, Anzahl der Variablen und aktuelle Datentypen prüfen
 
-#View(GED)
-#glimpse(GED)
 str(GED)
-
-```
-
-# Deskriptive Analyse des gesamten Datensatzes
-
-```{r}
-
-```
-
-
-# Deskriptive Analyse der Daten bezüglich Afrika und der Sahel-Zone
-
-```{r}
-
-```
-
-
-# Aufbau und Durchführung der Datenanalyse (exploratives Clustering) mit Beschreibung
-
-Für die Durchführung der Clusteranalyse sind verschiedene Schritte notwendig.
-
-# Prüfung der geographischen Daten
-
-```{r}
-
-# Sind fehlende Werte bei den geographischen Daten vorhanden?
-
-sum(is.na(GED$latitude)); sum(is.na(GED$longitude))
 
 ```
 
@@ -77,27 +53,297 @@ sum(is.na(GED$latitude)); sum(is.na(GED$longitude))
 GED <- GED |>
   mutate(
     
-    # 1) Aktives Jahr: Der Wert der Variablen "true"/"false" wird von character nun als TRUE/FALSE (BOOLEAN) definiert
+    # 1) Aktives Jahr: Der Wert der Variablen "true"/"false" wird von einer Zeichenkette (character) nun als logischer Wert (TRUE/FALSE) definiert
     
     active_year = tolower(active_year) == "true",
 
-    # 2) Koordinaten: Das Dezimalzeichen wird von Komma zu Punkt geändert und als numeric definiert
+    # 2) Koordinaten: Das Dezimalzeichen wird von Komma zu Punkt geändert und als numeric definiert, da standardmäßig der Punkt das Dezimaltrennzeichen ist
     
     latitude  = as.numeric(gsub(",", ".", latitude)),
     longitude = as.numeric(gsub(",", ".", longitude)),
 
-    # 3) Datum: Die variablen date_start und date_end werden von character in ein Datumsformat gebracht
+    # 3) Datum: Die variablen date_start und date_end werden von einer  Zeichenkette (character) in ein Datumsformat gebracht
     
     date_start = dmy(date_start),
     date_end = dmy(date_end),
     
   ) |>
   
-  # 5) Zeilen mit fehlenden geographsichen Daten werden entfernt (sonst scheitert die spätere Datenanalyse)
+  # 4) Zeilen mit fehlenden geographischen Daten werden entfernt. Diese Beobachtungen können nicht als räumliche Punkte dargestellt werden und deshalb nicht in die CLusteranalyse einbezogen werden.
   
   drop_na(latitude, longitude)
 
 ```
+
+# Prüfung der geographischen Daten
+
+```{r}
+
+# Sind fehlende Werte bei den geographischen Daten vorhanden?
+
+sum(is.na(GED$latitude))
+sum(is.na(GED$longitude))
+
+# Befinden sich geographische Werte außerhalb der plausiblen Bereiche?
+
+sum(GED$latitude < -90 | GED$latitude > 90, na.rm = TRUE)
+sum(GED$longitude < -180 | GED$longitude > 180, na.rm = TRUE)
+
+```
+
+# Beschreibung der wichtigsten Variablen
+
+```{r}
+
+# AUflistung aller Variablen des Datensatzes
+
+colnames(GED)
+
+```
+
+**Inhalt der genutzten Variablen**
+
+"id"
+Eindeutige, dauerhafte numerische ID eines einzelnen Ereignisses. Dieselbe id bezeichnet über mehrere GED-Versionen hinweg dasselbe reale Ereignis.
+
+"year"
+Jahr, in dem das Ereignis stattgefunden hat.
+
+"type_of_violence"
+Typ der organisierten Gewalt nach UCDP: 
+1 = staatlicher Konflikt, 2 = nichtstaatlicher Konflikt, 3 = einseitige Gewalt gegen Zivilisten.
+
+"conflict_new_id"
+Eindeutige Konflikt-ID für jeden einzelnen Konflikt im Datensatz; geeignet zum Filtern und Aggregieren von Konflikten.
+
+"conflict_name"
+Name des UCDP-Konflikts, zu dem das Ereignis gehört; bei nichtstaatlichen Konflikten und einseitiger Gewalt entspricht er dem Dyadennamen.
+
+"event_clarity"
+1 (hoch) steht für Ereignisse, bei denen der Berichterstatter das Ereignis vollständig identifizieren kann. Das heißt, Ereignisse, bei denen das einzelne Geschehen von der Originalquelle ausreichend detailliert beschrieben wird, um einzelne Vorfälle zu identifizieren, d. h. separate Kampfhandlungen an einem einzigen Ort.
+
+"latitude"
+Breitengrad des Ereignisortes in Dezimalgrad.
+
+"longitude"
+Längengrad des Ereignisortes in Dezimalgrad.
+
+"where_prec"
+Die Genauigkeit, mit der die dem Ereignis zugewiesenen Koordinaten und der Standort den tatsächlichen Standort des Ereignisses widerspiegeln. 1: Der genaue Standort des Ereignisses ist bekannt und kodiert.
+
+"country"          
+Land, in dem das Ereignis tatsächlich stattgefunden hat.
+
+"region"
+Weltregion des Ereignisortes; mögliche Werte sind Africa, Americas, Asia, Europe und Middle East.
+
+"date_start"
+Frühestes mögliches Datum, an dem das Ereignis stattgefunden haben kann.
+
+"date_end"
+Spätestes mögliches Datum, an dem das Ereignis stattgefunden haben kann.
+
+"deaths_civilians"
+Beste Schätzung der getöteten Zivilpersonen im Ereignis; bei staatlichen und nichtstaatlichen Konflikten sind das zivile Opfer als Begleitschaden der Kämpfe, bei einseitiger Gewalt die gezielt von Seite A getöteten Zivilisten.
+
+"best"            
+Beste bzw. wahrscheinlichste Schätzung der gesamten Todesopfer des Ereignisses; sie ist die Summe aus deaths_a, deaths_b, deaths_civilians und deaths_unknown.
+
+"high"
+Höchste verlässliche Schätzung der gesamten Todesopfer des Ereignisses
+
+
+# Deskriptive Analyse des gesamten Datensatzes
+
+```{r}
+
+# Deskriptive Analyse des gesamten GED-Datensatzes
+
+
+# Lesbare Bezeichnungen für die Gewalttypen nach UCDP
+
+violence_labels <- c(
+  "1" = "Staatlicher Konflikt",
+  "2" = "Nichtstaatlicher Konflikt",
+  "3" = "Einseitige Gewalt gegen Zivilisten"
+)
+
+# Hilfsfunktion zur Formatierung großer Zahlen (deutsches Zahlenformat)
+
+fmt <- function(x) {
+  format(x, big.mark = ".", decimal.mark = ",")
+}
+
+# 1) Gesamtanzahl an Konflikten
+
+n_conflicts_total <- n_distinct(GED$conflict_new_id)
+
+# 2) Konflikte nach Gewalttyp
+
+conflicts_by_type <- GED |>
+  distinct(conflict_new_id, type_of_violence) |>
+  count(type_of_violence, name = "n_conflicts") |>
+  mutate(
+    type_of_violence = violence_labels[as.character(type_of_violence)]
+  )
+
+# 3) Gesamtanzahl an Events
+
+n_events_total <- nrow(GED)
+
+# 4) Gesamtanzahl der Todesopfer (best)
+
+total_deaths_best <- sum(GED$best, na.rm = TRUE)
+
+# 5) Gesamtanzahl ziviler Todesopfer
+
+total_deaths_civilians <- sum(GED$deaths_civilians, na.rm = TRUE)
+
+# Ausgabe der Ergebnisse des gesamten Datensatzes
+
+cat("Deskriptive Analyse des gesamten Datensatzes\n")
+cat("--------------------------------------------------\n")
+cat("Gesamtanzahl an Konflikten:", fmt(n_conflicts_total), "\n")
+cat("Gesamtanzahl an Konfliktereignissen (Events):", fmt(n_events_total), "\n")
+cat("Gesamte Todeszahl (best):", fmt(total_deaths_best), "\n")
+cat("Gesamte Zahl ziviler Todesopfer:", fmt(total_deaths_civilians), "\n\n")
+
+cat("Konflikte nach Gewalttyp:\n")
+print(conflicts_by_type)
+
+# cat wird für eine einfache Ausgabe von Text verwendet
+
+```
+
+
+# Deskriptive Analyse der Daten bezüglich Afrika und der Sahel-Zone
+
+```{r}
+
+# Deskriptive Analyse für Afrika und Sahel (ab dem Jahr 2000)
+
+
+# Afrika
+
+# Eingrenzung der Daten
+
+GED_africa <- GED |>
+  filter(region == "Africa") |>
+  filter(year >= 2000)
+
+# Lesbare Bezeichnungen für die Gewalttypen nach UCDP
+
+violence_labels <- c(
+  "1" = "Staatlicher Konflikt",
+  "2" = "Nichtstaatlicher Konflikt",
+  "3" = "Einseitige Gewalt gegen Zivilisten"
+)
+
+# Hilfsfunktion zur Formatierung großer Zahlen (deutsches Zahlenformat)
+
+fmt <- function(x) {
+  format(x, big.mark = ".", decimal.mark = ",")
+}
+
+# Gesamtanzahl an Konflikten
+
+n_conflicts_africa <- n_distinct(GED_africa$conflict_new_id)
+
+# Konflikte nach Gewalttyp
+
+conflicts_by_type_africa <- GED_africa |>
+  distinct(conflict_new_id, type_of_violence) |>
+  count(type_of_violence, name = "n_conflicts") |>
+  mutate(
+    type_of_violence = violence_labels[as.character(type_of_violence)]
+  )
+
+# Gesamtanzahl an Events
+
+n_events_africa <- nrow(GED_africa)
+
+# Gesamtanzahl der Todesopfer
+
+total_deaths_best_africa <- sum(GED_africa$best, na.rm = TRUE)
+total_deaths_civilians_africa <- sum(GED_africa$deaths_civilians, na.rm = TRUE)
+
+
+# --------------------------------------------------------------------------------
+
+
+# Sahel-Zone
+
+# Eingrenzung der Daten
+
+sahel_countries <- c("Senegal",
+                     "Mauritania",
+                     "Mali",
+                     "Burkina Faso",
+                     "Niger",
+                     "Chad",
+                     "Sudan")
+
+GED_sahel_desc <- GED_africa |>
+  filter(country %in% sahel_countries)
+
+# Gesamtanzahl an Konflikten
+
+n_conflicts_sahel <- n_distinct(GED_sahel_desc$conflict_new_id)
+
+# Konflikte nach Gewalttyp
+
+conflicts_by_type_sahel <- GED_sahel_desc |>
+  distinct(conflict_new_id, type_of_violence) |>
+  count(type_of_violence, name = "n_conflicts") |>
+  mutate(
+    type_of_violence = violence_labels[as.character(type_of_violence)]
+  )
+
+# Gesamtanzahl an Events
+
+n_events_sahel <- nrow(GED_sahel_desc)
+
+# Gesamtanzahl der Todesopfer
+
+total_deaths_best_sahel <- sum(GED_sahel_desc$best, na.rm = TRUE)
+total_deaths_civilians_sahel <- sum(GED_sahel_desc$deaths_civilians, na.rm = TRUE)
+
+
+# Ausgabe der Ergebnisse zu Afrika
+
+cat("Deskriptive Analyse: Afrika (ab 2000)\n")
+cat("--------------------------------------------------\n")
+cat("Gesamtanzahl an Konflikten:", fmt(n_conflicts_africa), "\n")
+cat("Gesamtanzahl an Konfliktereignissen (Events):", fmt(n_events_africa), "\n")
+cat("Gesamte Todeszahl (best):", fmt(total_deaths_best_africa), "\n")
+cat("Gesamte Zahl ziviler Todesopfer:", fmt(total_deaths_civilians_africa), "\n\n")
+
+cat("Konflikte nach Gewalttyp in Afrika:\n")
+print(conflicts_by_type_africa)
+
+cat("\n\n")
+
+
+# Ausgabe der Ergebnisse zur Sahel-Zone
+
+cat("Deskriptive Analyse: Sahel-Zone (ab 2000)\n")
+cat("--------------------------------------------------\n")
+cat("Gesamtanzahl an Konflikten:", fmt(n_conflicts_sahel), "\n")
+cat("Gesamtanzahl an Konfliktereignissen (Events):", fmt(n_events_sahel), "\n")
+cat("Gesamte Todeszahl (best):", fmt(total_deaths_best_sahel), "\n")
+cat("Gesamte Zahl ziviler Todesopfer:", fmt(total_deaths_civilians_sahel), "\n\n")
+
+cat("Konflikte nach Gewalttyp in der Sahel-Zone:\n")
+print(conflicts_by_type_sahel)
+
+# cat wird für eine einfache Ausgabe von Text verwendet
+
+```
+
+
+# Aufbau und Durchführung der Datenanalyse (exploratives Clustering) mit Beschreibung
+
+Für die Durchführung der Clusteranalyse sind verschiedene Schritte notwendig.
 
 # Eingrenzung der Daten zur späteren Clusteranalyse
 
@@ -114,12 +360,15 @@ sahel_countries <- c("Senegal",
                      "Sudan")
 
 # Hier wird ein neuer Datensatz auf Grundlage der benötigten Filter definiert und geladen
+# Gefilterte Teilmenge: Länder der Sahelzone, Zeitrahmen ab 2000, hohe Genauigkeit der geographischen Daten, hohe Klarheit des Ereignisses 
 
 GED_sahel <- GED |>
-  filter(country %in% sahel_countries) |>
+  filter(country %in% sahel_countries) |> # Der Begriff %in% prüft, ob der Wert in einem Vektor enthalten ist
   filter(year >= 2000) |>
   filter(where_prec %in% c(1, 2)) |>
   filter(event_clarity == 1)
+
+# Ziel des Schrittes ist die Definition der Grundgesamtheit
 
 ```
 
@@ -130,6 +379,10 @@ GED_sahel <- GED |>
 unique(GED_sahel$country)
 
 glimpse(GED_sahel)
+
+# Es dürfen nun nur noch die sieben ausgewählten Länder angezeigt werden
+# Geografische Daten nun im dbl Format
+# Zeitangaben nun im date Format
 
 ```
 
@@ -146,17 +399,37 @@ GED_sahel_sf <- GED_sahel |>
     remove = FALSE                        # Datensatz behält latitude/longitude als Spalten
   )
 
+# Zweck: Umwandlung des Datensatzes in ein räumliches sf-Objekt
+
+# sf ("simple features") ist ein Datenformat für Geodaten in R, bei dem jeder Datensatz eine Geometrie (einen Punkt) besitzt
+
+# CRS = Coordinate Reference System
+# Es beschreibt, wie Koordinaten auf der Erdoberfläche interpretiert werden
+
+# EPSG:4326 entspricht dem geographischen Koordinatensystem WGS84, das auch von GPS-Systemen verwendet wird
+# Die Koordinaten liegen hier in Grad vor (Breite/Länge)
+
 ```
 
 ```{r}
+
+# Überprüfung, ob das Koordinatenreferenzsystem korrekt gesetzt wurde, da spätere räumliche Berechnungen davon abhängen
 
 # Überprüfung: Welche Projektion/CRS hat das sf-Objekt?
 
 st_crs(GED_sahel_sf)
 
-# Überprüfung: Erste Geometrien anschauen
+# "User input: EPSG:4326" --> Das CRS wurde korrekt gesetzt
+# "GEOGCRS["WGS 84"" --> Das System ist WGS84
+# "ANGLEUNIT["degree"" --> Die Einheit ist Grad
+# Umrechnung von Grad in Meter erfolgt im nächsten Schritt
+
+
+# Überprüfung: Wie ist die geometry-Variable (Spalte) definiert?
 
 head(st_geometry(GED_sahel_sf))
+
+# "POINT (-0.20232 14.49112)" --> Für jedes Event leigt ein geographischer Punkt vor
 
 ```
 
@@ -164,24 +437,37 @@ head(st_geometry(GED_sahel_sf))
 
 ```{r}
 
-# Neuer Datensatz wird erstellt
+# Zweck: Für Distanz- und Clusteranalysen müssen Koordinaten in einem metrischen Koordinatensystem vorliegen, da geographische Koordinaten (Grad) keine konstanten Distanzen darstellen.
 
+# LAEA = Lambert Azimuthal Equal Area
+# Eine flächentreue Kartenprojektion, die Verzerrungen um das definierte Projektionszentrum minimiert.
+
+# Neuer Datensatz wird erstellt
 # Es werden die Vorherig erstellten Koordinaten in Meter-Koordinaten auf Grundlage des LAEA erzeugt
 
-# 1) Projektion definieren (LAEA) –> Zentrum grob in der Sahelzone
+
+# 1) Projektion eines Koordinatenreferenzsystem definieren (LAEA) –> Zentrum grob in der Sahelzone
+
+# Das Projektionszentrum (15°N, 10°E) liegt ungefähr im Zentrum der Sahelzone, wodurch räumliche Verzerrungen reduziert werden.
 
 crs_laea_sahel <- "+proj=laea +lat_0=15 +lon_0=10 +datum=WGS84 +units=m +no_defs"
+
 
 # 2) Transformation der Daten von WGS84 (Grad) zu LAEA (Meter)
 
 GED_sahel_laea <- GED_sahel_sf |>
   st_transform(crs = crs_laea_sahel)
 
+
 # 3) x/y-Koordinaten (in Metern) aus der Geometrie extrahieren
+
+# Die Funktion st_coordinates() extrahiert die projizierten x/y-Koordinaten aus der Geometrie
+# Wird in coords_m abgespeichert und im nächsten Schritt wieder darauf zugegriffen
 
 coords_m <- st_coordinates(GED_sahel_laea)
 
-# Zusatz: x/y als Spalten zum Datensatz hinzufügen (hilfreich für Debug/Plots)
+
+# Zusatz: x/y als Spalten zum Datensatz hinzufügen
 
 GED_sahel_laea <- GED_sahel_laea |>
   mutate(
@@ -193,11 +479,24 @@ GED_sahel_laea <- GED_sahel_laea |>
 
 ```{r}
 
-# Kurze Überprüfung: CRS und Größenordnung der Koordinaten
+# Zweck: Die Größenordnung der Koordinaten liegt im Bereich mehrerer, Millionen Meter und bestätigt somit die korrekte metrische Projektion
+
+# Überprüfung: CRS und Größenordnung der Koordinaten
 
 st_crs(GED_sahel_laea)
+
+# "METHOD["Lambert Azimuthal Equal Area"" --> LAEA-Projektion wurde korrekt angewendet
+# "LENGTHUNIT["metre",1]" --> Koordinaten sind nun in Meter
+
 summary(GED_sahel_laea$x_m)
 summary(GED_sahel_laea$y_m)
+
+# Interpretation der Koordinatenwerte
+# Min: -2904076
+# Max: 2828501
+# Min: -1160338
+# Max: 955275
+# Bedeutung: Koordinaten liegen ungefähr im Bereich von +- 3000km --> Plausibel für eine Region von der Größe der Sahelzone
 
 ```
 
@@ -207,7 +506,13 @@ summary(GED_sahel_laea$y_m)
 
 # HDBSCAN clustering (explorativ)
 
+
 # 1) Parameter setzen: Mindestgröße/Robustheit eines Clusters
+
+# HDBSCAN ist ein dichtebasiertes Clusterverfahren, das Cluster als Regionen hoher Punktdichte identifiziert
+# Es ist eine Erweiterung des DBSCAN-Algorithmus und kann Cluster unterschiedlicher Dichte erkennen
+
+# minPts definiert die minimale Anzahl von Punkten, die in einer lokalen Nachbarschaft vorhanden sein müssen, damit eine Region als Cluster erkannt wird
 
 minPts_value <- 30
 
@@ -217,8 +522,15 @@ minPts_value <- 30
 hdb <- hdbscan(coords_m, minPts = minPts_value)
 
 # 3) Ergebnisse an Datensatz anhängen
+
 # cluster: 0 = noise (kein Cluster), 1..k = Cluster-IDs
 # membership_prob: "Sicherheit" der Zuordnung (0..1)
+
+# membership_prob beschreibt die Sicherheit, mit der ein Punkt einem Cluster zugeordnet wird
+# Werte nahe 1 bedeuten eine stabile Clusterzugehörigkeit
+
+# Die Anzahl der Cluster wird automatisch vom Algorithmus bestimmt
+# Anders als bei k-means muss die Clusterzahl nicht vorgegeben werden
 
 GED_sahel_laea <- GED_sahel_laea |>
   mutate(
@@ -226,21 +538,30 @@ GED_sahel_laea <- GED_sahel_laea |>
     cluster_prob = hdb$membership_prob
   )
 
-
-
 ```
 
 ```{r}
 
-# Erste Überprüfungen: Wie viele Cluster? Wie viel Noise?
+# Überprüfung: Wie viele Cluster? Wie viel Noise?
+
+
+# Größe der Cluster --> Punkte gleich Ereignisse
 
 table(GED_sahel_laea$cluster_id)
 
+# Anzahl der  Cluster --> 10 Stück
+
 n_clusters <- length(setdiff(unique(GED_sahel_laea$cluster_id), 0))
+
+# Noise Anteil --> 4,9 % der Punkte sind Rauschen und gehören keinem Cluster an
+
 noise_share <- mean(GED_sahel_laea$cluster_id == 0)
 
 n_clusters
 noise_share
+
+# Clusterwahrscheinlichkeit --> Die Mehrheit der Punkte gehört einem Cluster an
+
 summary(GED_sahel_laea$cluster_prob)
 
 ```
@@ -253,25 +574,50 @@ summary(GED_sahel_laea$cluster_prob)
 
 # Bild zur Darstellung der Cluster mit ggplot2
 
-p_clusters <- ggplot(GED_sahel_laea,
-                     aes(x = longitude,
-                         y = latitude,
-                         color = factor(cluster_id))) +
-  geom_point(size = 0.6, alpha = 0.7) +
+# Okabe-Ito Palette definieren
+okabe_ito <- c(
+  "#000000",  # 0 = Noise (schwarz)
+  "#E69F00",
+  "#56B4E9",
+  "#009E73",
+  "#F0E442",
+  "#0072B2",
+  "#D55E00",
+  "#CC79A7",
+  "#999999",
+  "#882255",
+  "#44AA99"
+)
+
+p_clusters <- ggplot(
+  GED_sahel_laea,
+  aes(
+    x = longitude,
+    y = latitude,
+    color = factor(cluster_id)
+  )
+) +
+  geom_point(size = 0.8, alpha = 0.7) +
   coord_equal() +
-  labs(color = "Cluster ID",
-       title = paste0("HDBSCAN clusters (minPts = ", minPts_value, ")")) +
+  scale_color_manual(
+    values = okabe_ito,
+    labels = c("Noise", 1:10)
+    ) +
+  labs(
+    color = "Cluster ID",
+    title = paste0("Konflict-Cluster in der Sahelzone (minPts = ", minPts_value, ")")
+  ) +
   theme_minimal()
 
 p_clusters
 
-# ggsave(
-#   filename = paste0("plots/hdbscan_clusters_minPts_", minPts_value, ".png"),
-#   plot = p_clusters,
-#   width = 10,
-#   height = 6,
-#   dpi = 300
-# )
+ ggsave(
+   filename = paste0("plots/clusters_map_okabeito_minPts_", minPts_value, ".png"),
+   plot = p_clusters,
+   width = 10,
+   height = 6,
+   dpi = 300
+ )
 
 ```
 
@@ -279,39 +625,64 @@ p_clusters
 
 ```{r}
 
+# Cluster mit Ländern der Sahelzone
+
 # Zusätzliche Abbildung: Karte (Sahel) + HDBSCAN-Cluster in Longitude/Latitude
 
 # 1) Weltkarte als sf-Objekt laden
 
+# sf steht für "simple features" und ist ein Datenstandard für Vektor-Geodaten
+
 world_sf <- rnaturalearth::ne_countries(
-  scale = "medium",        # ausreichend detailliert
+  scale = "medium",
   returnclass = "sf"
 )
 
-# 2) Nur Sahel-Länder auswählen (gleiche Länder wie im Filter oben!)
+# 2) Nur Sahel-Länder auswählen
 
 sahel_map_sf <- world_sf |>
   filter(name %in% sahel_countries)
 
-# Optional: Falls du etwas mehr Raum um die Länder möchtest,
-# könntest du stattdessen mit st_crop() arbeiten.
+# 3) Farben der Okabe-Ito-Palette definieren
+# 0 = Noise (schwarz)
 
+okabe_ito_clusters <- c(
+  "0"  = "#000000",  # Noise
+  "1"  = "#E69F00",
+  "2"  = "#56B4E9",
+  "3"  = "#009E73",
+  "4"  = "#F0E442",
+  "5"  = "#0072B2",
+  "6"  = "#D55E00",
+  "7"  = "#CC79A7",
+  "8"  = "#999999",
+  "9"  = "#882255",
+  "10" = "#44AA99"
+)
 
-# 3) Plot erstellen
+# 4) Plot erstellen
 
 p_clusters_map <- ggplot() +
   
-  # Hintergrund: Ländergrenzen
+  # Hintergrund: Länderflächen
   geom_sf(
     data = sahel_map_sf,
-    fill = "grey90",        # dezente Hintergrundfarbe
-    color = "grey40",       # Ländergrenzen sichtbar
+    fill = "grey90",
+    color = "grey40",
     linewidth = 0.3
   ) +
   
-  # Clusterpunkte darüber
+  # Ländernamen
+  geom_sf_text(
+    data = sahel_map_sf,
+    aes(label = name),
+    size = 3,
+    color = "black"
+  ) +
+  
+  # Clusterpunkte
   geom_point(
-    data = GED_sahel_laea,  # hier nutzen wir weiterhin longitude/latitude
+    data = GED_sahel_laea,
     aes(
       x = longitude,
       y = latitude,
@@ -321,16 +692,25 @@ p_clusters_map <- ggplot() +
     alpha = 0.7
   ) +
   
-  # Koordinatensystem
+  # Manuelle Farbskala
+  scale_color_manual(
+    values = okabe_ito_clusters,
+    labels = c("Noise", 1:10)
+  ) +
+  
+  # Kartenausschnitt
   coord_sf(
     xlim = range(GED_sahel_laea$longitude),
     ylim = range(GED_sahel_laea$latitude),
     expand = FALSE
   ) +
   
+  # Beschriftung
   labs(
     color = "Cluster ID",
-    title = paste0("HDBSCAN clusters in the Sahel region (minPts = ", minPts_value, ")")
+    title = paste0("Konflikt-Cluster in der Sahelzone (minPts = ", minPts_value, ")"),
+    x = "Längengrad",
+    y = "Breitengrad"
   ) +
   
   theme_minimal()
@@ -339,16 +719,18 @@ p_clusters_map <- ggplot() +
 
 p_clusters_map
 
+# Speichern
 
-# 4) Speichern wie bisher
+ ggsave(
+   filename = paste0("plots/clusters_map_okabeito_sahel.png"),
+   plot = p_clusters_map,
+   width = 10,
+   height = 6,
+   dpi = 300
+ )
 
-# ggsave(
-#   filename = paste0("plots/hdbscan_clusters_map_africa.png"),
-#   plot = p_clusters_map,
-#   width = 10,
-#   height = 6,
-#   dpi = 300
-# )
+# Bedutung der Warnung
+# Die Berechnung des Beschriftungspunktes kann bei Grad-Koordinaten ungenau sein, weil sie eigentlich für projizierte Koordinaten gedacht ist --> Unkritisch, da nur Ort des Labels betroffen ist!
 
 ```
 
@@ -356,7 +738,12 @@ p_clusters_map
 
 ```{r}
 
-# Komplette Abbildung: Cluster + vollständige Afrika-Karte + Ländernamen
+GED_sahel_sf <- GED_sahel_sf |>
+  mutate(cluster_id = GED_sahel_laea$cluster_id)
+
+# Cluster mit vollständiger Afrika-Karte
+
+# Komplette Abbildung: Cluster + Afrika-Karte + Ländernamen
 
 # 1) Alle afrikanischen Länder laden
 
@@ -366,15 +753,40 @@ africa_sf <- rnaturalearth::ne_countries(
   returnclass = "sf"
 )
 
-# 2) Bounding Box auf Basis deiner tatsächlichen Daten erzeugen
+# 2) Bounding Box der Ereignisdaten erzeugen
+# Grundlage: GED_sahel_sf liegt in WGS84 (Grad)
 
 bbox_sahel <- st_bbox(GED_sahel_sf)
 
-# 3) Afrika-Karte auf genau diesen Bereich zuschneiden
+# 3) Kartenausschnitt manuell anpassen
+# West/Ost wie in den Daten, Nordgrenze bis 35°N, Südgrenze ab 0°N
 
-africa_crop <- st_crop(africa_sf, bbox_sahel)
+bbox_africa_map <- bbox_sahel
+bbox_africa_map["ymin"] <- 3
+bbox_africa_map["ymax"] <- 28
 
-# 4) Plot erstellen
+# 4) Afrika-Karte auf diesen Bereich zuschneiden
+
+africa_crop <- st_crop(africa_sf, bbox_africa_map)
+
+# 5) Okabe-Ito-Farbpalette definieren
+# 0 = Noise
+
+okabe_ito_clusters <- c(
+  "0"  = "#000000",  # Noise
+  "1"  = "#E69F00",
+  "2"  = "#56B4E9",
+  "3"  = "#009E73",
+  "4"  = "#F0E442",
+  "5"  = "#0072B2",
+  "6"  = "#D55E00",
+  "7"  = "#CC79A7",
+  "8"  = "#999999",
+  "9"  = "#882255",
+  "10" = "#44AA99"
+)
+
+# 6) Plot erstellen
 
 p_clusters_africa <- ggplot() +
   
@@ -386,7 +798,7 @@ p_clusters_africa <- ggplot() +
     linewidth = 0.3
   ) +
   
-  # Ländernamen einfügen
+  # Ländernamen
   geom_sf_text(
     data = africa_crop,
     aes(label = name),
@@ -396,22 +808,32 @@ p_clusters_africa <- ggplot() +
   
   # Clusterpunkte
   geom_sf(
-   data = GED_sahel_laea,
-   aes(color = factor(cluster_id)),
-   size = 0.6,
-   alpha = 0.7
+    data = GED_sahel_sf,
+    aes(color = factor(cluster_id)),
+    size = 0.6,
+    alpha = 0.7
   ) +
   
-  # Koordinatensystem
+  # Farbskala
+  scale_color_manual(
+    values = okabe_ito_clusters,
+    breaks = as.character(0:10),
+    labels = c("Noise", as.character(1:10))
+  ) +
+  
+  # Kartenausschnitt
   coord_sf(
-    xlim = c(bbox_sahel["xmin"], bbox_sahel["xmax"]),
-    ylim = c(bbox_sahel["ymin"], bbox_sahel["ymax"]),
+    xlim = c(bbox_africa_map["xmin"], bbox_africa_map["xmax"]),
+    ylim = c(bbox_africa_map["ymin"], bbox_africa_map["ymax"]),
     expand = FALSE
   ) +
   
+  # Beschriftung
   labs(
-    color = "Cluster ID",
-    title = paste0("HDBSCAN clusters in geographic context (minPts = ", minPts_value, ")")
+    color = "Cluster-ID",
+    title = paste0("HDBSCAN-Konflikt-Cluster im geographischen Kontext (minPts = ", minPts_value, ")"),
+    x = "Längengrad",
+    y = "Breitengrad"
   ) +
   
   theme_minimal()
@@ -422,13 +844,13 @@ p_clusters_africa
 
 # Speichern
 
-# ggsave(
-#   filename = paste0("plots/hdbscan_clusters_map_africa_complete.png"),
-#   plot = p_clusters_africa,
-#   width = 10,
-#   height = 6,
-#   dpi = 300
-# )
+ ggsave(
+   filename = paste0("plots/clusters_map_okabeito_africa_complete.png"),
+   plot = p_clusters_africa,
+   width = 10,
+   height = 6,
+   dpi = 300
+ )
 
 ```
 
@@ -436,40 +858,18 @@ p_clusters_africa
 
 ```{r}
 
-# Kreuztabelle: cluster_id vs conflict_new_id
-
-# Optional: Noise (cluster_id == 0) ausschließen, damit die Tabelle übersichtlicher wird
+# Vorbereitung der Daten für die Clusterbeschreibung
+# Es werden nur echte Cluster betrachtet, Noise (cluster_id = 0) wird ausgeschlossen
 
 GED_sahel_clustered <- GED_sahel_laea |>
   filter(cluster_id != 0)
 
-# Kreuztabelle (Counts)
-
-tab_cluster_conflict <- table(
-  GED_sahel_clustered$cluster_id,
-  GED_sahel_clustered$conflict_new_id
-)
-
-# Ausgabe (kann sehr groß sein)
-tab_cluster_conflict
-
 ```
+
 
 ```{r}
 
-# Nennung aller Konflikte pro Cluster 
-
-GED_sahel_laea |>
-  filter(cluster_id != 0) |>
-  count(cluster_id, conflict_new_id, name = "n") |>
-  arrange(cluster_id, desc(n)) |>
-  View()
-
-```
-
-```{r}
-
-# Anzahl Konflikte pro Cluster mit Anzahl an Events (cluster_size)
+# Anzahl Konflikte pro Cluster mit Anzahl an Events (cluster_size) --> Clustergröße
 
 GED_sahel_laea |>
   filter(cluster_id != 0) |>
@@ -484,10 +884,10 @@ GED_sahel_laea |>
 
 ```{r}
 
-# Dominanter Konflikt pro Cluster (share/purity-like measure)
+# Dominanter Konflikt pro Cluster (share/purity-like measure) --> Anteil des häufigsten Konflikts vom Gesamtanteil
 
 dominance_by_cluster <- GED_sahel_clustered |>
-  count(cluster_id, conflict_new_id, name = "n") |>
+  count(cluster_id, conflict_new_id, conflict_name, name = "n") |>
   group_by(cluster_id) |>
   mutate(
     cluster_size = sum(n),
@@ -496,7 +896,7 @@ dominance_by_cluster <- GED_sahel_clustered |>
   arrange(cluster_id, desc(share)) |>
   slice(1) |>
   ungroup() |>
-  select(cluster_id, conflict_new_id, cluster_size, n_dominant = n, dominant_share = share)
+  select(cluster_id, conflict_new_id, conflict_name, cluster_size, n_dominant = n, dominant_share = share)
 
 dominance_by_cluster
 
@@ -507,7 +907,7 @@ dominance_by_cluster
 # Top-Konflikt pro Cluster
 
 top_conflicts_by_cluster <- GED_sahel_clustered |>
-  count(cluster_id, conflict_new_id, name = "n") |>
+  count(cluster_id, conflict_new_id, conflict_name, name = "n") |>
   group_by(cluster_id) |>
   mutate(share = n / sum(n)) |>
   arrange(cluster_id, desc(share)) |>
@@ -524,7 +924,7 @@ top_conflicts_by_cluster
 
 ```{r}
 
-# Plot 1: Anzahl Konflikte pro Cluster (Balkendiagramm)
+# Plot 1: Anzahl unterschiedlicher Konflikte pro Cluster (Balkendiagramm)
 
 conflicts_per_cluster <- GED_sahel_laea |>
   filter(cluster_id != 0) |>
@@ -536,21 +936,23 @@ conflicts_per_cluster <- GED_sahel_laea |>
   ) |>
   arrange(cluster_id)
 
-p_conflicts <- ggplot(conflicts_per_cluster,
-                      aes(x = factor(cluster_id), y = n_conflicts)) +
-  geom_col() +
+p_conflicts <- ggplot(
+  conflicts_per_cluster,
+  aes(x = factor(cluster_id), y = n_conflicts)
+) +
+  geom_col(fill = "grey40") +
   labs(
-    title = "Number of distinct conflicts per HDBSCAN cluster",
-    subtitle = paste0("minPts = ", minPts_value, " (Noise excluded)"),
-    x = "Cluster ID",
-    y = "Number of distinct conflicts"
+    title = "Anzahl unterschiedlicher Konflikte pro HDBSCAN-Cluster",
+    subtitle = paste0("minPts = ", minPts_value, " (Noise ausgeschlossen)"),
+    x = "Cluster-ID",
+    y = "Anzahl unterschiedlicher Konflikte"
   ) +
   theme_minimal()
 
 p_conflicts
 
 ggsave(
-  filename = paste0("plots/bar_n_conflicts_per_cluster_minPts_", minPts_value, ".png"),
+  filename = paste0("plots/new_bar_conflicts_per_cluster_minPts_", minPts_value, ".png"),
   plot = p_conflicts,
   width = 10,
   height = 6,
@@ -563,23 +965,26 @@ ggsave(
 
 ```{r}
 
-# Plot 2: Dominant Share pro Cluster (Homogenität)
+# Plot 2: Anteil des dominanten Konflikts pro Cluster (Homogenität)
 
-p_dominance <- ggplot(dominance_by_cluster,
-                      aes(x = factor(cluster_id), y = dominant_share)) +
-  geom_col() +
+p_dominance <- ggplot(
+  dominance_by_cluster,
+  aes(x = factor(cluster_id), y = dominant_share)
+) +
+  geom_col(fill = "grey40") +
+  scale_y_continuous(labels = scales::percent) +
   labs(
-    title = "Dominant conflict share per HDBSCAN cluster",
-    subtitle = paste0("minPts = ", minPts_value, " (Noise excluded)"),
-    x = "Cluster ID",
-    y = "Dominant share within cluster"
+    title = "Anteil des dominanten Konflikts pro HDBSCAN-Cluster",
+    subtitle = paste0("minPts = ", minPts_value, " (Noise ausgeschlossen)"),
+    x = "Cluster-ID",
+    y = "Anteil des dominanten Konflikts"
   ) +
   theme_minimal()
 
 p_dominance
 
 ggsave(
-  filename = paste0("plots/bar_dominant_share_per_cluster_minPts_", minPts_value, ".png"),
+  filename = paste0("plots/new_bar_dominant_share_per_cluster_minPts_", minPts_value, ".png"),
   plot = p_dominance,
   width = 10,
   height = 6,
