@@ -8,13 +8,6 @@ output:
     code_folding: hide
 ---
 
-
-```{r}
-getwd()
-list.files()
-list.files("data")
-```
-
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
 ```

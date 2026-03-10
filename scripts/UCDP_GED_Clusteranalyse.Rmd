@@ -199,6 +199,12 @@ total_deaths_best <- sum(GED$best, na.rm = TRUE)
 
 total_deaths_civilians <- sum(GED$deaths_civilians, na.rm = TRUE)
 
+# 6) Zeitraum des Datensatzes
+
+year_start <- min(GED$year, na.rm = TRUE)
+year_end <- max(GED$year, na.rm = TRUE)
+n_years <- year_end - year_start + 1
+
 # Ausgabe der Ergebnisse des gesamten Datensatzes
 
 cat("Deskriptive Analyse des gesamten Datensatzes\n")
@@ -207,6 +213,7 @@ cat("Gesamtanzahl an Konflikten:", fmt(n_conflicts_total), "\n")
 cat("Gesamtanzahl an Konfliktereignissen (Events):", fmt(n_events_total), "\n")
 cat("Gesamte Todeszahl (best):", fmt(total_deaths_best), "\n")
 cat("Gesamte Zahl ziviler Todesopfer:", fmt(total_deaths_civilians), "\n\n")
+cat("Abgedeckter Zeitraum:", year_start, "-", year_end, "(", n_years, "Jahre )\n")
 
 cat("Konflikte nach Gewalttyp:\n")
 print(conflicts_by_type)
@@ -597,6 +604,14 @@ p_clusters <- ggplot(
     color = factor(cluster_id)
   )
 ) +
+  
+  # Legendenpunkte vergrößern
+  guides(
+  color = guide_legend(
+    override.aes = list(size = 3)
+    )
+  ) +
+  
   geom_point(size = 0.8, alpha = 0.7) +
   coord_equal() +
   scale_color_manual(
@@ -696,6 +711,13 @@ p_clusters_map <- ggplot() +
   scale_color_manual(
     values = okabe_ito_clusters,
     labels = c("Noise", 1:10)
+  ) +
+  
+  # Legendenpunkte vergrößern
+  guides(
+  color = guide_legend(
+    override.aes = list(size = 3)
+    )
   ) +
   
   # Kartenausschnitt
@@ -819,6 +841,14 @@ p_clusters_africa <- ggplot() +
     values = okabe_ito_clusters,
     breaks = as.character(0:10),
     labels = c("Noise", as.character(1:10))
+  ) +
+  
+  
+  # Legendenpunkte vergrößern
+  guides(
+  color = guide_legend(
+    override.aes = list(size = 3)
+    )
   ) +
   
   # Kartenausschnitt
