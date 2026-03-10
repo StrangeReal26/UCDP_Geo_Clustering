@@ -125,6 +125,8 @@ GED_sahel <- GED |>
 
 ```
 
+Kein Zitat nötig
+
 **Erstellung geometrischer Punkte**
 
 ```{r, eval=FALSE}
@@ -149,6 +151,9 @@ GED_sahel_sf <- GED_sahel |>
 # Die Koordinaten liegen hier in Grad vor (Breite/Länge)
 
 ```
+
+Zitat sf-Objekt
+Zitat sf Library
 
 **Definition der Kartenprojektion**
 
@@ -194,6 +199,8 @@ GED_sahel_laea <- GED_sahel_laea |>
 
 ```
 
+Zitat LAEA Projektion
+
 **Clusteranalyse**
 
 ```{r, eval=FALSE}
@@ -233,6 +240,9 @@ GED_sahel_laea <- GED_sahel_laea |>
   )
 
 ```
+
+Zitat dbscan Library
+Erklärung minPts mit Zitat
 
 Im Anschluss an die Analyse wurden mehrere Auswertungsschritte durchgeführt. Zunächst wurde die räumliche Verteilung der identifizierten Cluster kartographisch dargestellt. Daraufhin wurde untersucht, wie viele unterschiedliche Konflikte innerhalb eines Clusters auftreten und welcher Konflikt jeweils den größten Anteil innerhalb eines Clusters ausmacht. Die Ergebnisse werden im nächsten Kapitel anhand der Diagramme vollends beschrieben.
 
