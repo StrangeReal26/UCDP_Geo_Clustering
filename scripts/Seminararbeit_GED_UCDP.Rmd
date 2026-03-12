@@ -11,7 +11,7 @@ output:
     toc: true
     toc_float: true
     appendices: true
-    code_folding: Code Aufklappen
+    code_folding: Code aufklappen
   html_document:
     toc: true
     toc_float: true
@@ -33,14 +33,13 @@ library(distill)
 ```
 
 
-
 ## Einleitung
 
-Auch wenn der Kalte Krieg mehr als 30 Jahre her ist, gibt es auf der Welt weiterhin zahlreiche militärische Auseinandersetzungen. Die globale Aufrüstung wird weiter fortgeführt und die Umsätze der Rüstungsproduzenten steigen weiter an  [@sinram_weltweite_2025]. Dies mag vor allem am derzeitigen Krieg in der Ukraine und an den zahlreichen sowie andauernden Konflikten im Nahen Osten liegen, aber auch in Afrika hat sich die Zahl der Konflikte erhöht. 
+Auch wenn der Kalte Krieg mehr als 30 Jahre her ist, gibt es auf der Welt weiterhin zahlreiche militärische Auseinandersetzungen. Die globale Aufrüstung wird weiter fortgeführt und die Umsätze der Rüstungsproduzenten steigen weiter an  [@sinram_weltweite_2025]. Dies mag vor allem am derzeitigen Krieg in der Ukraine und an den zahlreichen sowie andauernden Konflikten im Nahen Osten liegen, aber auch in Afrika hat sich die Zahl der Konflikte erhöht.
 
 Die Anzahl von Bürgerkriegen in Afrika hat sich beispielsweise seit 2013 bis 2023 von 15 auf 28 fast verdoppelt [@lacher_konflikte_2025]. Trotz dieser starken Entwicklung erhalten die afrikanischen Konflikte auf der internationalen Bühne jedoch nur wenig aufmerksamkeit [@frankfurter_rundschau_kriege_2025]. In diesem Zusammenhang wird in dieser Ausarbeitung der Blick auf die Konflikte in Afrika, insbesondere auf die Sahelzone, seit dem Jahr 2000 gerichtet.
 
-Es wird die zentrale Frage gestellt, ob auschließlich anhand der geografischen Daten von Konfliktereignissen eine zutreffende Einordnung zu den übergeordnetetn Konflikten erreicht werden kann. Die zur Beantwortung der Fragestellung verwendete Analysemethode ist hierbei das hierarchische Clustering nach dem HDBSCAN-Format. Die genutzten Daten stammen aus dem Georeferenced Event Dataset (GED) in der Version 25.1 des Uppsala Conflict Data Program (UCDP) der Universität Uppsala [@uppsala_university_department_of_peace_and_conflict_ucdp_nodate]. Die gesamte Analyse der Daten wurde in einer separaten Markdown-Datei durchgeführt, in welcher alle Auswertungen und Ergebnisse in kommentierter Form vorhanden sind.
+Es wird die zentrale Frage gestellt, ob auschließlich anhand der geografischen Daten von Konfliktereignissen eine zutreffende Einordnung zu den übergeordnetetn Konflikten erreicht werden kann. Die zur Beantwortung der Fragestellung verwendete Analysemethode ist hierbei das hierarchische Clustering. Die genutzten Daten stammen aus dem Georeferenced Event Dataset (GED) in der Version 25.1 des Uppsala Conflict Data Program (UCDP) der Universität Uppsala [@uppsala_university_department_of_peace_and_conflict_ucdp_nodate]. Die gesamte Analyse der Daten wurde in einer separaten Markdown-Datei durchgeführt, in welcher alle Auswertungen und Ergebnisse in kommentierter Form vorhanden sind.
 
 Die Seminararbeit ist in insgesamt sechs Kapitel unterteilt. Nach der Einleitung wird zuerst der genutzte Datensatz beschrieben und es wird auf die wichtigsten deskriptiven Zahlen des gesamten Datensatzes sowie im spezielleren auf die Daten bezüglich Afrika und der Sahelzone eingegangen. Danach werden im dritte Kapitel Forschungsfrage und die dazugehörige Methodik erläutert, woraufhin im vierten Kapitel die Art und die Durchführung der konkreten Analysemethode erklärt wird. Im Anschluss daran werden im fünften Kapitel die Ergebnisse der Clusteranalyse vorgestellt. Zuletzt wird die gesamte Arbeit zusammengefasst sowie ein schließendes Gesamturteil getroffen.
 
@@ -70,19 +69,18 @@ Die Daten des gesamten verwendeten Datensatzes beinhalten 1.531 Konflikte und in
 Bezogen auf Afrika und die Sahelzone haben sich deutlich weniger Konflikte und Todeszahlen ergeben, die trotzdem als hoch eingestuft werden können. Dieser Schluss ist zudem vor dem Hintegrund, dass dabei nur die Ereignsse ab dem Jahr 2000 einbezogen wurden, umso schwerwiegender. In Afrika wurden seit dem Jahr 2000 insgesamt 754 Konflikte mit 52.145 Ereignissen und 792.996 Toten gezählt. Mit Blick ausschließlich auf die Sahelzone sind es im selben Zeitraum 164 Konflikte, 9.282 Ereignisse und insgesamt 115.328 Toten. In beiden regionalen Bereichen waren die nichtstaatlichen Konflikte am stärksten vertreten.
 
 
+
 ## Forschungsfrage und Methodik
 
 Der Mittelpunkt dieser Arbeit ist die Frage, ob sich aus der räumlichen Verteilung von Konfliktereigissen Rückschlüsse auf die zugrunde liegenden Konflikte des GED ziehen lassen. Es wird dabei weiterführend untersucht, ob Ereignisse desselben Konflikts auch räumlich betrachtet in ähnlichen Regionen auftreten oder ob sich die Ereignisse unterschiedlicher Konflikte überlagern.
 
-Die zentrale Forschungsfrage der Arbeit lautete daher:
+Die zentrale Forschungsfrage der Arbeit lautet daher:
 
 **In welchem Maße entsprechen räumlich identifizierte Cluster von Konfliktereignissen in der Sahlezone den übergeordneten Konflikten, denen die Ereignisse im GED-Datensatz des UCDP zugeordnet sind?**
 
-Zur Untersuchung dieser Fragestellung wird ein explorativer Ansatz gewählt. 
+Zur Untersuchung dieser Fragestellung wird ein explorativer Ansatz gewählt. Ziel der Analyse ist es durch die Anwendung eines Clusterverfahrens räumliche Muster zu identifizieren, die anschließend mit den vorhandenen Konfliktinformationen des Datensatzes verglichen werden. Es ist nicht beabsichtigt eine vorab definierte Hypothese zu testen, sondern im Kern die räumliche Dimension der Konfliktdaten sichtbar zu machen.
 
-Der Grundgedanke der Analyse
-
-Die Analyse erfolgt dabei in mehreren Schritten, die im nächsten Kapitel ausführlich erläutert werden.
+Der Grundgedanke der Analyse besteht darin, dass Konfliktereignisse desselben Konflikts häufig innerhalb eines ähnlichen geografischen Bereichs stattfinden. Sollten die Cluster der Konfliktereignisse häufig von einem einzelnen Konflikt dominiert werden, dann bestätigt sich diese Annahme. Im Umkehrschluss würde eine starke Durchmischung unterschiedlicher Konflikte innerhalb eines Clusters darauf hinweisen, dass räumliche Nähe alleine nicht ausreicht, um Konflikte voneinander zu unterscheiden.
 
 
 
@@ -90,19 +88,19 @@ Die Analyse erfolgt dabei in mehreren Schritten, die im nächsten Kapitel ausfü
 
 Zur Identifikation der räumlichen Muster der Konfliktereignisse wird ein dichtebasiertes Clusterverfahren verwendet.
 
-Erklärung von HDBSCAN (Zitat)
+Genaue Erklärung von HDBSCAN (Zitat)
 
-Die Analyse wurde vollständig mit der Statistiksoftware R in der Entwicklungsumgebung RStudio durchgeführt. Zur Trennung zwischen Ausarbeitung des Themas und Analyse der Daten wurden, wie bereits in der Einleitung beschrieben, zwei R-Markdown-Dateien verwendet. Diese Arbeit bezieht sich dabei auf die durchgeführte Analyse und den kommenteirten Code. Außerdem integriert sie die Abbildungen und Diagramme der Analyse in den Ergebnisteil der Arbeit.
+Die Analyse wurde vollständig mit der Statistiksoftware R in der Entwicklungsumgebung RStudio durchgeführt. Zur Trennung zwischen Ausarbeitung des Themas und Analyse der Daten wurden, wie bereits in der Einleitung beschrieben, zwei R-Markdown-Dateien verwendet. Diese Arbeit bezieht sich dabei auf die durchgeführte Analyse und den kommentierten Code. Außerdem integriert sie die Abbildungen und Diagramme der Analyse in den Ergebnisteil der Arbeit.
+
+Für das Schreiben des Codes und für die Analyse wurden mehrere R Pakete verwendet, welche die Basisfunktionen von R ergänzen. Die Pakete *lubridate* und *dplyr* wurden für die Datenaufbereitung sowie Datenfilterung, wohingegen die Pakete *sf* und *dbscan* für die Kartenprojektion sowie die eigentliche Clusteranalyse verwendet wurden. Bei den Paketen *ggplot2*, *rnaturalearth* und *rnaturalearthdata* handelt es sich um Pakete für die Darstellung von Diagrammen, wobei *rnaturalearth* für die Erstellung einer Karte innerhalb eines Diagramms verwendet wird. Das Paket *distill* dient dazu den Code der Datei in eine ansprechende HTML-Webseite umzuwandeln.
 
 Der Ablauf der Analyse lässt sich in mehrere aufeinanderfolgende Schritte und Codechunks unterteilen. Diese werden in den folgenden Abschnitten beschrieben und anhand der eingefügten, aber funktionslosen, Codeblöcke erklärt.
 
-Zusammengefasst besteht die komplette Analyse aus vier Kernschritten. Die vorangegangene Bereinigung sowie Anpassung der Daten und die sich anschließende Auswertung sowie Generierung der Diagramme zählt nicht in diese Abfolge mit rein. Zuerst wurden die Daten für die kommende Clusteranalyse nach mehreren Kriterien eingegrenzt. Danach wurden die Ereignisse in ein räumliches Datenformat überführt. Anschließend wurde Kartenprojektion definiert und die Koordinaten in dieses metrische Koordinatensystem eingebettet, damit die Entfernugnne zwischen den Eriegnissen korrekt berechnet werden können. Zuletzt wurde auf dieser Grundlage das Cluster-Verfahren durchgeführt.
+Zusammengefasst besteht die komplette Analyse aus vier Kernschritten. Die vorangegangene Bereinigung sowie Anpassung der Daten und die sich anschließende Auswertung sowie Generierung der Diagramme zählt nicht in diese Abfolge mit rein. Zuerst wurden die Daten für die Clusteranalyse nach mehreren Kriterien eingegrenzt. Danach wurden die Ereignisse in ein räumliches Datenformat überführt. Anschließend wurde eine Kartenprojektion definiert und die Koordinaten in dieses metrische Koordinatensystem eingebettet, damit die Entfernungen zwischen den Eriegnissen korrekt berechnet werden können. Zuletzt wurde auf dieser Grundlage das Cluster-Verfahren durchgeführt.
 
 **Eingrenzung der Daten**
 
 ```{r, eval=FALSE}
-
-# Die Länder der Region der späteren Clusteranalyse werden festgehalten (dafür wird ein Vektor genutzt)
 
 sahel_countries <- c("Senegal",
                      "Mauritania",
@@ -112,20 +110,15 @@ sahel_countries <- c("Senegal",
                      "Chad",
                      "Sudan")
 
-# Hier wird ein neuer Datensatz auf Grundlage der benötigten Filter definiert und geladen
-# Gefilterte Teilmenge: Länder der Sahelzone, Zeitrahmen ab 2000, hohe Genauigkeit der geographischen Daten, hohe Klarheit des Ereignisses 
-
 GED_sahel <- GED |>
-  filter(country %in% sahel_countries) |> # Der Begriff %in% prüft, ob der Wert in einem Vektor enthalten ist
+  filter(country %in% sahel_countries) |>
   filter(year >= 2000) |>
   filter(where_prec %in% c(1, 2)) |>
   filter(event_clarity == 1)
 
-# Ziel des Schrittes ist die Definition der Grundgesamtheit
-
 ```
 
-Kein Zitat nötig
+Im ersten Schritt der Clusteranalyse wurden die Daten eingegrenzt. Da sich die Analyse nur auf die Länder der Sahelzone bezieht, wurden diese sieben Länder mit einem definierten Vektor festgelegt. Des Weiteren wurden nur Ereignisse einbezogen die einschließlich nach dem Jahr 2000 geschehen sind. Außerdem wurde die Datenqualität berücksichtigt, indem nur Beobachtungen Einzug in die Analyse fanden, wo die Präzision des Orts und die Klarheit bezüglich der Ereignisse sehr gut ist. Es handelt sich demnach zusammengefasst um die Definition der Grundgesamtheit für das Cluster-Verfahren.
 
 **Erstellung geometrischer Punkte**
 
@@ -152,8 +145,15 @@ GED_sahel_sf <- GED_sahel |>
 
 ```
 
-Zitat sf-Objekt
-Zitat sf Library
+Der zweite Schritt der Analyse besteht aus der Überführung der geographischen Daten in ein räumliches Datenformat.
+
+Hierzu wurde die Bibliothek "sf" verwendet.
+
+(Zitat mit Erklärung von sf)
+
+Ein sf-Objekt ist dabei XXX.
+
+Im Code werden die geographischen Daten nun in dieses Datenformat umgewandelt. Der definierte Vektor *coords* greift auf die im Datensatz vorhandenen Daten zu den Längen- und Breitengraden zu, um diese dann über das Coordinate Reference System (CRS) mit der Nummer 4326 als geometrische Punkte zu definieren. Das CRS 4326 steht hierbei für das geographische Koordinatensystem WSG84, welches auch von GPS-Systemen verwendet wird.
 
 **Definition der Kartenprojektion**
 
@@ -199,7 +199,19 @@ GED_sahel_laea <- GED_sahel_laea |>
 
 ```
 
-Zitat LAEA Projektion
+In diesem Schritt wurde die Kartenprojektion erstellt. Diese ist Grundlegend für die anschließende Clusteranalyse, da sie mit den Daten dieser Projektion durchgeführt wird. Der Zweck liegt darin, dass die Koordinaten für eine Distanzanalyse innerhalb eines metrischen Koordinatensystems voliegen müssen, damit die Entfernungen korrekt berechnet werden können. Bei geographischen Daten, wie die Längen- und Breitengrade, werden keine konstanten Distanzen dargestellt. 
+
+Dieser Teil der  Analyse ist nochmals in drei Teilschritte unterteilt.
+
+Zuerst wird ein Koordinatenreferenzsystem auf Grundlage der Lambert Azimuthal Equal-Area (LAEA) Projektion erstellt.
+
+Die LAEA-Projektion ist ein XXX.
+
+Das Projektionszentrum wurde bei 15°N und 10°E gesetzt, weil dieser ungefähr im Zentrum der Sahelzone liegt. Dadurch werden räumliche Verzerrungen reduziert. 
+
+Im nächsten Teilschritt werden die Daten aus dem WSG84-Koordinatensystem (Grad) in die neu erstellte LAEA-Projektion (Meter) transformiert.
+
+Der dritte Teilschritt dient dazu die projizierten Koordinaten aus der Geometrie extrahiert und in *coords_m* abgespeichert. Dadurch kann im nächsten Schritt auf diese nun metrischen Daten wieder zugegriffen werden.
 
 **Clusteranalyse**
 
@@ -241,19 +253,22 @@ GED_sahel_laea <- GED_sahel_laea |>
 
 ```
 
-Zitat dbscan Library
-Erklärung minPts mit Zitat
+Der vierte und letzte Schritt der Analyse ist nun die angepeilte Clusteranalyse.
 
-Im Anschluss an die Analyse wurden mehrere Auswertungsschritte durchgeführt. Zunächst wurde die räumliche Verteilung der identifizierten Cluster kartographisch dargestellt. Daraufhin wurde untersucht, wie viele unterschiedliche Konflikte innerhalb eines Clusters auftreten und welcher Konflikt jeweils den größten Anteil innerhalb eines Clusters ausmacht. Die Ergebnisse werden im nächsten Kapitel anhand der Diagramme vollends beschrieben.
+Für die Durchführung des Cluster-Verfahrens wurde, wie bereits genannt, das R Paket *dbscan* verwendet.
+
+(Zitat dbscan Paket)
+
+Vor der urchführung des Verfahrens müssen zuerst die *minPts* festgelegt werden.
+
+Bei den minPts handelt es sich um XXX.
+
+Im Anschluss an die Analyse wurden mehrere Auswertungsschritte durchgeführt. Zunächst wurde die räumliche Verteilung der identifizierten Cluster kartographisch dargestellt. Daraufhin wurde untersucht, wie viele unterschiedliche Konflikte innerhalb eines Clusters auftreten und welcher Konflikt jeweils den größten Anteil innerhalb eines Clusters ausmacht. Die Ergebnisse werden im nächsten Kapitel anhand mehrerer Diagramme vollends beschrieben.
+
+(Zitat rnaturalearth und rnaturalearthdata Pakete)
 
 
 ## Ergebnisse Clusteranalyse
-
-- Abbildung der Cluster (Diagramm)
-- Diagramm beschreiben
-- Palette für Farbenblinde (z.B. Okabe-Ito)
-- Clusterdiagramm über eine Afrikakarte legen 
-- Balkendiagramme der Zuweisungen und Prozentzahlen
 
 Die Anwendung des HDBSCAN-Verfahrens auf die geographischen Daten der Konfliktereignisse führte zur Identifikation von insgesamt 10 räumlichen Clustern. Zusätzlich wurden insgesamt 4,88 % der Punkte bzw. Ereignisse vom Algorithmus als sogenannte Noise-Punkte klassifiziert, die zu keinem Cluster gehören.
 
@@ -285,11 +300,9 @@ Abbildung 2: Konflikt-Cluster über einer Karte von Afrika
 </div>
 :::
 
-Zur besseren räumlichen Einordnung der Cluster zeigt die Abbildung 2 zusätzlich eine Karte des afrikanischen Kontinents, der passend zu den Längen- und Breitengraden unter die Cluster gelegt wurde. Dadurch werden verschiedene Aspekte hervorgehoben. Es wird sichtbar, wo sich die Länder der Sahelzone befinden und wie groß die räumliche Ausdehnung der Cluster ist. Außerdem ist zu erkennen, wo genau sich die Cluster auf dem Kontinent befinden und an welchen Grenzen sich diese aufhalten.
+Zur besseren räumlichen Einordnung der Cluster zeigt die Abbildung 2 zusätzlich eine Karte des afrikanischen Kontinents, der passend zu den Längen- und Breitengraden unter die Cluster gelegt wurde. Dadurch werden verschiedene Aspekte hervorgehoben. Es wird sichtbar, wo sich die Länder der Sahelzone befinden und wie groß die räumliche Ausdehnung der Cluster im Verhältnis zum Kontinet ist. Außerdem ist zu erkennen, wo genau sich die Cluster auf dem Kontinent befinden und an welchen Grenzen sich diese aufhalten.
 
-
-Bei Betrachtung der Abbildung fallen die beiden größten Cluster Nummer 7 und 10 auf. Das Cluster 7 hat insgesamt 1.356 Ereignisse zugeordnet bekommen, während das Cluster 10 mit 3.378 Ereignissen mehr als doppelt so groß ist von der Anzahl her. Zudem ist dieses Cluster augenscheinlch auch bezogen auf die Ausdehnung am größten. Alle anderen Cluster befinden sich in einem Bereich von 54 Punkten bis 340 Punkten.
-
+Bei Betrachtung der beiden Abbildungen fallen die beiden größten Cluster Nummer 7 und 10 auf. Das Cluster 7 hat insgesamt 1.356 Ereignisse zugeordnet bekommen, während das Cluster 10 mit 3.378 Ereignissen mehr als doppelt so groß ist von der Anzahl her. Zudem ist dieses Cluster augenscheinlch auch bezogen auf die Ausdehnung am größten. Alle anderen Cluster befinden sich in einem Bereich von 54 Punkten bis 340 Punkten. Anhand der nächsten Diagramme wird ersichtlich, wie homgen oder heterogen die Cluster sind, was Aufschluss darüber gibt, inwiefern sich das Clustering zur geopraphischen Identifikation von Konflikten eignet.
 
 ::: {.l-screen}
 <div style="width:50%; margin:auto;">
@@ -303,8 +316,7 @@ Abbildung 3: Anzahl übergeordneter Konflikte je Cluster
 </div>
 :::
 
-
-
+Anzahl der Konflikte je Cluster
 
 ::: {.l-screen}
 <div style="width:50%; margin:auto;">
@@ -318,21 +330,34 @@ Abbildung 4: Anteil des dominaten Konflikts je Cluster
 </div>
 :::
 
+Anteil der Punkte des dominanten Konflikts in Bezug auf die gesamten Punkte des Clusters 
 
 
 
 ## Zusammenfassende Schlussbetrachtung
 
-- Zusammenfassung der Ergebnisse
-- Limitationen
-- Ausblick und weitere Analysen
+Zusammenfassung der Ergebnisse
+-Ausgeglichenes Ergebnis
+-Zwei homogene Cluster und zwei heterogene Cluster
+-Eingrenzung und Zuweisung von Konflikten anhand geographischer Daten teilweise möglich
+
+
+Limitationen
+-Größe des Zeitraums
+-Unterschiedliche (bzw. immer neue) Gruppen kämpfen in den selben Regionen (und um die selben Objekte)
+-
+
+Ausblick und weitere Analysen
+-
+
+
 
 
 
 
 # Anhang {.appendix .unnumbered toc=false}
 
-In dieser Arbeit wurde die APA-Zitierweise genutzt. (Zur erleichterten Suche der Quellen wurden in den Zitationen von Dokumenten zusätzlich die Seitenzahlen angegeben.)
+In dieser Arbeit wurde die APA-Zitierweise genutzt.
 
 Jegliche URL- und DOI-Links der Quellen wurden am XX.XX.2026 zuletzt aufgerufen und überprüft. Es wird bestätigt, dass die im Literaturverzeichnis aufgelisteten Webadressen zu diesem Zeitpunkt im Internet auffindbar waren. Der Zugriff auf entgeltlich zu erwerbende Quellen wurde über das Netz der Universität ermöglicht.
 
@@ -342,8 +367,6 @@ Bei der Erstellung dieser Ausarbeitung wurden KI-Anwendungen zur Einarbeitung in
 # Kursinformationen {.appendix .unnumbered toc=false}
 
 Name: Simon Teichgräber
-
-Adresse: Werner-Heisenberg-Weg 199, 85579 Neubiberg
 
 Matrikelnummer: 1229726
 

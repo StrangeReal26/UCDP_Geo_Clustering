@@ -5,7 +5,7 @@ date: "2026-02-16"
 output:
   distill::distill_article:
     toc: true
-    code_folding: hide
+    code_folding: Code/Erklärungen ausklappen
 ---
 
 ## Clusteranalyse von Konfliktereignissen in der Sahelzone
@@ -21,9 +21,9 @@ library(ggplot2)
 library(distill)
 library(sf)
 library(dbscan)
-library(tidyr)
 library(rnaturalearth)
 library(rnaturalearthdata)
+# library(tidyr) Entfernt, da nicht verwendet
 ```
 
 ```{r}
@@ -73,6 +73,12 @@ GED <- GED |>
   
   drop_na(latitude, longitude)
 
+```
+
+# Erklärung
+
+```{r}
+Kommentare
 ```
 
 # Prüfung der geographischen Daten
@@ -222,6 +228,11 @@ print(conflicts_by_type)
 
 ```
 
+# Erklärung
+
+```{r}
+Kommentare
+```
 
 # Deskriptive Analyse der Daten bezüglich Afrika und der Sahel-Zone
 
@@ -347,6 +358,11 @@ print(conflicts_by_type_sahel)
 
 ```
 
+# Erklärung
+
+```{r}
+Kommentare
+```
 
 # Aufbau und Durchführung der Datenanalyse (exploratives Clustering) mit Beschreibung
 
@@ -379,6 +395,12 @@ GED_sahel <- GED |>
 
 ```
 
+# Erklärung
+
+```{r}
+Kommentare
+```
+
 ```{r}
 
 # Überprüfung, ob die Filter korrekt sind und wie viele Beobachtungen übrig bleiben
@@ -391,6 +413,12 @@ glimpse(GED_sahel)
 # Geografische Daten nun im dbl Format
 # Zeitangaben nun im date Format
 
+```
+
+# Erklärung
+
+```{r}
+Kommentare
 ```
 
 # Erstellung geometrischer Punkte
@@ -418,6 +446,12 @@ GED_sahel_sf <- GED_sahel |>
 
 ```
 
+# Erklärung
+
+```{r}
+Kommentare
+```
+
 ```{r}
 
 # Überprüfung, ob das Koordinatenreferenzsystem korrekt gesetzt wurde, da spätere räumliche Berechnungen davon abhängen
@@ -438,6 +472,12 @@ head(st_geometry(GED_sahel_sf))
 
 # "POINT (-0.20232 14.49112)" --> Für jedes Event leigt ein geographischer Punkt vor
 
+```
+
+# Erklärung
+
+```{r}
+Kommentare
 ```
 
 # Definition der Kartenprojektion
@@ -484,6 +524,12 @@ GED_sahel_laea <- GED_sahel_laea |>
 
 ```
 
+# Erklärung
+
+```{r}
+Kommentare
+```
+
 ```{r}
 
 # Zweck: Die Größenordnung der Koordinaten liegt im Bereich mehrerer, Millionen Meter und bestätigt somit die korrekte metrische Projektion
@@ -505,6 +551,12 @@ summary(GED_sahel_laea$y_m)
 # Max: 955275
 # Bedeutung: Koordinaten liegen ungefähr im Bereich von +- 3000km --> Plausibel für eine Region von der Größe der Sahelzone
 
+```
+
+# Erklärung
+
+```{r}
+Kommentare
 ```
 
 # Clusteranalyse
@@ -547,6 +599,12 @@ GED_sahel_laea <- GED_sahel_laea |>
 
 ```
 
+# Erklärung
+
+```{r}
+Kommentare
+```
+
 ```{r}
 
 # Überprüfung: Wie viele Cluster? Wie viel Noise?
@@ -571,6 +629,12 @@ noise_share
 
 summary(GED_sahel_laea$cluster_prob)
 
+```
+
+# Erklärung
+
+```{r}
+Kommentare
 ```
 
 # Erstellung der Karten
