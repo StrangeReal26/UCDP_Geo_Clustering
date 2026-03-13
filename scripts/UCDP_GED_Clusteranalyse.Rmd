@@ -5,7 +5,7 @@ date: "2026-02-16"
 output:
   distill::distill_article:
     toc: true
-    code_folding: Code/Erklärungen ausklappen
+    code_folding: Ausklappen
 ---
 
 ## Clusteranalyse von Konfliktereignissen in der Sahelzone
@@ -14,26 +14,33 @@ output:
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
+**Libraries laden**
+
 ```{r, echo=FALSE}
 library(lubridate)
 library(dplyr)
+library(tidyr)
 library(ggplot2)
 library(distill)
 library(sf)
 library(dbscan)
 library(rnaturalearth)
 library(rnaturalearthdata)
-# library(tidyr) Entfernt, da nicht verwendet
 ```
+
+**Datensatz  laden**
 
 ```{r}
 
 # Laden der Daten
 # Das Trennzeichen ist wegen der Deutschen Version von xlsx bzw. csv ein Semikolon
+# Quelle des Datensatzes: https://ucdp.uu.se/downloads/
 
 GED = read.csv("data/GEDEvent_v25_1_small.csv", sep = ";")
 
 ```
+
+**Erste Übersicht der Daten**
 
 ```{r}
 
@@ -48,49 +55,61 @@ str(GED)
 
 ```{r}
 
-# Überschreibung des Datensatzes mit den veränderten Daten und entfernen von unvollständigen Zeilen
-
 GED <- GED |>
   mutate(
     
-    # 1) Aktives Jahr: Der Wert der Variablen "true"/"false" wird von einer Zeichenkette (character) nun als logischer Wert (TRUE/FALSE) definiert
+    # 1)
     
     active_year = tolower(active_year) == "true",
 
-    # 2) Koordinaten: Das Dezimalzeichen wird von Komma zu Punkt geändert und als numeric definiert, da standardmäßig der Punkt das Dezimaltrennzeichen ist
+    # 2)
     
     latitude  = as.numeric(gsub(",", ".", latitude)),
     longitude = as.numeric(gsub(",", ".", longitude)),
 
-    # 3) Datum: Die variablen date_start und date_end werden von einer  Zeichenkette (character) in ein Datumsformat gebracht
+    # 3)
     
     date_start = dmy(date_start),
     date_end = dmy(date_end),
     
   ) |>
   
-  # 4) Zeilen mit fehlenden geographischen Daten werden entfernt. Diese Beobachtungen können nicht als räumliche Punkte dargestellt werden und deshalb nicht in die CLusteranalyse einbezogen werden.
+    # 4)
   
   drop_na(latitude, longitude)
 
 ```
 
-# Erklärung
+**Erklärung**
 
 ```{r}
-Kommentare
+
+# Überschreibung des Datensatzes mit den veränderten Daten und entfernen von unvollständigen Zeilen
+
+# 1) Aktives Jahr: Der Wert der Variablen "true"/"false" wird von einer Zeichenkette (character) nun als logischer Wert (TRUE/FALSE) definiert
+
+# 2) Koordinaten: Das Dezimalzeichen wird von Komma zu Punkt geändert und als numeric definiert, da standardmäßig der Punkt das Dezimaltrennzeichen ist
+
+# 3) Datum: Die variablen date_start und date_end werden von einer  Zeichenkette (character) in ein Datumsformat gebracht
+
+# 4) Zeilen mit fehlenden geographischen Daten werden entfernt. Diese Beobachtungen können nicht als räumliche Punkte dargestellt werden und deshalb nicht in die CLusteranalyse einbezogen werden.
+
 ```
 
-# Prüfung der geographischen Daten
+# Prüfung der geographischen Daten (fehlende Werte)
+
+**Sind fehlende Werte bei den geographischen Daten vorhanden?**
 
 ```{r}
-
-# Sind fehlende Werte bei den geographischen Daten vorhanden?
 
 sum(is.na(GED$latitude))
 sum(is.na(GED$longitude))
 
-# Befinden sich geographische Werte außerhalb der plausiblen Bereiche?
+```
+
+**Befinden sich geographische Werte außerhalb der plausiblen Bereiche?**
+
+```{r}
 
 sum(GED$latitude < -90 | GED$latitude > 90, na.rm = TRUE)
 sum(GED$longitude < -180 | GED$longitude > 180, na.rm = TRUE)
@@ -99,9 +118,9 @@ sum(GED$longitude < -180 | GED$longitude > 180, na.rm = TRUE)
 
 # Beschreibung der wichtigsten Variablen
 
-```{r}
+**Auflistung aller notwendigen Variablen des Datensatzes**
 
-# AUflistung aller Variablen des Datensatzes
+```{r}
 
 colnames(GED)
 
@@ -109,64 +128,68 @@ colnames(GED)
 
 **Inhalt der genutzten Variablen**
 
-"id"
+**"id"**
 Eindeutige, dauerhafte numerische ID eines einzelnen Ereignisses. Dieselbe id bezeichnet über mehrere GED-Versionen hinweg dasselbe reale Ereignis.
 
-"year"
+**"year"**
 Jahr, in dem das Ereignis stattgefunden hat.
 
-"type_of_violence"
+**"type_of_violence"**
 Typ der organisierten Gewalt nach UCDP: 
 1 = staatlicher Konflikt, 2 = nichtstaatlicher Konflikt, 3 = einseitige Gewalt gegen Zivilisten.
 
-"conflict_new_id"
+**"conflict_new_id"**
 Eindeutige Konflikt-ID für jeden einzelnen Konflikt im Datensatz; geeignet zum Filtern und Aggregieren von Konflikten.
 
-"conflict_name"
+**"conflict_name"**
 Name des UCDP-Konflikts, zu dem das Ereignis gehört; bei nichtstaatlichen Konflikten und einseitiger Gewalt entspricht er dem Dyadennamen.
 
-"event_clarity"
+**"event_clarity"**
 1 (hoch) steht für Ereignisse, bei denen der Berichterstatter das Ereignis vollständig identifizieren kann. Das heißt, Ereignisse, bei denen das einzelne Geschehen von der Originalquelle ausreichend detailliert beschrieben wird, um einzelne Vorfälle zu identifizieren, d. h. separate Kampfhandlungen an einem einzigen Ort.
 
-"latitude"
+**"latitude"**
 Breitengrad des Ereignisortes in Dezimalgrad.
 
-"longitude"
+**"longitude"**
 Längengrad des Ereignisortes in Dezimalgrad.
 
-"where_prec"
+**"where_prec"**
 Die Genauigkeit, mit der die dem Ereignis zugewiesenen Koordinaten und der Standort den tatsächlichen Standort des Ereignisses widerspiegeln. 1: Der genaue Standort des Ereignisses ist bekannt und kodiert.
 
-"country"          
+**"country"**          
 Land, in dem das Ereignis tatsächlich stattgefunden hat.
 
-"region"
+**"region"**
 Weltregion des Ereignisortes; mögliche Werte sind Africa, Americas, Asia, Europe und Middle East.
 
-"date_start"
+**"date_start"**
 Frühestes mögliches Datum, an dem das Ereignis stattgefunden haben kann.
 
-"date_end"
+**"date_end"**
 Spätestes mögliches Datum, an dem das Ereignis stattgefunden haben kann.
 
-"deaths_civilians"
+**"deaths_civilians"**
 Beste Schätzung der getöteten Zivilpersonen im Ereignis; bei staatlichen und nichtstaatlichen Konflikten sind das zivile Opfer als Begleitschaden der Kämpfe, bei einseitiger Gewalt die gezielt von Seite A getöteten Zivilisten.
 
-"best"            
+**"best"**            
 Beste bzw. wahrscheinlichste Schätzung der gesamten Todesopfer des Ereignisses; sie ist die Summe aus deaths_a, deaths_b, deaths_civilians und deaths_unknown.
 
-"high"
+**"high"**
 Höchste verlässliche Schätzung der gesamten Todesopfer des Ereignisses
 
 
 # Deskriptive Analyse des gesamten Datensatzes
 
+**Code mit Kommentaren**
+**Danach folgen die Ausgaben**
+
 ```{r}
 
 # Deskriptive Analyse des gesamten GED-Datensatzes
 
+# cat wird für eine einfache Ausgabe von Text verwendet
 
-# Lesbare Bezeichnungen für die Gewalttypen nach UCDP
+# Lesbare Bezeichnungen (labels) für die Gewalttypen nach UCDP
 
 violence_labels <- c(
   "1" = "Staatlicher Konflikt",
@@ -214,7 +237,6 @@ n_years <- year_end - year_start + 1
 # Ausgabe der Ergebnisse des gesamten Datensatzes
 
 cat("Deskriptive Analyse des gesamten Datensatzes\n")
-cat("--------------------------------------------------\n")
 cat("Gesamtanzahl an Konflikten:", fmt(n_conflicts_total), "\n")
 cat("Gesamtanzahl an Konfliktereignissen (Events):", fmt(n_events_total), "\n")
 cat("Gesamte Todeszahl (best):", fmt(total_deaths_best), "\n")
@@ -224,22 +246,16 @@ cat("Abgedeckter Zeitraum:", year_start, "-", year_end, "(", n_years, "Jahre )\n
 cat("Konflikte nach Gewalttyp:\n")
 print(conflicts_by_type)
 
-# cat wird für eine einfache Ausgabe von Text verwendet
-
-```
-
-# Erklärung
-
-```{r}
-Kommentare
 ```
 
 # Deskriptive Analyse der Daten bezüglich Afrika und der Sahel-Zone
 
+**Code mit Kommentaren**
+**Danach folgen die Ausgaben**
+
 ```{r}
 
 # Deskriptive Analyse für Afrika und Sahel (ab dem Jahr 2000)
-
 
 # Afrika
 
@@ -263,11 +279,11 @@ fmt <- function(x) {
   format(x, big.mark = ".", decimal.mark = ",")
 }
 
-# Gesamtanzahl an Konflikten
+# 1) Gesamtanzahl an Konflikten
 
 n_conflicts_africa <- n_distinct(GED_africa$conflict_new_id)
 
-# Konflikte nach Gewalttyp
+# 2) Konflikte nach Gewalttyp
 
 conflicts_by_type_africa <- GED_africa |>
   distinct(conflict_new_id, type_of_violence) |>
@@ -276,11 +292,11 @@ conflicts_by_type_africa <- GED_africa |>
     type_of_violence = violence_labels[as.character(type_of_violence)]
   )
 
-# Gesamtanzahl an Events
+# 3) Gesamtanzahl an Events
 
 n_events_africa <- nrow(GED_africa)
 
-# Gesamtanzahl der Todesopfer
+# 4) Gesamtanzahl der Todesopfer
 
 total_deaths_best_africa <- sum(GED_africa$best, na.rm = TRUE)
 total_deaths_civilians_africa <- sum(GED_africa$deaths_civilians, na.rm = TRUE)
@@ -304,11 +320,11 @@ sahel_countries <- c("Senegal",
 GED_sahel_desc <- GED_africa |>
   filter(country %in% sahel_countries)
 
-# Gesamtanzahl an Konflikten
+# 1) Gesamtanzahl an Konflikten
 
 n_conflicts_sahel <- n_distinct(GED_sahel_desc$conflict_new_id)
 
-# Konflikte nach Gewalttyp
+# 2) Konflikte nach Gewalttyp
 
 conflicts_by_type_sahel <- GED_sahel_desc |>
   distinct(conflict_new_id, type_of_violence) |>
@@ -317,11 +333,11 @@ conflicts_by_type_sahel <- GED_sahel_desc |>
     type_of_violence = violence_labels[as.character(type_of_violence)]
   )
 
-# Gesamtanzahl an Events
+# 3) Gesamtanzahl an Events
 
 n_events_sahel <- nrow(GED_sahel_desc)
 
-# Gesamtanzahl der Todesopfer
+# 4) Gesamtanzahl der Todesopfer
 
 total_deaths_best_sahel <- sum(GED_sahel_desc$best, na.rm = TRUE)
 total_deaths_civilians_sahel <- sum(GED_sahel_desc$deaths_civilians, na.rm = TRUE)
@@ -330,7 +346,6 @@ total_deaths_civilians_sahel <- sum(GED_sahel_desc$deaths_civilians, na.rm = TRU
 # Ausgabe der Ergebnisse zu Afrika
 
 cat("Deskriptive Analyse: Afrika (ab 2000)\n")
-cat("--------------------------------------------------\n")
 cat("Gesamtanzahl an Konflikten:", fmt(n_conflicts_africa), "\n")
 cat("Gesamtanzahl an Konfliktereignissen (Events):", fmt(n_events_africa), "\n")
 cat("Gesamte Todeszahl (best):", fmt(total_deaths_best_africa), "\n")
@@ -339,13 +354,10 @@ cat("Gesamte Zahl ziviler Todesopfer:", fmt(total_deaths_civilians_africa), "\n\
 cat("Konflikte nach Gewalttyp in Afrika:\n")
 print(conflicts_by_type_africa)
 
-cat("\n\n")
-
 
 # Ausgabe der Ergebnisse zur Sahel-Zone
 
 cat("Deskriptive Analyse: Sahel-Zone (ab 2000)\n")
-cat("--------------------------------------------------\n")
 cat("Gesamtanzahl an Konflikten:", fmt(n_conflicts_sahel), "\n")
 cat("Gesamtanzahl an Konfliktereignissen (Events):", fmt(n_events_sahel), "\n")
 cat("Gesamte Todeszahl (best):", fmt(total_deaths_best_sahel), "\n")
@@ -354,25 +366,15 @@ cat("Gesamte Zahl ziviler Todesopfer:", fmt(total_deaths_civilians_sahel), "\n\n
 cat("Konflikte nach Gewalttyp in der Sahel-Zone:\n")
 print(conflicts_by_type_sahel)
 
-# cat wird für eine einfache Ausgabe von Text verwendet
-
-```
-
-# Erklärung
-
-```{r}
-Kommentare
 ```
 
 # Aufbau und Durchführung der Datenanalyse (exploratives Clustering) mit Beschreibung
 
 Für die Durchführung der Clusteranalyse sind verschiedene Schritte notwendig.
 
-# Eingrenzung der Daten zur späteren Clusteranalyse
+# 1. Eingrenzung der Daten zur späteren Clusteranalyse
 
 ```{r}
-
-# Die Länder der Region der späteren Clusteranalyse werden festgehalten (dafür wird ein Vektor genutzt)
 
 sahel_countries <- c("Senegal",
                      "Mauritania",
@@ -382,50 +384,54 @@ sahel_countries <- c("Senegal",
                      "Chad",
                      "Sudan")
 
-# Hier wird ein neuer Datensatz auf Grundlage der benötigten Filter definiert und geladen
-# Gefilterte Teilmenge: Länder der Sahelzone, Zeitrahmen ab 2000, hohe Genauigkeit der geographischen Daten, hohe Klarheit des Ereignisses 
-
 GED_sahel <- GED |>
-  filter(country %in% sahel_countries) |> # Der Begriff %in% prüft, ob der Wert in einem Vektor enthalten ist
+  filter(country %in% sahel_countries) |> 
   filter(year >= 2000) |>
   filter(where_prec %in% c(1, 2)) |>
   filter(event_clarity == 1)
+
+```
+
+**Erklärung**
+
+```{r}
+
+# Die Länder der Region der späteren Clusteranalyse werden festgehalten (dafür wird ein Vektor genutzt)
+
+# Es wird ein neuer Datensatz auf Grundlage der benötigten Filter definiert und geladen
+# --> Der Prozess der Speicherung eines neuen Datensatzes wird bei mehreren Schritten angewendet
+
+# Gefilterte Teilmenge: Länder der Sahelzone, Zeitrahmen ab 2000, hohe Genauigkeit der geographischen Daten, hohe Klarheit des Ereignisses
+
+# Der Begriff %in% prüft, ob der Wert in einem Vektor enthalten ist
 
 # Ziel des Schrittes ist die Definition der Grundgesamtheit
 
 ```
 
-# Erklärung
-
 ```{r}
-Kommentare
-```
-
-```{r}
-
-# Überprüfung, ob die Filter korrekt sind und wie viele Beobachtungen übrig bleiben
 
 unique(GED_sahel$country)
 
 glimpse(GED_sahel)
 
+```
+
+**Erklärung der Prüfung**
+
+```{r}
+
+# Überprüfung, ob die Filter korrekt sind und wie viele Beobachtungen übrig bleiben
+
 # Es dürfen nun nur noch die sieben ausgewählten Länder angezeigt werden
-# Geografische Daten nun im dbl Format
+# Geografische Daten nun im dbl (numeric) Format
 # Zeitangaben nun im date Format
 
 ```
 
-# Erklärung
+# 2. Erstellung geometrischer Punkte
 
 ```{r}
-Kommentare
-```
-
-# Erstellung geometrischer Punkte
-
-```{r}
-
-# Neuer Datensatz wird erstellt mit allen vorherigen Variablen und mit einer neuen Spalte geometry (geometrischer Punkt)
 
 GED_sahel_sf <- GED_sahel |>
   st_as_sf(
@@ -433,6 +439,15 @@ GED_sahel_sf <- GED_sahel |>
     crs = 4326,                           # WGS84 / EPSG:4326 (Grad)
     remove = FALSE                        # Datensatz behält latitude/longitude als Spalten
   )
+
+```
+
+**Erklärung**
+
+```{r}
+
+# Neuer Datensatz wird erstellt mit allen vorherigen Variablen und mit einer neuen Spalte geometry (geometrischer Punkt)
+
 
 # Zweck: Umwandlung des Datensatzes in ein räumliches sf-Objekt
 
@@ -446,19 +461,21 @@ GED_sahel_sf <- GED_sahel |>
 
 ```
 
-# Erklärung
-
 ```{r}
-Kommentare
+
+st_crs(GED_sahel_sf)
+
+head(st_geometry(GED_sahel_sf))
+
 ```
+
+**Erklärung der Prüfung**
 
 ```{r}
 
 # Überprüfung, ob das Koordinatenreferenzsystem korrekt gesetzt wurde, da spätere räumliche Berechnungen davon abhängen
 
-# Überprüfung: Welche Projektion/CRS hat das sf-Objekt?
-
-st_crs(GED_sahel_sf)
+# Überprüfung 1: Welche Projektion/CRS hat das sf-Objekt?
 
 # "User input: EPSG:4326" --> Das CRS wurde korrekt gesetzt
 # "GEOGCRS["WGS 84"" --> Das System ist WGS84
@@ -466,25 +483,47 @@ st_crs(GED_sahel_sf)
 # Umrechnung von Grad in Meter erfolgt im nächsten Schritt
 
 
-# Überprüfung: Wie ist die geometry-Variable (Spalte) definiert?
-
-head(st_geometry(GED_sahel_sf))
+# Überprüfung 2: Wie ist die geometry-Variable (Spalte) definiert?
 
 # "POINT (-0.20232 14.49112)" --> Für jedes Event leigt ein geographischer Punkt vor
 
 ```
 
-# Erklärung
+# 3. Definition der Kartenprojektion
 
 ```{r}
-Kommentare
+
+# 1)
+
+crs_laea_sahel <- "+proj=laea +lat_0=15 +lon_0=10 +datum=WGS84 +units=m +no_defs"
+
+# 2)
+
+GED_sahel_laea <- GED_sahel_sf |>
+  st_transform(crs = crs_laea_sahel)
+
+
+# 3)
+
+coords_m <- st_coordinates(GED_sahel_laea)
+
+
+# Zusatz
+
+GED_sahel_laea <- GED_sahel_laea |>
+  mutate(
+    x_m = coords_m[, 1],
+    y_m = coords_m[, 2]
+  )
+
 ```
 
-# Definition der Kartenprojektion
+**Erklärung**
 
 ```{r}
 
 # Zweck: Für Distanz- und Clusteranalysen müssen Koordinaten in einem metrischen Koordinatensystem vorliegen, da geographische Koordinaten (Grad) keine konstanten Distanzen darstellen.
+
 
 # LAEA = Lambert Azimuthal Equal Area
 # Eine flächentreue Kartenprojektion, die Verzerrungen um das definierte Projektionszentrum minimiert.
@@ -497,13 +536,8 @@ Kommentare
 
 # Das Projektionszentrum (15°N, 10°E) liegt ungefähr im Zentrum der Sahelzone, wodurch räumliche Verzerrungen reduziert werden.
 
-crs_laea_sahel <- "+proj=laea +lat_0=15 +lon_0=10 +datum=WGS84 +units=m +no_defs"
-
 
 # 2) Transformation der Daten von WGS84 (Grad) zu LAEA (Meter)
-
-GED_sahel_laea <- GED_sahel_sf |>
-  st_transform(crs = crs_laea_sahel)
 
 
 # 3) x/y-Koordinaten (in Metern) aus der Geometrie extrahieren
@@ -511,38 +545,32 @@ GED_sahel_laea <- GED_sahel_sf |>
 # Die Funktion st_coordinates() extrahiert die projizierten x/y-Koordinaten aus der Geometrie
 # Wird in coords_m abgespeichert und im nächsten Schritt wieder darauf zugegriffen
 
-coords_m <- st_coordinates(GED_sahel_laea)
-
 
 # Zusatz: x/y als Spalten zum Datensatz hinzufügen
 
-GED_sahel_laea <- GED_sahel_laea |>
-  mutate(
-    x_m = coords_m[, 1],
-    y_m = coords_m[, 2]
-  )
-
 ```
-
-# Erklärung
 
 ```{r}
-Kommentare
+
+st_crs(GED_sahel_laea)
+
+summary(GED_sahel_laea$x_m)
+summary(GED_sahel_laea$y_m)
+
 ```
+
+**Erklärung der Prüfung**
 
 ```{r}
 
 # Zweck: Die Größenordnung der Koordinaten liegt im Bereich mehrerer, Millionen Meter und bestätigt somit die korrekte metrische Projektion
 
-# Überprüfung: CRS und Größenordnung der Koordinaten
 
-st_crs(GED_sahel_laea)
+# Überprüfung: CRS und Größenordnung der Koordinaten
 
 # "METHOD["Lambert Azimuthal Equal Area"" --> LAEA-Projektion wurde korrekt angewendet
 # "LENGTHUNIT["metre",1]" --> Koordinaten sind nun in Meter
 
-summary(GED_sahel_laea$x_m)
-summary(GED_sahel_laea$y_m)
 
 # Interpretation der Koordinatenwerte
 # Min: -2904076
@@ -553,13 +581,29 @@ summary(GED_sahel_laea$y_m)
 
 ```
 
-# Erklärung
+# 4. Clusteranalyse
 
 ```{r}
-Kommentare
+
+# 1)
+
+minPts_value <- 30
+
+# 2)
+
+hdb <- hdbscan(coords_m, minPts = minPts_value)
+
+# 3)
+
+GED_sahel_laea <- GED_sahel_laea |>
+  mutate(
+    cluster_id = hdb$cluster,
+    cluster_prob = hdb$membership_prob
+  )
+
 ```
 
-# Clusteranalyse
+**Erklärung**
 
 ```{r}
 
@@ -571,14 +615,14 @@ Kommentare
 # HDBSCAN ist ein dichtebasiertes Clusterverfahren, das Cluster als Regionen hoher Punktdichte identifiziert
 # Es ist eine Erweiterung des DBSCAN-Algorithmus und kann Cluster unterschiedlicher Dichte erkennen
 
-# minPts definiert die minimale Anzahl von Punkten, die in einer lokalen Nachbarschaft vorhanden sein müssen, damit eine Region als Cluster erkannt wird
+# Im Gegensatz zu DBSCAN wird bei HDBSCAN keine Definition des Radius der Cluster (Epsilon) verwendet
 
-minPts_value <- 30
+# Es müssen jedoch die minPts (minimum points) definiert werden --> Die minimale Anzahl von Punkten, die in einer Nachbarschaft vorhanden sein müssen, damit eine Region als Cluster erkannt wird
+
 
 # 2) HDBSCAN ausführen
 # coords_m ist eine Matrix: Spalte 1 = x (m), Spalte 2 = y (m)
 
-hdb <- hdbscan(coords_m, minPts = minPts_value)
 
 # 3) Ergebnisse an Datensatz anhängen
 
@@ -591,19 +635,28 @@ hdb <- hdbscan(coords_m, minPts = minPts_value)
 # Die Anzahl der Cluster wird automatisch vom Algorithmus bestimmt
 # Anders als bei k-means muss die Clusterzahl nicht vorgegeben werden
 
-GED_sahel_laea <- GED_sahel_laea |>
-  mutate(
-    cluster_id = hdb$cluster,
-    cluster_prob = hdb$membership_prob
-  )
-
 ```
-
-# Erklärung
 
 ```{r}
-Kommentare
+
+table(GED_sahel_laea$cluster_id)
+
+
+n_clusters <- length(setdiff(unique(GED_sahel_laea$cluster_id), 0))
+
+
+noise_share <- mean(GED_sahel_laea$cluster_id == 0)
+
+
+n_clusters
+noise_share
+
+
+summary(GED_sahel_laea$cluster_prob)
+
 ```
+
+**Erklärung der Prüfung**
 
 ```{r}
 
@@ -612,30 +665,14 @@ Kommentare
 
 # Größe der Cluster --> Punkte gleich Ereignisse
 
-table(GED_sahel_laea$cluster_id)
-
 # Anzahl der  Cluster --> 10 Stück
-
-n_clusters <- length(setdiff(unique(GED_sahel_laea$cluster_id), 0))
 
 # Noise Anteil --> 4,9 % der Punkte sind Rauschen und gehören keinem Cluster an
 
-noise_share <- mean(GED_sahel_laea$cluster_id == 0)
-
-n_clusters
-noise_share
-
 # Clusterwahrscheinlichkeit --> Die Mehrheit der Punkte gehört einem Cluster an
 
-summary(GED_sahel_laea$cluster_prob)
-
 ```
 
-# Erklärung
-
-```{r}
-Kommentare
-```
 
 # Erstellung der Karten
 
@@ -645,7 +682,9 @@ Kommentare
 
 # Bild zur Darstellung der Cluster mit ggplot2
 
+
 # Okabe-Ito Palette definieren
+
 okabe_ito <- c(
   "#000000",  # 0 = Noise (schwarz)
   "#E69F00",
@@ -659,6 +698,8 @@ okabe_ito <- c(
   "#882255",
   "#44AA99"
 )
+
+# Plot erstellen
 
 p_clusters <- ggplot(
   GED_sahel_laea,
@@ -676,6 +717,7 @@ p_clusters <- ggplot(
     )
   ) +
   
+  # Clusterpunkte
   geom_point(size = 0.8, alpha = 0.7) +
   coord_equal() +
   scale_color_manual(
@@ -688,7 +730,11 @@ p_clusters <- ggplot(
   ) +
   theme_minimal()
 
+# Plot anzeigen
+
 p_clusters
+
+# Speichern
 
  ggsave(
    filename = paste0("plots/clusters_map_okabeito_minPts_", minPts_value, ".png"),
@@ -815,12 +861,13 @@ p_clusters_map
    dpi = 300
  )
 
-# Bedutung der Warnung
-# Die Berechnung des Beschriftungspunktes kann bei Grad-Koordinaten ungenau sein, weil sie eigentlich für projizierte Koordinaten gedacht ist --> Unkritisch, da nur Ort des Labels betroffen ist!
+# Bedeutung der Warnung
+# Die Berechnung des Beschriftungspunktes kann bei Grad-Koordinaten ungenau sein, weil sie eigentlich für projizierte Koordinaten gedacht ist 
+# --> Unkritisch, da nur der Ort des Labels betroffen ist
 
 ```
 
-# Cluster mit vollständiger Afrika-KArte
+# Cluster mit vollständiger Karte von Afrika
 
 ```{r}
 
@@ -844,8 +891,7 @@ africa_sf <- rnaturalearth::ne_countries(
 
 bbox_sahel <- st_bbox(GED_sahel_sf)
 
-# 3) Kartenausschnitt manuell anpassen
-# West/Ost wie in den Daten, Nordgrenze bis 35°N, Südgrenze ab 0°N
+# 3) Kartenausschnitt manuell anpassen --> Nordgrenze bis 28°N, Südgrenze ab 3°N
 
 bbox_africa_map <- bbox_sahel
 bbox_africa_map["ymin"] <- 3

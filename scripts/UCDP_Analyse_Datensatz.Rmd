@@ -17,7 +17,6 @@ knitr::opts_chunk$set(echo = TRUE)
 
 Georeferenzierte Daten zu Konfliktereignissen weltweit seit 1989
 
-
 ## Libraries laden (jedes Mal durchführen)
 
 ```{r, echo = FALSE}
