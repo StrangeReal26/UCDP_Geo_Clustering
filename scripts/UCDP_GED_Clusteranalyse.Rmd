@@ -736,13 +736,13 @@ p_clusters
 
 # Speichern
 
- ggsave(
-   filename = paste0("plots/clusters_map_okabeito_minPts_", minPts_value, ".png"),
-   plot = p_clusters,
-   width = 10,
-   height = 6,
-   dpi = 300
- )
+ # ggsave(
+ #   filename = paste0("plots/clusters_map_okabeito_minPts_", minPts_value, ".png"),
+ #   plot = p_clusters,
+ #   width = 10,
+ #   height = 6,
+ #   dpi = 300
+ # )
 
 ```
 
@@ -853,13 +853,13 @@ p_clusters_map
 
 # Speichern
 
- ggsave(
-   filename = paste0("plots/clusters_map_okabeito_sahel.png"),
-   plot = p_clusters_map,
-   width = 10,
-   height = 6,
-   dpi = 300
- )
+ # ggsave(
+ #   filename = paste0("plots/clusters_map_okabeito_sahel.png"),
+ #   plot = p_clusters_map,
+ #   width = 10,
+ #   height = 6,
+ #   dpi = 300
+ # )
 
 # Bedeutung der Warnung
 # Die Berechnung des Beschriftungspunktes kann bei Grad-Koordinaten ungenau sein, weil sie eigentlich für projizierte Koordinaten gedacht ist 
@@ -983,14 +983,14 @@ p_clusters_africa <- ggplot() +
 p_clusters_africa
 
 # Speichern
-
- ggsave(
-   filename = paste0("plots/clusters_map_okabeito_africa_complete.png"),
-   plot = p_clusters_africa,
-   width = 10,
-   height = 6,
-   dpi = 300
- )
+ # 
+ # ggsave(
+ #   filename = paste0("plots/clusters_map_okabeito_africa_complete.png"),
+ #   plot = p_clusters_africa,
+ #   width = 10,
+ #   height = 6,
+ #   dpi = 300
+ # )
 
 ```
 
@@ -1091,13 +1091,13 @@ p_conflicts <- ggplot(
 
 p_conflicts
 
-ggsave(
-  filename = paste0("plots/new_bar_conflicts_per_cluster_minPts_", minPts_value, ".png"),
-  plot = p_conflicts,
-  width = 10,
-  height = 6,
-  dpi = 300
-)
+# ggsave(
+#   filename = paste0("plots/new_bar_conflicts_per_cluster_minPts_", minPts_value, ".png"),
+#   plot = p_conflicts,
+#   width = 10,
+#   height = 6,
+#   dpi = 300
+# )
 
 ```
 
@@ -1123,12 +1123,12 @@ p_dominance <- ggplot(
 
 p_dominance
 
-ggsave(
-  filename = paste0("plots/new_bar_dominant_share_per_cluster_minPts_", minPts_value, ".png"),
-  plot = p_dominance,
-  width = 10,
-  height = 6,
-  dpi = 300
-)
+# ggsave(
+#   filename = paste0("plots/new_bar_dominant_share_per_cluster_minPts_", minPts_value, ".png"),
+#   plot = p_dominance,
+#   width = 10,
+#   height = 6,
+#   dpi = 300
+# )
 
 ```

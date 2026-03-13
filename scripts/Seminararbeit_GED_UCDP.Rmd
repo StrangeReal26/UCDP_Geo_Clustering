@@ -37,7 +37,7 @@ library(distill)
 
 Auch wenn der Kalte Krieg mehr als 30 Jahre her ist, gibt es auf der Welt weiterhin zahlreiche militärische Auseinandersetzungen. Die globale Aufrüstung wird weiter fortgeführt und die Umsätze der Rüstungsproduzenten steigen weiter an  [@sinram_weltweite_2025]. Dies mag vor allem am derzeitigen Krieg in der Ukraine und an den zahlreichen sowie andauernden Konflikten im Nahen Osten liegen, aber auch in Afrika hat sich die Zahl der Konflikte erhöht.
 
-Bezüglich Afrika hat sich die Anzahl von Bürgerkriegen seit 2013 bis 2023 von 15 auf 28 fast verdoppelt [@lacher_konflikte_2025]. Trotz dieser starken Entwicklung erhalten die afrikanischen Konflikte auf der internationalen Bühne jedoch nur wenig aufmerksamkeit [@frankfurter_rundschau_kriege_2025]. In diesem Zusammenhang wird in dieser Ausarbeitung der Blick auf die Konflikte in Afrika, insbesondere auf die Sahelzone, seit dem Jahr 2000 gerichtet.
+AUf dem afrikanischen Kontinent hat sich die Anzahl von Bürgerkriegen seit 2013 bis 2023 von 15 auf 28 fast verdoppelt [@lacher_konflikte_2025]. Trotz dieser starken Entwicklung erhalten die afrikanischen Konflikte auf der internationalen Bühne jedoch nur wenig aufmerksamkeit [@frankfurter_rundschau_kriege_2025]. In diesem Zusammenhang wird in dieser Ausarbeitung der Blick auf die Konflikte in Afrika, insbesondere auf die Sahelzone, seit dem Jahr 2000 gerichtet.
 
 Es wird die zentrale Frage gestellt, ob auschließlich anhand der geografischen Daten von Konfliktereignissen eine zutreffende Einordnung zu den übergeordnetetn Konflikten erreicht werden kann. Die zur Beantwortung der Fragestellung verwendete Analysemethode ist hierbei ein hierarchisches Clustering. Die genutzten Daten stammen aus dem Georeferenced Event Dataset (GED) in der Version 25.1 des Uppsala Conflict Data Program (UCDP) der Universität Uppsala [@uppsala_university_department_of_peace_and_conflict_ucdp_nodate]. Die gesamte Analyse der Daten wurde in einer separaten Markdown-Datei durchgeführt, in welcher alle Auswertungen und Ergebnisse in kommentierter Form vorhanden sind.
 
@@ -46,30 +46,19 @@ Die Seminararbeit ist in insgesamt sechs Kapitel unterteilt. Nach der Einleitung
 
 ## Vorstellung und deskriptive Beschreibung des Datensatzes
 
-Die in dieser Arbeit verwendeten Daten stammen, wie bereits benannt, aus dem GED in der Version 25.1 des UCDP. 
+Die in dieser Arbeit verwendeten Daten stammen, wie bereits benannt, aus dem GED in der Version 25.1 des UCDP. Bei diesem Datensatz des UCDP des Department of Peace and Conflict Research der Universität Uppsala handelt es sich um eine Ansammlung von Beobachtungen zu tödlicher GEwalöt auf Ereignisebene. Dies bedeutet, dass jede Analyseeinheit im Datensatz einem Fall organisierter Gewalt mit mindestens einem Todesopfer entspricht. Jedes Ereignis ist dabei mit mehreren räumlichen sowie zetilichen Angaben versehen, wie beispielsweise geographische Koordinaten, und besitzt unter anderem eine eindeutige ID zum Konflikt [@sundberg_introducing_2013].
 
-Bei diesem Programm des Instituts XXX der Universität Uppsala handelt es sich um XXX (Zitat mit Erklärung des Programms).
+Kurzgefasst enthält der Datensatz demnach georeferenzierte Informationen zu einzelnen gewaltsamen Ereignissen, welche den übergeordneten Konflikten klar zugeordnet werden können.Zusätzlich sind die Namen der Konflikte sowie der beteiligten Aktuere, die aufgeschlüsselten sowie gesamten Todeszahlen und Informationen zur Datenqualität hinterlegt. Bei Letzterem handelt es sich einerseits um die Informationsklarheit des Eriegnisses an sich und andererseits um die Präzision der zeitlichen Angaben [@hogbladh_ucdp_2025].
 
-Kurzgefasst enthält der Datensatz georeferenzierte Informationen zu einzelnen gewaltsamen Ereignissen von übergeordneten Konflikten.
-
-Für jedes Ereignis werden unter anderem Angaben zum Konflikt, zu den beteiligten Akteuren, zum genauen Ort, zur Zeit und zu den geschätzten Opferzahlen gemacht (Zitat Codebook).
-
-Für die vorliegende Arbeit wurde ein selbstständig gekürzter Datensatz verwendet, bei welchem mehrere nicht benötigte Variablen entfernt wurden, um die Größe der Daten insgesamt zu verringern.
-
-Die Analyse der Daten funktioniert jedoch gleichermaßen mit dem unveränderten Datensatz des Programms. 
-
-Darüber hinaus wurde der Datensatz modifiziert. Die ursprüngliche Version des GED-Datensatzes enthält weltweite Daten zu Konfliktereignissen über mehrere Jahrzehnte hinweg. Um den Umfang der Analyse zu reduzieren und gleichzeitig die Fragestellung stärker einzugrenzen, wurden die Daten gefiltert und für die Analyse technisch bereinigt sowie angepasst.
-
-Es wurden beispielsweise Variablenformate angepasst, wie das Festlegen der Längen- und Breitengrade als *numeric*, und Zeilen mit fehlenden geografischen Angaben entfernt, damit die spätere Clusteranalyse problemlos durchgeführt werden kann.
+Für die vorliegende Arbeit wurde ein selbstständig gekürzter Datensatz verwendet, bei welchem mehrere nicht benötigte Variablen entfernt wurden, um die Größe der Daten insgesamt zu verringern. Die Analyse der Daten funktioniert jedoch gleichermaßen mit dem unveränderten Datensatz des Programms. Darüber hinaus wurde der Datensatz für die Clusteranalyse modifiziert. Die ursprüngliche Version des GED-Datensatzes enthält weltweite Daten zu Konfliktereignissen über mehrere Jahrzehnte hinweg. Um den Umfang der Analyse zu reduzieren und gleichzeitig die Fragestellung stärker einzugrenzen, wurden die Daten gefiltert und für die Analyse technisch bereinigt sowie angepasst. Es wurden beispielsweise Variablenformate verändert, wie das Festlegen der Längen- und Breitengrade als *numeric*, und Zeilen mit fehlenden geografischen Angaben entfernt, damit die spätere Clusteranalyse problemlos durchgeführt werden kann.
 
 Für die deskriptive Begutachtung der Daten und für die Clusteranalyse wurden die Daten zudem auf Ereignisse ab dem Jahr 2000 begrenzt sowie nur Länder der Sahelzone mit einbezogen. Weitere Eingrenzungen der Daten für die Clusteranalyse werden im vierten Kapitel erläutert.
 
-Bei Ländern der Sahelzone handelt es sich im Kern um die Staaten Mauretanien, Mali, Burkina Faso, Niger, Tschad (Zitat Staaten Sahelzone). Zur Erweiterung der zu berücksichtigenden Daten wurden außerdem die Staaten Senegal und Sudan (inklusive Südsudan) mit einbezogen. 
+Bei den Ländern der Sahelzone handelt es sich im Kern um die Staaten Mauretanien, Mali, Burkina Faso, Niger, Tschad [@bmz_entwicklungszusammenarbeit_2025]. Zur Erweiterung der betrachteten Region wurden außerdem die Staaten Senegal und Sudan (inklusive Südsudan) mit einbezogen.
 
 Die Daten des gesamten verwendeten Datensatzes beinhalten 1.531 Konflikte und insgesamt 385.918 Konfliktereignisse, die den Zeilen bzw. Beobachtungen entsprechen. Zudem verzeichnet der Datensatz insgesamt 3.957.143 Tote, von denen 1.474.095 zivile Todesopfer sind. Die Konflikte selbst lassen sich zudem in 201 staatliche und 967 nichtstaatliche Konflikte unterteilen. Weitere 363 Konflikte gehören zur einseitigen Gewalt gegen Zivilisten. Die Zeit der erhobenen Daten beschränkt sich dabei auf 36 Jahre im Zeitraum von 1986 bis 2024.
 
 Bezogen auf Afrika und die Sahelzone haben sich deutlich weniger Konflikte und Todeszahlen ergeben, die trotzdem als hoch eingestuft werden können. Dieser Schluss wiegt vor dem Hintegrund, dass dabei nur die Ereignsse ab dem Jahr 2000 einbezogen wurden, umso schwerer. In Afrika wurden seit dem Jahr 2000 insgesamt 754 Konflikte mit 52.145 Ereignissen und 792.996 Toten gezählt. Mit Blick ausschließlich auf die Sahelzone sind es im selben Zeitraum 164 Konflikte, 9.282 Ereignisse und insgesamt 115.328 Toten. In beiden regionalen Bereichen waren die nichtstaatlichen Konflikte am stärksten vertreten.
-
 
 
 ## Forschungsfrage und Methodik
@@ -88,11 +77,11 @@ Der Grundgedanke der Analyse besteht darin, dass Konfliktereignisse desselben Ko
 
 ## Vorstellung und Durchführung der Analysemethode
 
-Zur Identifikation der räumlichen Muster der Konfliktereignisse wird ein dichtebasiertes Clusterverfahren verwendet.
+Zur Identifikation der räumlichen Muster der Konfliktereignisse wird ein dichtebasiertes Clusterverfahren verwendet. Die Kernidee des Density-Based Spatial Clustering of Applications with Noise (DBSCAN, dichtebasierte räumliche Clusteranalyse mit Rauschen) geht davon aus, dass ein Cluster eine Region im Datenraum mit hoher Dichte an Datenobjekten ist. Diese Methode des Clustering führte die Möglichkeiten ein, ohne vorherige Kenntnis der im Datensatz vorhandenen Klassen Cluster zu identifizieren und Ausreißer zu erkennen [@bushra_comparative_2021]. 
 
-Genaue Erklärung von DBSCAN und HDBSCAN mit Unterschieden (Zitat Bushra)
+Für die Durchführung des DBSCAN müssen trotzdem Parameter festgelegt werden, auf dessen Grundlage das Clustering durchgeführt wird. Der erste Parameter *Eps* definiert den Nachbarschaftsradius und bestimmt dadurch, welche Punkte zum selben Cluster gehören. Durch den zweiten Parameter *MinPts* wird die Mindestanzahl an Punkten angegeben, die innerhalb des Radius von *Eps* erfordleich ist, damit ein Kernpunkt klassifiziert wird. Dadurch werden aus den Kernpunkten dichte CLuster, wobei die Randpunkte inenrhalp von *Eps* liegen und Rauschpunkte die Dichtekriterien nicht erfüllen [@das_-depth_2025].
 
-Erklärung minPts (Zitat Das)
+Im Gegensatz zu DBSCAN braucht das Hierarchical DBSCAN (HDBSCAN, hierarchisches DBSCAN), welches in der hier behandelten Analyse angewendet wird, keine Parameter für die Festlegung des Radius. Das HDBSCAN ist bezüglich des *Eps* selbstanpassend und verwendet unterschiedliche Abstände, wodurch Cluster mit verschiedenen Dichten möglich sind [@esri_density-based_nodate]. DIe *MinPts* müssen jedoch, wie im letzten Schritt der Analyse zu sehen ist, festgelegt werden.
 
 Die Analyse wurde vollständig mit der Statistiksoftware R in der Entwicklungsumgebung RStudio durchgeführt. Zur Trennung zwischen Ausarbeitung des Themas und Analyse der Daten wurden, wie bereits in der Einleitung beschrieben, zwei R-Markdown-Dateien verwendet. Diese Arbeit bezieht sich dabei auf die durchgeführte Analyse und den kommentierten Code der Analysedatei. Außerdem integriert sie die Abbildungen und Diagramme der Clusteranalyse in den Ergebnisteil der Arbeit.
 
@@ -128,8 +117,6 @@ Im ersten Schritt der Clusteranalyse wurden die Daten eingegrenzt. Da sich die A
 
 ```{r, eval=FALSE}
 
-# Neuer Datensatz wird erstellt mit allen vorherigen Variablen und mit einer neuen Spalte geometry (geometrischer Punkt)
-
 GED_sahel_sf <- GED_sahel |>
   st_as_sf(
     coords = c("longitude", "latitude"),  # x = longitude, y = latitude
@@ -137,61 +124,25 @@ GED_sahel_sf <- GED_sahel |>
     remove = FALSE                        # Datensatz behält latitude/longitude als Spalten
   )
 
-# Zweck: Umwandlung des Datensatzes in ein räumliches sf-Objekt
-
-# sf ("simple features") ist ein Datenformat für Geodaten in R, bei dem jeder Datensatz eine Geometrie (einen Punkt) besitzt
-
-# CRS = Coordinate Reference System
-# Es beschreibt, wie Koordinaten auf der Erdoberfläche interpretiert werden
-
-# EPSG:4326 entspricht dem geographischen Koordinatensystem WGS84, das auch von GPS-Systemen verwendet wird
-# Die Koordinaten liegen hier in Grad vor (Breite/Länge)
-
 ```
 
-Der zweite Schritt der Analyse besteht aus der Überführung der geographischen Daten (Längen- und Breitengrade) der Konfliktereignisse in ein räumliches Datenformat.
+Der zweite Schritt der Analyse besteht aus der Überführung der geographischen Daten (Längen- und Breitengrade) der Konfliktereignisse in ein räumliches Datenformat. Hierzu wurde das R Paket "sf" verwendet. Dieses Paket eröffnet den zugriff auf Simple Features (SF), bei denen es sich um eine standardisierte Methode zur Kodierung und Analyse von Vektordaten handelt [@pebesma_sf_2026].
 
-Hierzu wurde das R Paket "sf" verwendet.
-
-Dieses Paket eröffnet den zugriff auf Simple Features (SF), bei denen es sich um eine standardisierte Methode zur Kodierung und Analyse von Vektordaten handelt (Zitat sf).
-
-Im Code werden die geographischen Daten nun in ein SF-Objekt umgewandelt. Der definierte Vektor *coords* greift auf die im Datensatz vorhandenen Daten zu den Längen- und Breitengraden zu, um diese dann über das Coordinate Reference System (CRS) mit der Nummer 4326 als geometrische Punkte zu definieren. Das CRS 4326 steht hierbei für das geographische Koordinatensystem World Geodetic System 84 (WGS84). Im nächsten Schritt wir dann auf die im SF-Objekt gespeicherten Koordinatenpunkte zugegriffen.
+Im Code werden die geographischen Daten nun in ein SF-Objekt umgewandelt. Der definierte Vektor *coords* greift auf die im Datensatz vorhandenen Daten zu den Längen- und Breitengraden zu, um diese dann über das Coordinate Reference System (CRS) mit der Nummer 4326 als geometrische Punkte zu definieren. Das CRS 4326 steht hierbei für das World Geodetic System 84 (WGS84), welches das am häufigsten verwendete geographische Koordinatensystem auf der Welt ist und auf dem GPS-Messungen basieren [@esri_wgs84_nodate]. Im nächsten Schritt wir auf die im SF-Objekt gespeicherten Koordinatenpunkte zugegriffen.
 
 **Definition der Kartenprojektion**
 
 ```{r, eval=FALSE}
 
-# Zweck: Für Distanz- und Clusteranalysen müssen Koordinaten in einem metrischen Koordinatensystem vorliegen, da geographische Koordinaten (Grad) keine konstanten Distanzen darstellen.
-
-# LAEA = Lambert Azimuthal Equal Area
-# Eine flächentreue Kartenprojektion, die Verzerrungen um das definierte Projektionszentrum minimiert.
-
-# Neuer Datensatz wird erstellt
-# Es werden die Vorherig erstellten Koordinaten in Meter-Koordinaten auf Grundlage des LAEA erzeugt
-
-
-# 1) Projektion eines Koordinatenreferenzsystem definieren (LAEA) –> Zentrum grob in der Sahelzone
-
-# Das Projektionszentrum (15°N, 10°E) liegt ungefähr im Zentrum der Sahelzone, wodurch räumliche Verzerrungen reduziert werden.
-
 crs_laea_sahel <- "+proj=laea +lat_0=15 +lon_0=10 +datum=WGS84 +units=m +no_defs"
 
-
-# 2) Transformation der Daten von WGS84 (Grad) zu LAEA (Meter)
 
 GED_sahel_laea <- GED_sahel_sf |>
   st_transform(crs = crs_laea_sahel)
 
 
-# 3) x/y-Koordinaten (in Metern) aus der Geometrie extrahieren
-
-# Die Funktion st_coordinates() extrahiert die projizierten x/y-Koordinaten aus der Geometrie
-# Wird in coords_m abgespeichert und im nächsten Schritt wieder darauf zugegriffen
-
 coords_m <- st_coordinates(GED_sahel_laea)
 
-
-# Zusatz: x/y als Spalten zum Datensatz hinzufügen
 
 GED_sahel_laea <- GED_sahel_laea |>
   mutate(
@@ -203,49 +154,21 @@ GED_sahel_laea <- GED_sahel_laea |>
 
 In diesem Schritt wurde die Kartenprojektion erstellt. Diese ist die Grundlegend für die anschließende Clusteranalyse, da sie mit den Daten dieser Projektion durchgeführt wird. Der Zweck liegt darin, dass die Koordinaten für eine Distanzanalyse innerhalb eines metrischen Koordinatensystems voliegen müssen, damit die Entfernungen korrekt berechnet werden können. Bei geographischen Daten, wie die Längen- und Breitengrade, werden keine konstanten Distanzen dargestellt. Diesbezüglich ist dieser Teil der Analyse nochmals in drei Teilschritte unterteilt.
 
-Zuerst wird ein Koordinatenreferenzsystem auf Grundlage der Lambert Azimuthal Equal-Area (LAEA) Projektion definiert. Die LAEA-Projektion bewahrt die tasächlichen relativen Größenverhältnisse der Landmassen. Hierbei wird die Welt von einem beliebigen Punkt auf dem Globus auf eine ebene Fläche projiziert.
+Zuerst wird ein Koordinatenreferenzsystem auf Grundlage der Lambert Azimuthal Equal-Area (LAEA) Projektion definiert. Die LAEA-Projektion bewahrt die tasächlichen relativen Größenverhältnisse der Landmassen. Hierbei wird die Welt von einem beliebigen Punkt auf dem Globus auf eine ebene Fläche projiziert [@esri_lambert_nodate].
 
-(Zitat esri)
+Da es sich bei diesem Koordinatensystem um eine flächentreue (equal-area) Projektion handelt, besitzt diese Abbildung einen konstanten Flächenmaßstab [@steinert_flachentreue_nodate]. Die Abstände in diesem System können demnach als metrisch kategorisiert werden, was weitere Berechnungen, wie das Clustering, ermöglicht. Das Projektionszentrum wurde bei 15 Grad nördlicher Breite und 10 Grad östlicher Länge gesetzt, weil dieser Punkt ungefähr im Zentrum der Sahelzone liegt. Dadurch sollen räumliche Verzerrungen reduziert werden.
 
-Das Projektionszentrum wurde bei 15°N und 10°E gesetzt, weil dieser ungefähr im Zentrum der Sahelzone liegt. Dadurch sollen räumliche Verzerrungen reduziert werden.
-
-Im nächsten Teilschritt werden die Daten aus dem WSG84-Koordinatensystem (Grad) in die neu erstellte LAEA-Projektion (Meter) transformiert.
-
-Der dritte Teilschritt dient dazu die projizierten Koordinaten aus der Geometrie zu extrahieren und in *coords_m* abzuspeichern. Dadurch kann im nächsten Schritt auf diese nun metrischen Daten wieder zugegriffen werden.
-
-Es können demnach die Entfernungen zwischen den Ereignissen korrekt berechnet werden. 
+Im nächsten Teilschritt werden die Daten aus dem WSG84-Koordinatensystem (Grad) in die neu erstellte LAEA-Projektion (Meter) transformiert. Woran anschließend im dritten Teilschritt die projizierten Koordinaten aus der Geometrie extrahiert und in *coords_m* abgespeichert werden. Dadurch kann im nächsten Schritt auf diese nun metrischen Daten wieder zugegriffen werden und die Entfernungen zwischen den Ereignispunkten können korrekt berechnet werden.
 
 **Clusteranalyse**
 
 ```{r, eval=FALSE}
 
-# HDBSCAN clustering (explorativ)
-
-
-# 1) Parameter setzen: Mindestgröße/Robustheit eines Clusters
-
-# HDBSCAN ist ein dichtebasiertes Clusterverfahren, das Cluster als Regionen hoher Punktdichte identifiziert
-# Es ist eine Erweiterung des DBSCAN-Algorithmus und kann Cluster unterschiedlicher Dichte erkennen
-
-# minPts definiert die minimale Anzahl von Punkten, die in einer lokalen Nachbarschaft vorhanden sein müssen, damit eine Region als Cluster erkannt wird
-
 minPts_value <- 30
 
-# 2) HDBSCAN ausführen
-# coords_m ist eine Matrix: Spalte 1 = x (m), Spalte 2 = y (m)
 
 hdb <- hdbscan(coords_m, minPts = minPts_value)
 
-# 3) Ergebnisse an Datensatz anhängen
-
-# cluster: 0 = noise (kein Cluster), 1..k = Cluster-IDs
-# membership_prob: "Sicherheit" der Zuordnung (0..1)
-
-# membership_prob beschreibt die Sicherheit, mit der ein Punkt einem Cluster zugeordnet wird
-# Werte nahe 1 bedeuten eine stabile Clusterzugehörigkeit
-
-# Die Anzahl der Cluster wird automatisch vom Algorithmus bestimmt
-# Anders als bei k-means muss die Clusterzahl nicht vorgegeben werden
 
 GED_sahel_laea <- GED_sahel_laea |>
   mutate(
@@ -255,26 +178,20 @@ GED_sahel_laea <- GED_sahel_laea |>
 
 ```
 
-Der vierte und letzte Schritt der Analyse ist nun die angepeilte Clusteranalyse.
+Der vierte und letzte Schritt der Analyse ist nun die angepeilte Clusteranalyse nach dem HDBSCAN-Verfahren. Für die Durchführung des Clusterings wurde, wie bereits genannt, das R Paket *dbscan* verwendet. Dieses bietet mehrere dichtebasierte Algorithmen mit Schwerpunkt auf der DBSCAN-Familie [@hahsler_r_2025].
 
-Für die Durchführung des Cluster-Verfahrens wurde, wie bereits genannt, das R Paket *dbscan* verwendet.
+Vor der Durchführung des Verfahrens wurden zuerst die *MinPts* festgelegt. Hierbei wurde ein Wert von 30 Punkten angepeilt, um stabile Cluster in verschiedenen Größen zu erhalten und gleichzeitig zufällige Dichtemuster zu ignorieren.
 
-(Zitat dbscan Paket)
-
-Vor der Durchführung des Verfahrens müssen zuerst die *minPts* festgelegt werden.
-
-Bei den minPts handelt es sich um XXX.
+Daraufhin wurde mit dem definierten Parameter der *MinPts* und den zuvor projizierten Koordinaten, die in *coords_m* abgespeichert sind, das Clustering durchgeführt. Die Anzahl der Cluster wird dabei vom Algorithmus automatisch bestimmt und mit einer Zahl benannt (cluster_id). Zusätzlich wird angegeben, wie stabil bzw. sicher ein Punkt einem Cluster zugeordnet ist (cluster_prob). Zuletzt werden diese neu gewonnenen Daten in den Datensatz mit allen anderen Variablen integriert (GED_sahel_laea).
 
 Im Anschluss an die Analyse wurden mehrere Auswertungsschritte durchgeführt. Zunächst wurde die räumliche Verteilung der identifizierten Cluster kartographisch dargestellt. Daraufhin wurde untersucht, wie viele unterschiedliche Konflikte innerhalb eines Clusters auftreten und welcher Konflikt jeweils den größten Anteil innerhalb eines Clusters ausmacht. Die Ergebnisse werden im nächsten Kapitel anhand mehrerer Diagramme vollends beschrieben.
-
-(Zitat rnaturalearth und rnaturalearthdata Pakete)
 
 
 ## Ergebnisse Clusteranalyse
 
 Die Anwendung des HDBSCAN-Verfahrens auf die geographischen Daten der Konfliktereignisse führte zur Identifikation von insgesamt 10 räumlichen Clustern. Zusätzlich wurden insgesamt 4,88 % der Punkte bzw. Ereignisse vom Algorithmus als sogenannte Noise-Punkte klassifiziert, die zu keinem Cluster gehören.
 
-Die Cluster werden in den beiden ersten folgenden Diagrammen anhand der Längen- und Breitengrade dargestellt. Die Diagramme zeigen die Konfliktereignisse demnach als Punkte im geographischen Raum. Dabei sind die Ereignisse desselben Clusters jewisl in derselben Farbe dargestellt. Für die Einfärbung der Cluster bzw. Punkte wurde die Farbpalette nach Okabe und Ito (Zitat) ausgewählt, um eine farbliche Unterscheidung auch für Farbenblinde zu ermöglichen. Da diese Palette jedoch nur sieben differenzierte Farben angibt, wurden drei weitere Farben hinzugefügt, welche sich an jeweils einer Farbe der Palette orientieren. In Abbildung 1 sind die Punkte in einem leeren Koordinatensystem der Gradzaheln angegeben, wohingegen in Abbildung 2 unter die Punkte der Cluster eine Karte von Nordafrika gelegt wurde, um die Cluster einfacher räumlich einordnen zu können.
+Die Cluster werden in den beiden ersten folgenden Diagrammen anhand der Längen- und Breitengrade dargestellt. Die Diagramme zeigen die Konfliktereignisse demnach als Punkte im geographischen Raum. Dabei sind die Ereignisse desselben Clusters jewisl in derselben Farbe dargestellt. Für die Einfärbung der Cluster bzw. Punkte wurde die Farbpalette nach Okabe und Ito [@okabe_color_2002] ausgewählt, um eine farbliche Unterscheidung auch für Farbenblinde zu ermöglichen. Da diese Palette jedoch nur sieben differenzierte Farben angibt, wurden drei weitere Farben hinzugefügt, welche sich an jeweils einer Farbe der Palette orientieren. In Abbildung 1 sind die Punkte in einem leeren Koordinatensystem der Gradzaheln angegeben, wohingegen in Abbildung 2 unter die Punkte der Cluster eine Karte von Nordafrika gelegt wurde, um die Cluster einfacher räumlich einordnen zu können.
 
 ::: {.l-screen}
 <div style="width:70%; margin:auto;">
@@ -343,14 +260,15 @@ Zusammenfassung der Ergebnisse
 -Zwei homogene Cluster und zwei heterogene Cluster
 -Eingrenzung und Zuweisung von Konflikten anhand geographischer Daten teilweise möglich
 
-
 Limitationen
 -Größe des Zeitraums
 -Unterschiedliche (bzw. immer neue) Gruppen kämpfen in den selben Regionen (und um die selben Objekte)
--
+-Art des Kofliktes nicht berücksichtigt
 
 Ausblick und weitere Analysen
--
+-Kleinerer Zeitraum als Vergleich
+-Konflikte in Zukunft eher weiter gestreut durch den Einsatz von weitreichenden Raketen, Marschflugkörpern und Drohnen
+-Selbige Annahme in Afraika fraglich
 
 
 
