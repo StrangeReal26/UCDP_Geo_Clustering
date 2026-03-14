@@ -63,16 +63,13 @@ Bezogen auf Afrika und die Sahelzone haben sich deutlich weniger Konflikte und T
 
 ## Forschungsfrage und Methodik
 
-Der Mittelpunkt dieser Arbeit ist die Frage, ob sich aus der räumlichen Verteilung von Konfliktereigissen Rückschlüsse auf die zugrunde liegenden Konflikte des GED ziehen lassen. Es wird dabei weiterführend untersucht, ob Ereignisse desselben Konflikts auch räumlich betrachtet in ähnlichen Regionen auftreten oder ob sich die Ereignisse unterschiedlicher Konflikte in einem Cluster überlagern.
-
-Die zentrale Forschungsfrage der Arbeit lautet daher:
+Der Mittelpunkt dieser Arbeit ist die Frage, ob sich aus der räumlichen Verteilung von Konfliktereigissen Rückschlüsse auf die zugrunde liegenden Konflikte des GED ziehen lassen. Es wird dabei weiterführend untersucht, ob Ereignisse desselben Konflikts auch räumlich betrachtet in ähnlichen Regionen auftreten oder ob sich die Ereignisse unterschiedlicher Konflikte in einem Cluster überlagern. Die zentrale Forschungsfrage der Arbeit wird im Folgenden ausformuliert:
 
 **In welchem Maße entsprechen räumlich identifizierte Cluster von Konfliktereignissen in der Sahlezone den übergeordneten Konflikten, denen die Ereignisse im GED-Datensatz des UCDP zugeordnet sind?**
 
 Zur Untersuchung dieser Fragestellung wird ein explorativer Ansatz gewählt. Ziel der Analyse ist es durch die Anwendung eines Clusterverfahrens räumliche Muster zu identifizieren, die anschließend mit den vorhandenen Konfliktinformationen des Datensatzes verglichen werden. Es ist nicht beabsichtigt eine vorab definierte Hypothese zu testen, sondern im Kern die räumliche Dimension der Konfliktdaten sichtbar zu machen.
 
 Der Grundgedanke der Analyse besteht darin, dass Konfliktereignisse desselben Konflikts häufig innerhalb eines ähnlichen geografischen Bereichs stattfinden. Sollten die Cluster der Konfliktereignisse häufig von einem einzelnen Konflikt dominiert werden, dann bestätigt sich diese Annahme. Im Umkehrschluss würde eine starke Durchmischung unterschiedlicher Konflikte innerhalb eines Clusters darauf hinweisen, dass räumliche Nähe alleine nicht ausreicht, um Konflikte voneinander zu unterscheiden.
-
 
 
 ## Vorstellung und Durchführung der Analysemethode
@@ -235,7 +232,15 @@ Abbildung 3: Anzahl übergeordneter Konflikte je Cluster
 </div>
 :::
 
-Anzahl der Konflikte je Cluster
+Neben der räumlichen Verteilung wurde auch die Zusammensetzung der Cluster bezüglich der übergeordneten Konflikte untersucht. Dazu wurde einerseits ausgewertet, wie viele unterschiedliche Konflikte innerhalb eines Clusters auftreten, und andererseits wurden die Anteile des dominanten Konflikts je Cluster dargestellt. Diese beiden Informationen werden in Abbildung 3 und Abbildung 4 jeweils in einem Balkendiagramm abgebildet.
+
+Es hat sich bei der Anzahl der Konflikte pro Cluster ein klares Bild gezeigt. Die beiden größten Cluster der Analyse, die Cluster Nummer 7 und 10, besitzen mit jeweils ungefähr 40 Konflikten eine sehr heterogene zusammensetzung.
+
+Im Gegensatz dazu bestehen die anderen Cluster, die von ihrer Größe her nicht an die größten Cluster heranreichen, aus weit weniger unterschiedlichen Konflikten.
+
+Hier kann demnach davon ausgegangen werden, dass mit der steigender Größe und geringerer Dichte die Anzahl an übergeordneten Konflikten eines Clusters steigt.
+
+Um diese Annahme zu prüfen, wird in der nächsten Abbildung der Blick auf den Anteil des Dominanten Konflikts gerichtet.
 
 ::: {.l-screen}
 <div style="width:50%; margin:auto;">
@@ -249,8 +254,9 @@ Abbildung 4: Anteil des dominaten Konflikts je Cluster
 </div>
 :::
 
-Anteil der Punkte des dominanten Konflikts in Bezug auf die gesamten Punkte des Clusters 
+Anahnd der Abbildung 4 bestätigt sich, zumindest bezogen auf das Cluster Nummer 10, die Annahme eines heterogenen Clusters bei ausgeprägter Größe.
 
+Der Anteil der Punkte des dominanten Konflikts in Bezug auf die gesamten Punkte des Clusters Nummer 10 liegt bei knappen 20 %.
 
 
 ## Zusammenfassende Schlussbetrachtung
