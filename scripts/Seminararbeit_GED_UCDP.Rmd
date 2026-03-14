@@ -184,11 +184,11 @@ Daraufhin wurde mit dem definierten Parameter der *MinPts* und den zuvor projizi
 Im Anschluss an die Analyse wurden mehrere Auswertungsschritte durchgeführt. Zunächst wurde die räumliche Verteilung der identifizierten Cluster kartographisch dargestellt. Daraufhin wurde untersucht, wie viele unterschiedliche Konflikte innerhalb eines Clusters auftreten und welcher Konflikt jeweils den größten Anteil innerhalb eines Clusters ausmacht. Die Ergebnisse werden im nächsten Kapitel anhand mehrerer Diagramme vollends beschrieben.
 
 
-## Ergebnisse Clusteranalyse
+## Ergebnisse der Clusteranalyse
 
-Die Anwendung des HDBSCAN-Verfahrens auf die geographischen Daten der Konfliktereignisse führte zur Identifikation von insgesamt 10 räumlichen Clustern. Zusätzlich wurden insgesamt 4,88 % der Punkte bzw. Ereignisse vom Algorithmus als sogenannte Noise-Punkte klassifiziert, die zu keinem Cluster gehören.
+Die Anwendung des HDBSCAN-Verfahrens auf die geographischen Daten der Konfliktereignisse führte zur Identifikation von insgesamt 10 räumlichen Clustern. Zusätzlich wurden insgesamt 4,88 % der Punkte bzw. Ereignisse vom Algorithmus als sogenannte Noise-Punkte klassifiziert, die zu keinem Cluster gehören. Es wurden demnach über 90 % der Punkte einem Cluster konkret zugeordnet.
 
-Die Cluster werden in den beiden ersten folgenden Diagrammen anhand der Längen- und Breitengrade dargestellt. Die Diagramme zeigen die Konfliktereignisse demnach als Punkte im geographischen Raum. Dabei sind die Ereignisse desselben Clusters jewisl in derselben Farbe dargestellt. Für die Einfärbung der Cluster bzw. Punkte wurde die Farbpalette nach Okabe und Ito [@okabe_color_2002] ausgewählt, um eine farbliche Unterscheidung auch für Farbenblinde zu ermöglichen. Da diese Palette jedoch nur sieben differenzierte Farben angibt, wurden drei weitere Farben hinzugefügt, welche sich an jeweils einer Farbe der Palette orientieren. In Abbildung 1 sind die Punkte in einem leeren Koordinatensystem der Gradzaheln angegeben, wohingegen in Abbildung 2 unter die Punkte der Cluster eine Karte von Nordafrika gelegt wurde, um die Cluster einfacher räumlich einordnen zu können.
+Die Cluster werden in den beiden ersten folgenden Diagrammen anhand der Längen- und Breitengrade dargestellt, um sie mit einer Karte von Nordafrika verbinden zu können. Dabei zeigen die Diagramme die Konfliktereignisse als Punkte im geographischen Raum. Zur Unterscheidung werden die Ereignisse desselben Clusters jeweils in derselben Farbe dargestellt. Für die Einfärbung der Cluster bzw. Punkte wurde die Farbpalette nach Okabe und Ito [@okabe_color_2002] ausgewählt, um eine farbliche Differenzierung auch für Farbenblinde zu ermöglichen. Da diese Palette jedoch nur sieben unterschiedliche Farben angibt, wurden drei weitere Farben hinzugefügt, welche sich an je einer Farbe der Palette orientieren. In Abbildung 1 sind die Punkte in einem leeren Koordinatensystem der Gradzaheln angegeben, wohingegen in Abbildung 2 unter die Punkte der Cluster eine Karte von Nordafrika gelegt wurde, damit die Cluster einfacher räumlich einzuordnen sind. Punkte, die als Noise eingestuft wurden, sind schwarz dargestellt.
 
 ::: {.l-screen}
 <div style="width:70%; margin:auto;">
@@ -202,7 +202,7 @@ Abbildung 1: Konflikt-Cluster mit Längen- und Breitengraden
 </div>
 :::
 
-Wie in der Abbildung 1 zu erkennen ist, bilden sich mehrere deutlich abgegrenzte Konfliktzonen. Einige dieser Cluster umfassen eine große Anzahl an Ereignissen und erstrecken sich über größere Abschnitte. Andere Cluster sind deutlich kleiner und räumlich stärker konzentriert.
+Die Abbildung 1 zeigt die identifizierten Cluster ausschließlich auf Grundlage der Längen- und Breitengrade der Ereignisse. In der Darstellung wird deutlich, dass sich mehrere deutlich voneinander abgegrenzte Konfliktzonen und -zentren innerhalb der Sahelzone erkennen lassen. Einige dieser Cluster umfassen eine große Anzahl an Ereignissen und erstrecken sich über größere Teile der Region. Dahingegen sind andere Cluster deutlich kleiner und räumlich stärker konzentriert.
 
 ::: {.l-screen}
 <div style="width:70%; margin:auto;">
@@ -216,9 +216,13 @@ Abbildung 2: Konflikt-Cluster über einer Karte von Afrika
 </div>
 :::
 
-Zur besseren räumlichen Einordnung der Cluster zeigt die Abbildung 2 zusätzlich eine Karte des afrikanischen Kontinents, der passend zu den Längen- und Breitengraden unter die Cluster gelegt wurde. Dadurch werden verschiedene Aspekte hervorgehoben. Es wird sichtbar, wo sich die Länder der Sahelzone befinden und wie groß die räumliche Ausdehnung der Cluster im Verhältnis zum Kontinet ist. Außerdem ist zu erkennen, wo genau sich die Cluster auf dem Kontinent befinden und an welchen Grenzen sich diese aufhalten.
+Zur besseren räumlichen Einordnung der Cluster zeigt die Abbildung 2 zusätzlich eine Karte des afrikanischen Kontinents, die passend zu den Längen- und Breitengraden unter die Cluster gelegt wurde. Dadurch werden verschiedene Aspekte hervorgehoben. Es wird sichtbar, wo sich die Länder der Sahelzone befinden und wie groß die räumliche Ausdehnung der Cluster im Verhältnis zum Kontinent ist. Außerdem ist zu erkennen, wo genau sich die Cluster auf dem Kontinent befinden und an welchen Ländergrenzen sich diese aufhalten.
 
-Bei Betrachtung der beiden Abbildungen fallen die beiden größten Cluster Nummer 7 und 10 auf. Das Cluster 7 hat insgesamt 1.356 Ereignisse zugeordnet bekommen, während das Cluster 10 mit 3.378 Ereignissen mehr als doppelt so groß ist von der Anzahl her. Zudem ist dieses Cluster augenscheinlch auch bezogen auf die Ausdehnung am größten. Alle anderen Cluster befinden sich in einem Bereich von 54 Punkten bis 340 Punkten. Anhand der nächsten Diagramme wird ersichtlich, wie homgen oder heterogen die Cluster sind, was Aufschluss darüber gibt, inwiefern sich das Clustering zur geopraphischen Identifikation von Konflikten eignet.
+Bei Betrachtung der beiden Abbildungen fallen die beiden größten Cluster Nummer 7 und 10 auf. Das Cluster 7 hat insgesamt 1.356 Ereignisse zugeordnet bekommen, während das Cluster 10 mit 3.378 Ereignissen mehr als doppelt so groß ist. Zudem ist dieses Cluster augenscheinlch auch bezogen auf die Ausdehnung am größten. Alle anderen Cluster befinden sich in einem Bereich von 54 Punkten bis 340 Ereignispunkten.
+
+Besonders auffällig ist das große Cluster 10, welches sich über Teile von Mali, Burkina Faso und Niger ausbreitet. Das Cluster 7 ist im Gegensatz nur im Westen des Sudans angesiedelt und hat scheinbar die Grenze zu Tschad als Begrenzung der Ereignisse. Daneben gibt es jedoch auch zahlreiche stark konzentrierte Cluster, wie das CLuster 9 bei Senegal und das Cluster 6 an der südlichen Landesgrenze vom Sudan. Bemerkenswert sind zudem die Cluster 8 und 1, die sich an mehreren Landesgrenzen entlang bewegen.
+
+Anhand der nächsten Diagramme wird ersichtlich, wie homogen oder heterogen die Cluster sind. Dies gibt Aufschluss darüber, inwiefern sich das Clustering zur geopraphischen Identifikation von Konflikten eignet.
 
 ::: {.l-screen}
 <div style="width:50%; margin:auto;">
@@ -232,15 +236,11 @@ Abbildung 3: Anzahl übergeordneter Konflikte je Cluster
 </div>
 :::
 
-Neben der räumlichen Verteilung wurde auch die Zusammensetzung der Cluster bezüglich der übergeordneten Konflikte untersucht. Dazu wurde einerseits ausgewertet, wie viele unterschiedliche Konflikte innerhalb eines Clusters auftreten, und andererseits wurden die Anteile des dominanten Konflikts je Cluster dargestellt. Diese beiden Informationen werden in Abbildung 3 und Abbildung 4 jeweils in einem Balkendiagramm abgebildet.
+Neben der räumlichen Verteilung wurde auch die Zusammensetzung der Cluster bezüglich der übergeordneten Konflikte untersucht. Dazu wurde einerseits ausgewertet, wie viele unterschiedliche Konflikte innerhalb eines Clusters auftreten, und andererseits wurden die Anteile des dominanten Konflikts je Cluster dargestellt. Diese beiden Informationen werden in Abbildung 3 und Abbildung 4 jeweils in einem Säulendiagramm abgebildet.
 
-Es hat sich bei der Anzahl der Konflikte pro Cluster ein klares Bild gezeigt. Die beiden größten Cluster der Analyse, die Cluster Nummer 7 und 10, besitzen mit jeweils ungefähr 40 Konflikten eine sehr heterogene zusammensetzung.
+Es hat sich bei der Anzahl der Konflikte pro Cluster ein differenziertes Bild gezeigt. Während einige Cluster nur wenige unterschiedliche Konflikte enthalten, weisen andere Cluster eine deutlich höhere Konfliktvielfalt auf. Auffallend sind hierbei die beiden größten Cluster der Analyse. Die Cluster 7 und 10 besitzen mit jeweils ungefähr 40 Konflikten eine sehr heterogene Zusammensetzung und enthalten mit Abstand die höchtse Anzahl an unterschiedlichen Konflikten.
 
-Im Gegensatz dazu bestehen die anderen Cluster, die von ihrer Größe her nicht an die größten Cluster heranreichen, aus weit weniger unterschiedlichen Konflikten.
-
-Hier kann demnach davon ausgegangen werden, dass mit der steigender Größe und geringerer Dichte die Anzahl an übergeordneten Konflikten eines Clusters steigt.
-
-Um diese Annahme zu prüfen, wird in der nächsten Abbildung der Blick auf den Anteil des Dominanten Konflikts gerichtet.
+Im Gegensatz dazu bestehen die anderen Cluster, die von ihrer Größe her nicht an die Cluster 7 und 10 heranreichen, aus weit weniger unterschiedlichen Konflikten. Dies deutet darauf hin, dass sich in diesen Regionen Konfliktereignisse stärker auf einzelne Konflikte konzentrieren.
 
 ::: {.l-screen}
 <div style="width:50%; margin:auto;">
@@ -254,31 +254,28 @@ Abbildung 4: Anteil des dominaten Konflikts je Cluster
 </div>
 :::
 
-Anahnd der Abbildung 4 bestätigt sich, zumindest bezogen auf das Cluster Nummer 10, die Annahme eines heterogenen Clusters bei ausgeprägter Größe.
+Ein genaueres Bild bezüglich der Zusammensetzung der Cluster ergibt sich durch die Betrachtung des sogenannten Dominanzanteils eines Konflikts innerhalb eines Clusters. Dieser Anteil gibt an, welchen Prozentsatz der am häufigsten vorkommende Konflikt eines Clusters an der Gesamtanzahl der Ereignisse ausmacht. Die entsprechenden Werte sind in der Abbildung 4 dargestellt.
 
-Der Anteil der Punkte des dominanten Konflikts in Bezug auf die gesamten Punkte des Clusters Nummer 10 liegt bei knappen 20 %.
+Anhand des Diagramms lässt sich erkennen, dass einige Cluster eine relativ hohe Dominanz und somit auch eine stärkere Homogenität aufweisen. Besonders deutlich wird dies bei Cluster 2, bei dem mehr als 80 % der Ereignisse auf einen einzigen Konflikt zurücjzuführen sind. Auch das Cluster 9 besitzt mit knappen 70 % einen hohen Dominanzanteil auf. Es kann bei einem Vergleich der beiden Säulendiagramme außerdem festgehalten werden, dass Cluster mit weniger als 10 unterschiedlichen Konflikten einen Dominanzanteil von über 50 % besitzen.
+
+Andere Cluster weisen hingegen eine deutlich geringere Dominanz eines einzelnen Konflikts auf. Der Dominazanatiel bei Cluster 10 liegt beispielsweise nur bei etwa 25 %. In diesen Fällen verteilen sich die Ereignisse demnach auf eine größere Anzahl unterschiedlicher Konflikte, wodurch diese Cluster eine heterogenere Struktur aufweisen.
+
+Die Kombination der beiden Auswertungen zeigt, dass sich räumliche Cluster von Konfliktereigissen teilweise stark mit einzelnen Konflikten decken, während andere Cluster mehrere Konflikte innerhalb desselben geographischen Raums erfassen. Insbedonder größere Cluster tendieren dazu, mehrere Jonflikte zu enthalten. Demgegenüber werden räumlich kleiner Cluster häufiger von einzelnen Konflikten dominiert. Insgesamt deutet die Analyse darauf hin, dass geographische Nähe ein wichtiger Faktor für die Abgrenzung von Konflikten sein kann, jedoch alleine nicht ausreichend ist.
 
 
 ## Zusammenfassende Schlussbetrachtung
 
-Zusammenfassung der Ergebnisse
--Ausgeglichenes Ergebnis
--Zwei homogene Cluster und zwei heterogene Cluster
--Eingrenzung und Zuweisung von Konflikten anhand geographischer Daten teilweise möglich
+Das Ziel dieser Arbeit war es zu untersuchen, in welchem Maß sich Konflikte innerhalb der Sahelzone allein anhand der geographischen Verteilung von Konfliktereignissen voneinander abgrenzen lassen. Zu diesm Zweck wurde eine dichtebasierte Clusteranalyse nach dem HDBSCAN-Verfahren auf Grundlage der geographischen Koordinaten der Ereignisse aus dem GED des UCDP der Universität Uppsala durchgeführt.
 
-Limitationen
--Größe des Zeitraums
--Unterschiedliche (bzw. immer neue) Gruppen kämpfen in den selben Regionen (und um die selben Objekte)
--Art des Kofliktes nicht berücksichtigt
+Die Ergebnisse zeigen ein insgesamt ausgeglichenes Bild bezüglich der Cluster. Einerseits konnten einzelne Cluster identifiziert werden, in denen ein übergeordneter Konflikt einen großen Anteil der Ereignisse ausmacht. Diese Cluster weisen eine relativ homogene Struktur auf und deuten darauf hin, dass bestimmte Konflikte tatsächlich stark räumlich konzentriert auftreten. Andererseits zeigen insbesondere größere Cluster eine deutlich heterogenere Zusammensetzung, in denen mehrere unterschiedliche Konflikte gleichzeitg vertreten sind.
 
-Ausblick und weitere Analysen
--Kleinerer Zeitraum als Vergleich
--Konflikte in Zukunft eher weiter gestreut durch den Einsatz von weitreichenden Raketen, Marschflugkörpern und Drohnen
--Selbige Annahme in Afraika fraglich
+Die Analyse verdeutlicht somit, dass eine Eingrenzung und Zuordnung von Konfliktereignissen ausschließlich anhand geographischer Daten nur teilweise möglich ist. Zwar stellt räumliche Nähe einen wichtigen Hinweis auf die Zugehörigkeit von Konfliktereignissen dar, sie reicht aber nicht aus, um Konflikte eindeutig voneinander zu unterscheiden.
 
+Gleichzeitig weist die vorliegende Untersuchung mehrere Limitationen auf. Zum einen umfasst der betrachtete Zeitraum mehr als zwei Jahrzehnte, innerhalb dessen sich Konfliktdynamiken erheblich verändern können. In vielen Regionen treten über längere Zeiträume hinweg unterschiedliche bewaffnete Akteure auf, die wahrscheinlich um ähnliche territoriale oder strategische Ziele kämpfen. Dadurch können sich Konfliktereignisse unterschiedlicher Konflikte räumlich überlagern. Außerdem wurden in der vorliegenden Analyse weder die Art des Konflikts noch die beteiligten Parteien berücksichtigt, obwohl diese einen wichtigen Einfluss auf die Struktur von Konflikten haben können.
 
+Für zukünftige Analysen ergeben sich daraus mehrere mögliche Erweiterungen. Eine Untersuchung mit einem kürzeren Betrachtungszeitraum könnte helfen, zeitliche Überlagerungen verschiedener Konflikte zu reduzieren. Zudem wäre es sinnvoll, die beteiligten Konfliktparteien oder genaue Konflikte stärker in die Analyse einzubeziehen, um räumliche Muster besser interpretieren zu können.
 
-
+Darüber hinaus können sich die räumlichen Muster von Konflikten in Zukunft stärker verändern. Der zunehmende EInstz weitreichender Waffensysteme wie Raketen, Marschflugkörper oder Drohnen kann dazu führen, dass KOnfliktereignisse räumlich stärker verteilt auftreten. Ob sich jedoch eine solche Entwickluing auch auf die momentanen Konflikte in Afrika übertragen lässt, bleibt offen und müsste in zukünftigen Untersuchungen weiter verfolgt werden.
 
 
 # Anhang {.appendix .unnumbered toc=false}
