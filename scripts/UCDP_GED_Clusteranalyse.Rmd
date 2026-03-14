@@ -424,7 +424,7 @@ glimpse(GED_sahel)
 # Überprüfung, ob die Filter korrekt sind und wie viele Beobachtungen übrig bleiben
 
 # Es dürfen nun nur noch die sieben ausgewählten Länder angezeigt werden
-# Geografische Daten nun im dbl (numeric) Format
+# Geographische Daten nun im dbl (numeric) Format
 # Zeitangaben nun im date Format
 
 ```
