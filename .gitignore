@@ -3,5 +3,6 @@
 .RData
 .Ruserdata
 data/GEDEvent_v25_1_small.csv
+data/GEDEvent_v25_1_big.csv
 .RDataTmp1
 .RDataTmp
