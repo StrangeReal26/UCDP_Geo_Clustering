@@ -50,7 +50,7 @@ Die in dieser Arbeit verwendeten Daten stammen, wie bereits genannt, aus dem GED
 
 Kurzgefasst enthält der Datensatz demnach georeferenzierte Informationen zu einzelnen gewaltsamen Ereignissen, welche den übergeordneten Konflikten klar zugeordnet werden können. Zusätzlich sind die Namen der Konflikte sowie der beteiligten Aktuere, die aufgeschlüsselten sowie gesamten Todeszahlen und Informationen zur Datenqualität hinterlegt. Bei Letzterem handelt es sich einerseits um die Informationsklarheit des Ereignisses an sich und andererseits um die Präzision der zeitlichen Angaben [@hogbladh_ucdp_2025].
 
-Für die vorliegende Arbeit wurde ein selbstständig gekürzter Datensatz verwendet, bei welchem mehrere nicht benötigte Variablen entfernt wurden, um die Größe der Daten insgesamt zu verringern. Die Analyse der Daten funktioniert jedoch gleichermaßen mit dem unveränderten Datensatz des Programms. Darüber hinaus wurde der Datensatz für die Clusteranalyse modifiziert. Die ursprüngliche Version des GED-Datensatzes enthält weltweite Daten zu Konfliktereignissen über mehrere Jahrzehnte hinweg. Um den Umfang der Analyse zu reduzieren und gleichzeitig die Fragestellung stärker einzugrenzen, wurden die Daten gefiltert und für die Analyse technisch bereinigt sowie angepasst. Es wurden beispielsweise Variablenformate verändert, wie das Festlegen der Längen- und Breitengrade als *numeric*, und Zeilen mit fehlenden geographischen Angaben entfernt, damit die spätere Clusteranalyse problemlos durchgeführt werden kann.
+Für die vorliegende Arbeit wurde ein selbstständig gekürzter Datensatz verwendet, bei welchem mehrere nicht benötigte Variablen entfernt wurden, um die Größe der Daten insgesamt zu verringern. Die Analyse der Daten funktioniert jedoch gleichermaßen mit dem unveränderten Datensatz des UCDP. Darüber hinaus wurde der Datensatz für die Clusteranalyse eingegrenzt, weil die ursprüngliche Version des GED-Datensatzes weltweite Daten zu Konfliktereignissen über einen Zeitraum von mehreren Jahrzehnten besitzt. Um den Umfang der Analyse zu reduzieren und gleichzeitig die Fragestellung stärker einzugrenzen, wurden die Daten gefiltert und für die Analyse technisch bereinigt sowie angepasst. Es wurden beispielsweise Variablenformate verändert, wie das Festlegen der Längen- und Breitengrade als *numeric*, und Zeilen mit fehlenden geographischen Angaben entfernt, damit die spätere Clusteranalyse problemlos durchgeführt werden kann.
 
 Für die deskriptive Begutachtung der Daten und für die Clusteranalyse wurden die Daten zudem auf Ereignisse ab dem Jahr 2000 begrenzt sowie nur Länder der Sahelzone mit einbezogen. Weitere Eingrenzungen der Daten für die Clusteranalyse werden im vierten Kapitel erläutert.
 
@@ -69,7 +69,7 @@ Der Mittelpunkt dieser Arbeit ist die Frage, ob sich aus der räumlichen Verteil
 
 Zur Untersuchung dieser Fragestellung wird ein explorativer Ansatz gewählt. Ziel der Analyse ist es durch die Anwendung eines Clusterverfahrens räumliche Muster zu identifizieren, die anschließend mit den vorhandenen Konfliktinformationen des Datensatzes verglichen werden. Es ist nicht beabsichtigt eine vorab definierte Hypothese zu testen, sondern im Kern die räumliche Dimension der Konfliktdaten sichtbar zu machen.
 
-Der Grundgedanke der Analyse besteht darin, dass Konfliktereignisse desselben Konflikts häufig innerhalb eines ähnlichen geographischen Bereichs stattfinden. Sollten die Cluster der Konfliktereignisse häufig von einem einzelnen Konflikt dominiert werden, dann bestätigt sich diese Annahme. Im Umkehrschluss würde eine starke Durchmischung unterschiedlicher Konflikte innerhalb eines Clusters darauf hinweisen, dass räumliche Nähe alleine nicht ausreicht, um Konflikte voneinander zu unterscheiden.
+Der Grundgedanke der Analyse besteht darin, dass Konfliktereignisse desselben Konflikts häufig innerhalb einer ähnlichen geographischen Region stattfinden. Sollten die Cluster der Konfliktereignisse häufig von einem einzelnen Konflikt dominiert werden, dann bestätigt sich diese Annahme. Im Umkehrschluss würde eine starke Durchmischung unterschiedlicher Konflikte innerhalb eines Clusters darauf hinweisen, dass räumliche Nähe alleine nicht ausreicht, um Konflikte voneinander zu unterscheiden.
 
 
 ## Vorstellung und Durchführung der Analysemethode
@@ -88,7 +88,7 @@ Der Ablauf der Analyse lässt sich in mehrere aufeinanderfolgende Schritte und C
 
 Zusammengefasst besteht die komplette Analyse aus vier Kernschritten. Die vorangegangene Bereinigung sowie Anpassung der Daten und die sich anschließende Auswertung sowie Generierung der Diagramme zählt nicht in diese Abfolge mit rein.
 
-Zuerst wurden die Daten für die Clusteranalyse nach mehreren Kriterien eingegrenzt. Daran anschließend wurden die Ereignisse in ein räumliches Datenformat überführt. Daraufhin wurde eine Kartenprojektion definiert und die Koordinaten in dieses metrische Koordinatensystem eingebettet. Zuletzt wurde auf dieser Grundlage das Cluster-Verfahren durchgeführt.
+Zuerst wurden die Daten für die Clusteranalyse nach mehreren Kriterien eingegrenzt. Daran anschließend wurden die Ereignisse in ein räumliches Datenformat überführt. Daraufhin wurde eine Kartenprojektion definiert und die Koordinaten in dieses metrische Koordinatensystem eingebettet. Zuletzt wurde auf dieser Grundlage das Clusterverfahren durchgeführt.
 
 **Eingrenzung der Daten**
 
@@ -110,7 +110,7 @@ GED_sahel <- GED |>
 
 ```
 
-Im ersten Schritt der Clusteranalyse wurden die Daten eingegrenzt. Da sich die Analyse nur auf die Länder der Sahelzone bezieht, wurden diese sieben Länder mit einem definierten Vektor festgelegt. Des Weiteren wurden nur Ereignisse einbezogen die einschließlich nach dem Jahr 2000 geschehen sind. Außerdem wurde die Datenqualität berücksichtigt, indem nur Beobachtungen Einzug in die Analyse fanden, wo die Präzision des Orts und die Klarheit bezüglich der Ereignisse sehr gut ist. Es handelt sich bei diesem Schritt demnach um die Definition der Grundgesamtheit für das Cluster-Verfahren.
+Im ersten Schritt der Clusteranalyse wurden die Daten eingegrenzt. Da sich die Analyse nur auf die Länder der Sahelzone bezieht, wurden diese sieben Länder mit einem definierten Vektor festgelegt. Des Weiteren wurden nur Ereignisse einbezogen die einschließlich nach dem Jahr 2000 geschehen sind. Außerdem wurde die Datenqualität berücksichtigt, indem nur Beobachtungen Einzug in die Analyse fanden, wo die Präzision des Orts und die Klarheit bezüglich der Ereignisse sehr gut ist. Es handelt sich bei diesem Schritt demnach um die Definition der Grundgesamtheit für das Clusterverfahren.
 
 **Erstellung geometrischer Punkte**
 
@@ -240,9 +240,9 @@ Abbildung 3: Anzahl übergeordneter Konflikte je Cluster
 
 Neben der räumlichen Verteilung wurde auch die Zusammensetzung der Cluster bezüglich der übergeordneten Konflikte untersucht. Dazu wurde einerseits ausgewertet, wie viele unterschiedliche Konflikte innerhalb eines Clusters auftreten, und andererseits wurden die Anteile des dominanten Konflikts je Cluster dargestellt. Diese beiden Informationen werden in Abbildung 3 und Abbildung 4 jeweils in einem Säulendiagramm abgebildet.
 
-Es hat sich bei der Anzahl der Konflikte pro Cluster ein differenziertes Bild gezeigt. Während einige Cluster nur wenige unterschiedliche Konflikte enthalten, weisen andere Cluster eine deutlich höhere Konfliktvielfalt auf. Auffallend sind hierbei die beiden größten Cluster der Analyse. Die Cluster 7 und 10 besitzen mit jeweils ungefähr 40 Konflikten eine sehr heterogene Zusammensetzung und enthalten mit Abstand die höchtse Anzahl an unterschiedlichen Konflikten.
+Es hat sich bei der Anzahl der Konflikte pro Cluster ein differenziertes Bild gezeigt. Während einige Cluster nur wenige unterschiedliche Konflikte enthalten, weisen andere Cluster eine deutlich höhere Konfliktvielfalt auf. Auffallend sind hierbei die beiden größten Cluster der Analyse. Die Cluster 7 und 10 besitzen mit jeweils ungefähr 40 Konflikten eine sehr heterogene Zusammensetzung und enthalten die höchste Anzahl an unterschiedlichen Konflikten.
 
-Im Gegensatz dazu bestehen die anderen Cluster, die von ihrer Größe her nicht an die Cluster 7 und 10 heranreichen, aus weit weniger unterschiedlichen Konflikten. Dies deutet darauf hin, dass sich in diesen Regionen Konfliktereignisse stärker auf einzelne Konflikte konzentrieren.
+Im Gegensatz dazu bestehen die anderen Cluster, die von ihrer Größe her nicht an die Cluster 7 und 10 heranreichen, aus deutlich weniger unterschiedlichen Konflikten. Dies deutet darauf hin, dass sich in diesen Regionen Ereignisse stärker auf einzelne Konflikte konzentrieren.
 
 ::: {.l-screen}
 <div style="width:50%; margin:auto;">
@@ -269,11 +269,11 @@ Die Kombination der beiden Auswertungen zeigt, dass sich räumliche Cluster von 
 
 Das Ziel dieser Arbeit war es zu untersuchen, in welchem Maß sich Konflikte innerhalb der Sahelzone allein anhand der geographischen Verteilung von Konfliktereignissen voneinander abgrenzen lassen. Zu diesem Zweck wurde eine dichtebasierte Clusteranalyse nach dem HDBSCAN-Verfahren auf Grundlage der geographischen Koordinaten der Ereignisse aus dem GED des UCDP der Universität Uppsala durchgeführt.
 
-Die Ergebnisse zeigen ein insgesamt ausgeglichenes Bild bezüglich der Cluster. Einerseits konnten einzelne Cluster identifiziert werden, in denen ein übergeordneter Konflikt einen großen Anteil der Ereignisse ausmacht. Diese Cluster weisen eine relativ homogene Struktur auf und deuten darauf hin, dass bestimmte Konflikte tatsächlich stark räumlich konzentriert auftreten. Andererseits zeigen insbesondere größere Cluster eine deutlich heterogenere Zusammensetzung auf, in denen mehrere unterschiedliche Konflikte gleichzeitg vertreten sind.
+Die Ergebnisse zeigen ein insgesamt ausgeglichenes Bild bezüglich der Cluster. Einerseits konnten einzelne Cluster identifiziert werden, in denen ein übergeordneter Konflikt einen großen Anteil der Konfliktereignisse ausmacht. Diese Cluster weisen eine eher homogene Struktur auf und deuten darauf hin, dass bestimmte Konflikte tatsächlich stark räumlich konzentriert auftreten. Andererseits zeigen vor allem größere Cluster eine deutlich heterogenere Zusammensetzung auf, in denen mehrere verschiedene Konflikte gleichzeitg vertreten sind.
 
 Die Analyse verdeutlicht somit, dass eine Eingrenzung und Zuordnung von Konfliktereignissen ausschließlich anhand geographischer Daten nur teilweise möglich ist. Zwar stellt räumliche Nähe einen wichtigen Hinweis auf die Zugehörigkeit von Konfliktereignissen dar, sie reicht aber nicht aus, um Konflikte eindeutig voneinander zu unterscheiden.
 
-Gleichzeitig weist die vorliegende Untersuchung mehrere Limitationen auf. Zum einen umfasst der betrachtete Zeitraum mehr als zwei Jahrzehnte, innerhalb dessen sich Konfliktdynamiken erheblich verändern können. In vielen Regionen treten über längere Zeiträume hinweg unterschiedliche bewaffnete Akteure auf, die wahrscheinlich um ähnliche territoriale oder strategische Ziele kämpfen. Dadurch können sich Ereignisse verschiedener Konflikte räumlich überlagern. Außerdem wurden in der vorliegenden Analyse weder die Art des Konflikts noch die beteiligten Parteien berücksichtigt, obwohl diese einen wichtigen Einfluss auf die Struktur von Konflikten haben können.
+Gleichzeitig weist die vorliegende Untersuchung mehrere Limitationen auf. Zum einen umfasst der betrachtete Zeitraum mehr als zwei Jahrzehnte, innerhalb dessen sich Konfliktdynamiken erheblich verändern können. In vielen Regionen treten wahrscheinlich unterschiedliche bewaffnete Akteure über einen größeren Zetraum auf, die um ähnliche territoriale oder strategische Ziele kämpfen. Dadurch können sich Ereignisse verschiedener Konflikte räumlich überlagern. Außerdem wurden in der vorliegenden Analyse weder die Art des Konflikts noch die beteiligten Parteien berücksichtigt, obwohl diese einen wichtigen Einfluss auf die Struktur von Konflikten haben können.
 
 Für zukünftige Analysen ergeben sich daraus mehrere mögliche Erweiterungen. Eine Untersuchung mit einem kürzeren Betrachtungszeitraum könnte helfen, zeitliche Überlagerungen verschiedener Konflikte zu reduzieren. Zudem wäre es sinnvoll, die beteiligten Konfliktparteien oder genaue Konflikte stärker in die Analyse einzubeziehen, um räumliche Muster besser interpretieren zu können.
 
