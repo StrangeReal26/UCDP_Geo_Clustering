@@ -1,7 +1,7 @@
 ---
 title: "UCDP GED Clusteranalyse"
 author: "Teichgräber"
-date: "2026-02-16"
+date: "2026-03-20"
 output:
   distill::distill_article:
     toc: true
@@ -1070,7 +1070,7 @@ dominance_by_cluster
 
 ```{r}
 
-# Top-Konflikte pro Cluster
+# Die fünf Top-Konflikte pro Cluster
 
 top_conflicts_by_cluster <- GED_sahel_clustered |>
   count(cluster_id, conflict_new_id, conflict_name, name = "n") |>
