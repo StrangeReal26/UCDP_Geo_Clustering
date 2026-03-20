@@ -43,10 +43,11 @@ Bei der Analyse wurde ein verkürzter Datensatz verwendet, da Spalten entfernt w
 # Laden der Daten
 # Das Trennzeichen ist wegen der Deutschen Version von xlsx bzw. csv ein Semikolon
 # Quelle des Datensatzes: https://ucdp.uu.se/downloads/
+# Der Datensatz ist hinterlegt und im Ordner data abgespeichert
 
-# GED = read.csv("data/GEDEvent_v25_1_small.csv", sep = ";")
+GED = read.csv("data/GEDEvent_v25_1_small.csv", sep = ";")
 
-GED = read.csv("data/GEDEvent_v25_1_big.csv", sep = ";")
+# GED = read.csv("data/GEDEvent_v25_1_big.csv", sep = ";")
 
 ```
 
@@ -1032,6 +1033,7 @@ GED_sahel_clustered <- GED_sahel_laea |>
 
 ```
 
+**Anzahl Konflikte pro Cluster mit Anzahl an Events**
 
 ```{r}
 
@@ -1047,6 +1049,8 @@ GED_sahel_laea |>
   arrange(desc(n_conflicts))
 
 ```
+
+**Dominanter Konflikt pro Cluster**
 
 ```{r}
 
@@ -1067,6 +1071,8 @@ dominance_by_cluster <- GED_sahel_clustered |>
 dominance_by_cluster
 
 ```
+
+**Fünf Top-Konflikte pro Cluster**
 
 ```{r}
 
